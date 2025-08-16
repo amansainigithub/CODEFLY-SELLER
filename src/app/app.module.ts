@@ -9,7 +9,6 @@ import { LoginComponent } from './login/login.component';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSidenavModule} from '@angular/material/sidenav';
-import { SellerDashComponent } from './seller-panel/seller-dash/seller-dash.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -32,19 +31,12 @@ import {MatCardModule} from '@angular/material/card';
 import {MatTabsModule} from '@angular/material/tabs';
 import { SellerHomeComponent } from './seller-panel/seller-home/seller-home.component';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import { CatalogsAreaComponent } from './seller-panel/seller-catalog/catalogs/catalogs-area/catalogs-area.component';
 import { NgChartsModule } from 'ng2-charts';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import {MatBadgeModule} from '@angular/material/badge';
 import { MatDialogModule} from '@angular/material/dialog';
-import { SingleProductListingComponent } from './seller-panel/seller-catalog/sellerSingleCatalog/single-product-listing/single-product-listing.component';
-import { ProductIncompleteComponent } from './seller-panel/seller-catalog/product-status/product-incomplete/product-incomplete.component';
-import { ProductVariantCompleteComponent } from './seller-panel/seller-catalog/product-status/product-variant-complete/product-variant-complete.component';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { ProductUnderReviewComponent } from './seller-panel/seller-catalog/product-status/product-under-review/product-under-review.component';
-import { ProductApprovedComponent } from './seller-panel/seller-catalog/product-status/product-approved/product-approved.component';
-import { ProductSuccessPageComponent } from './seller-panel/product-success-page/product-success-page.component';
 
 
 @NgModule({
@@ -52,18 +44,10 @@ import { ProductSuccessPageComponent } from './seller-panel/product-success-page
     AppComponent,
     RegisterComponent,
     LoginComponent,
-    SellerDashComponent,
     HomeComponent,
     SellerDataFormComponent,
     RegisterCompletedComponent,
-    SellerHomeComponent,
-    CatalogsAreaComponent,
-    SingleProductListingComponent,
-    ProductIncompleteComponent,
-    ProductVariantCompleteComponent,
-    ProductUnderReviewComponent,
-    ProductApprovedComponent,
-    ProductSuccessPageComponent
+    SellerHomeComponent
   ],
   imports: [
     BrowserModule,

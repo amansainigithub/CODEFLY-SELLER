@@ -32,8 +32,7 @@ export class SellerDataFormComponent {
   checkBox:any;
 
 
-  constructor(private authService: AuthService , 
-    private UserService:UserService ,  
+  constructor(private authService: AuthService, 
     private toast:NgToastService,
     private router: Router,
     private spinner: NgxSpinnerService,
