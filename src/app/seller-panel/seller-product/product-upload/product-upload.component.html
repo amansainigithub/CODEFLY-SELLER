@@ -1,0 +1,269 @@
+<div class="mt-5">
+    <div class="container">
+        <div class="col-md-8">
+            <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+
+                <div class="row">
+                    <div class="col-md-6 mb-2" *ngFor="let field of formfields">
+
+                         <!-- TEXT FIELD -->
+                        <label *ngIf="field.type === 'TEXT'" [for]="field.identifier" class="tooltip-wrap-uniq">
+                            {{ field.identifier }}
+                            <span *ngIf="field.type === 'TEXT'" class="tooltip-icon-uniq ms-1">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                            </span>
+                        </label>
+
+                       
+                        <input *ngIf="field.type === 'TEXT'" type="text" class="form-control custom-height" 
+                            [id]="field.identifier"  placeholder="username" [formControlName]="field.identifier"
+                            [ngClass]="{
+                                        'is-invalid':
+                                            productForm.get(field.identifier)?.touched &&
+                                            productForm.get(field.identifier)?.invalid
+                                        }" />
+                        
+                        <!-- TEXT FIELD -->
+
+
+
+                         <!-- NUMBER FIELD -->
+                        <label *ngIf="field.type === 'NUMBER'" [for]="field.identifier" class="tooltip-wrap-uniq">
+                            {{ field.identifier }}
+                            <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                            </span>
+                        </label>
+
+                       
+                        <input *ngIf="field.type === 'NUMBER'" type="text" class="form-control custom-height"
+                           (keypress)="allowOnlyNumbers($event)" [id]="field.identifier"  placeholder="username"
+                           [formControlName]="field.identifier"  (input)="checkPrice()"
+                            [ngClass]="{
+                                        'is-invalid':
+                                            productForm.get(field.identifier)?.touched &&
+                                            productForm.get(field.identifier)?.invalid
+                                        }" />
+                                        
+                        <!-- Extra Error: Selling Price > MRP -->
+                            <div class="text-danger fs12 mb-1"
+                                *ngIf="field.identifier === 'sellingPrice' && productForm.get('sellingPrice')?.errors?.['greater']">
+                            Selling Price cannot be greater than MRP.
+                            </div>
+
+                        <!-- NUMBER FIELD -->
+                         
+                        
+
+
+                        <!-- SINGLE DROPDOWN -->
+                        <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier" class="tooltip-wrap-uniq">
+                            {{ field.identifier }}
+                            <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                            </span>
+                        </label>
+
+                            <input *ngIf="field.type === 'DROPDOWN'" type="text"
+                            class="form-control custom-height"
+                            placeholder="Search for a street"
+                            [id]="field.identifier"
+                            [matAutocomplete]="auto"
+                            [formControlName]="field.identifier"
+                            (blur)="validateDropdownValue(field)"
+                            (optionSelected)="onDropdownSelect($event, field)"
+                            [ngClass]="{
+                                'is-invalid':
+                                productForm.get(field.identifier)?.touched &&
+                                productForm.get(field.identifier)?.invalid
+                            }">
+
+                            <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option
+                                style="background-color: whitesmoke;color: black;font-size: 13px;margin-top: -10px;margin-bottom: -10px;"
+                                *ngFor="let option of (filteredDropdowns[field.identifier] | async)"
+                                [value]="option">
+                                {{ option }}
+                            </mat-option>
+                            </mat-autocomplete>
+                        <!-- SINGLE DROPDOWN -->
+                    
+                        
+
+
+
+                        <!-- MULTI SELECT DROPDOWN -->
+                        <label *ngIf="field.type === 'DROPDOWN-MUL'" [for]="field.identifier" class="tooltip-wrap-uniq">
+                            {{ field.identifier }}
+                            <span *ngIf="field.type === 'DROPDOWN-MUL'" class="tooltip-icon-uniq ms-1">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                            </span>
+                        </label>
+                        <div *ngIf="field.type === 'DROPDOWN-MUL'">
+                            <mat-form-field class="bootstrap-multiselect" [ngClass]="{
+                            'is-invalid':
+                                productForm.get(field.identifier)?.touched &&
+                                productForm.get(field.identifier)?.invalid
+                            }">
+                            <mat-label>{{ field.exclamationDesc || 'Select Options' }}</mat-label>
+                            <mat-select [formControlName]="field.identifier" multiple 
+                            (selectionChange)="onMultiSelectChange($event, field)">
+                                <mat-select-trigger>
+                                {{ productForm.get(field.identifier)?.value?.[0] || '' }}
+                                <span *ngIf="(productForm.get(field.identifier)?.value?.length || 0) > 1">
+                                    (+{{ (productForm.get(field.identifier)?.value?.length || 0) - 1 }}
+                                    {{ (productForm.get(field.identifier)?.value?.length || 0) === 2 ? 'other' : 'others' }})
+                                </span>
+                                </mat-select-trigger>
+
+                                <mat-option *ngFor="let drink of field.values" [value]="drink">
+                                {{ drink }}
+                                </mat-option>
+                            </mat-select>
+                            </mat-form-field>
+                        </div>
+                        
+
+
+                        <!-- VALIDATION ERRORS -->
+                        <div class="text-danger fs12 mb-1"
+                            *ngIf="productForm.get(field.identifier)?.touched && productForm.get(field.identifier)?.invalid">
+                            <small *ngIf="productForm.get(field.identifier)?.errors?.['required']">
+                                {{ field.name }} is required.
+                            </small>
+                            <small *ngIf="productForm.get(field.identifier)?.errors?.['minlength']">
+                                Minimum value is {{ field.minLength }}.
+                            </small>
+                            <small *ngIf="productForm.get(field.identifier)?.errors?.['maxlength']">
+                                Maximum value is {{ field.maxLength }}.
+                            </small>
+                            <small *ngIf="productForm.get(field.identifier)?.errors?.['pattern']">
+                                Invalid {{ field.name }} format.
+                            </small>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- TABLE -->
+                 <!-- <table class="table table-hover table-bordered" 
+                *ngIf="tableRows.length > 0" 
+                *ngIf="hasMultiSelectValues"
+                 > -->
+                <table class="table table-hover table-bordered" *ngIf="tableRows.length > 0" 
+                 >
+                    <thead style="background-color: aliceblue;">
+                        
+                        <tr class="fs12 text-center" style="color: #616a6b;">
+                        <th>Selected Option</th> <!-- naya column -->
+                        <th *ngFor="let columnName of dynamicRows">
+                            {{ columnName.name }}
+                            <span *ngIf="columnName.required" class="text-danger">*</span>
+                        </th>
+                        <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody formArrayName="tableRows">
+                        <tr *ngFor="let tableRow of tableRows.controls; let i = index" [formGroupName]="i">
+
+                        <td>{{ tableRow.get('__msVal')?.value }}</td>
+
+                        <td *ngFor="let col of dynamicRows">
+
+                            
+                            <!-- TEXT COLUMN -->
+                            <div *ngIf="col.type === 'TEXT'">
+                            <input style="width: 150px;"
+                                type="text"
+                                [formControlName]="col.identifier"
+                                [id]="col.identifier"
+                                class="form-control custom-height"
+                                [placeholder]="col.exclamationDesc"
+                                [minlength]="col.minLength"
+                                [maxlength]="col.maxLength"
+                                aria-label="file example"
+                                [ngClass]="{
+                                'is-invalid':
+                                    tableRow.get(col.identifier)?.touched &&
+                                    tableRow.get(col.identifier)?.invalid
+                                }" />
+                            </div>
+
+                            <!-- DROPDOWN COLUMN -->
+                            <!-- Table Dropdown Column -->
+                            <div *ngIf="col.type === 'DROPDOWN'">
+                            <input type="text" class="form-control custom-height"
+                                placeholder="Search for a street"
+                                [id]="col.identifier"
+                                [matAutocomplete]="autoTable"
+                                [formControlName]="col.identifier"
+                                (blur)="validateDropdownValue(col)"
+                                (optionSelected)="onDropdownSelect($event, col)"
+                                [ngClass]="{
+                                'is-invalid':
+                                    tableRow.get(col.identifier)?.touched &&
+                                    tableRow.get(col.identifier)?.invalid
+                                }">
+
+                            <mat-autocomplete #autoTable="matAutocomplete">
+                                <mat-option
+                                style="background-color: whitesmoke;color: black;font-size: 13px;margin-top: -10px;margin-bottom: -10px;"
+                                *ngFor="let option of (filteredTableDropdowns[col.identifier + '_' + tableRow.get('__msVal')?.value] | async)"
+                                [value]="option">
+                                {{ option }}
+                                </mat-option>
+                            </mat-autocomplete>
+                            </div>
+
+
+                            <!-- ERROR MESSAGES -->
+                            <div *ngIf="tableRow.get(col.identifier)?.touched && tableRow.get(col.identifier)?.invalid"
+                            class="text-danger fs12">
+                            <small *ngIf="tableRow.get(col.identifier)?.errors?.['required']">
+                                {{ col.name }} is required.
+                            </small>
+                            <small *ngIf="tableRow.get(col.identifier)?.errors?.['minlength']">
+                                Minimum length is {{ col.minLength }} characters.
+                            </small>
+                            <small *ngIf="tableRow.get(col.identifier)?.errors?.['maxlength']">
+                                Maximum length is {{ col.maxLength }} characters.
+                            </small>
+                            <small *ngIf="tableRow.get(col.identifier)?.errors?.['lessThanPrice']">
+                                Mrp Price is not less than the <br>actual price.
+                            </small>
+                            </div>
+                        </td>
+
+                        <!-- REMOVE BUTTON -->
+                        <td>
+                            <button mat-raised-button color="warn" type="button" (click)="removeTableRow(i)">
+                            Remove
+                            </button>
+                        </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+
+
+
+
+                </div>
+                <!-- ROW FINISH -->
+
+
+
+                <button type="submit" class="btn btn-primary mt-3">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

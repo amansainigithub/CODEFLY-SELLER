@@ -1,0 +1,61 @@
+
+/* Wrapper */
+.tooltip-wrap-uniq {
+  position: relative;
+  display: inline-block;
+}
+
+/* Icon container */
+.tooltip-icon-uniq {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Tooltip content */
+.tooltip-text-uniq {
+  visibility: hidden;
+  width: max-content;
+  max-width: 220px;
+  background-color: #212529;
+  color: #fff;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.2);
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Arrow */
+.tooltip-text-uniq::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #212529 transparent transparent transparent;
+}
+
+/* Hover effect */
+.tooltip-icon-uniq:hover .tooltip-text-uniq {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+input.is-invalid {
+  background-image: none !important; /* Remove red exclamation icon */
+}

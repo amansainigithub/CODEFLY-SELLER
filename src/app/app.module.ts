@@ -37,6 +37,8 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatBadgeModule} from '@angular/material/badge';
 import { MatDialogModule} from '@angular/material/dialog';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ProductUploadComponent } from './seller-panel/seller-product/product-upload/product-upload.component';
 
 
 @NgModule({
@@ -47,7 +49,8 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     HomeComponent,
     SellerDataFormComponent,
     RegisterCompletedComponent,
-    SellerHomeComponent
+    SellerHomeComponent,
+    ProductUploadComponent
   ],
   imports: [
     BrowserModule,
@@ -77,6 +80,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     MatSelectModule,
     MatBadgeModule,
     MatDialogModule,
+    MatAutocompleteModule,
     NgxSkeletonLoaderModule.forRoot({ animation: 'pulse', loadingText: 'This item is actually loading...' })
   ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],

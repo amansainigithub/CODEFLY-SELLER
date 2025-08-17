@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home/home.component';
 import { SellerDataFormComponent } from './register/seller-data-form/seller-data-form.component';
 import { RegisterCompletedComponent } from './register/register-completed/register-completed.component';
 import { SellerHomeComponent } from './seller-panel/seller-home/seller-home.component';
+import { ProductUploadComponent } from './seller-panel/seller-product/product-upload/product-upload.component';
 
 const routes: Routes = [
 { path: 'register', component: RegisterComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
       children: [
                   //ADMIN PANEL
                     { path: '', component: SellerHomeComponent },
+                    { path: 'productUpload', component: ProductUploadComponent },
                   
       ],
 }
