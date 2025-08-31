@@ -1,8 +1,27 @@
+.addProductDetails{
+  font-size: 15px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 600;
+}
+
+.psi {
+  display: inline-block;
+  border-bottom: 2px solid #e5dada; /* नीचे line */
+  line-height: 0.8;             /* text ke height ke बराबर line chipak जाएगी */
+  padding-bottom: 10px;  
+  color: #5A5E66;    
+  font-size: 13px;    /* thoda gap dena hai toh */
+}
+
+
+
+
 
 /* Wrapper */
 .tooltip-wrap-uniq {
   position: relative;
   display: inline-block;
+  font-size: 13px;
 }
 
 /* Icon container */
@@ -27,13 +46,14 @@
   bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.8rem;
+  font-size: 10px;
   line-height: 1.2;
   box-shadow: 0 3px 6px rgb(0 0 0 / 0.2);
   white-space: normal;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease-in-out; /* 👈 Smooth fade */
+  
 }
 
 /* Arrow */
@@ -58,4 +78,31 @@
 
 input.is-invalid {
   background-image: none !important; /* Remove red exclamation icon */
+}
+
+
+
+
+/* FORM BG */
+
+.formbg {
+  background-color: #f0f4f6;
+  padding-left: 25px;   /* left padding */
+  padding-right: 25px;  /* right padding */
+  padding-top: 20px;
+  border-radius: 12px;
+}
+
+
+
+.form-control:focus {
+  border-color: #4814cc;       /* border ka color change */
+  box-shadow: 0 0 2px #321aae; /* shadow halka kar diya */
+  outline: none;               /* default outline hata diya */
+}
+
+
+::placeholder {
+  font-size: 12px;   /* 👈 apne hisaab se chhota karo */
+  color: #999;       /* optional - halka color */
 }

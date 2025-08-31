@@ -79,7 +79,7 @@ margin-top: 10px;
     width: 78%;
     transition: margin-left 0.3s;
     display: inline-block;
-    margin-top: 1%;
+    /* margin-top: 1%; */
 }
 
 .content-expanded {
