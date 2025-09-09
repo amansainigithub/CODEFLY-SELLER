@@ -54,9 +54,9 @@ export class ProductUploadComponent {
       (err: any) => console.error(err)
     );
 
-    //     setTimeout(() => {
-    //   this.prefillForm();
-    // }, 3000);
+        setTimeout(() => {
+      this.prefillForm();
+    }, 3000);
   }
 
   generateDynamicControls(dataReceiver: any[]) {
@@ -266,57 +266,37 @@ export class ProductUploadComponent {
 
   prefillForm() {
     const testData = {
-  tableRows: [
-    {
-      price: '100',
-      MRP: '200',
-      inventory: '500',
-      SKUID: '',
-      chestSize: '22',
-      lengthSize: '20',
-      shoulderSize: '20',
-      __msId: 'brandNames',
-      __msVal: 'XXS'
-    },
-    {
-      price: '4500',
-      MRP: '6000',
-      inventory: '1000',
-      SKUID: '900',
-      chestSize: '20',
-      lengthSize: '25',
-      shoulderSize: '30',
-      __msId: 'brandNames',
-      __msVal: 'XS'
-    },
-    {
-      price: '450',
-      MRP: '500',
-      inventory: '150',
-      SKUID: '12000',
-      chestSize: '24',
-      lengthSize: '21',
-      shoulderSize: '46',
-      __msId: 'brandNames',
-      __msVal: 'M'
-    }
-  ],
-  'Product Name': 'Aman Saini',
-  'Default Name': 'SAini',
-  GST: '10',
-  'HSN Code': '15023',
-  netWeight: '10',
-  brandNames: ['XXS', 'XS', 'M'],
-  Color: 'Crimson',
-  netQuantity: '1',
-  neck: 'Turtle Neck / High Neck',
-  occasion: 'Formal',
-  pattern: 'Sleeveless',
-  countryOfOrigin: 'INDIA',
-  manufacturerName: 'Saurav',
-  manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
-  manufacturerPincode: '247001'
-};
+    tableRows: [
+        {price: '100', MRP: '200', inventory: '100', SKUID: '100', chestSize: '20', lengthSize: '21', shoulderSize: '22', __msId: 'brandNames', __msVal: 'L'},
+        {price: '250', MRP: '250', inventory: '10', SKUID: '100', chestSize: '34', lengthSize: '25', shoulderSize: '24', __msId: 'brandNames', __msVal: '4XL'},
+        {price: '2500', MRP: '3000', inventory: '150', SKUID: '100', chestSize: '28', lengthSize: '25', shoulderSize: '30', __msId: 'brandNames', __msVal: 'XXXL'},
+        {price: '780', MRP: '1000', inventory: '130', SKUID: '100', chestSize: '22', lengthSize: '21', shoulderSize: '46', __msId: 'brandNames', __msVal: 'XXL'},
+        {price: '999', MRP: '1000', inventory: '1200', SKUID: '160', chestSize: '22', lengthSize: '29', shoulderSize: '32', __msId: 'brandNames', __msVal: 'XL'}
+    ],
+    productName: 'Hair Bands Women| Girls | Kids | 24 Pieces Multicolor Elastic Hair Bands H',
+    defaultName: 'Mens Clothing',
+    GST: '18',
+    hsnCode: '44045',
+    netWeight: '200',
+    brandNames: ['L', 'XL', 'XXL', 'XXXL', '4XL'],
+    color: 'SlateBlue',
+    netQuantity: '1',
+    neck: 'V-Neck',
+    occasion: 'Casual',
+    pattern: 'Floral',
+    sleeveLength: 'Sleeveless',
+    countryOfOrigin: 'INDIA',
+    manufacturerName: 'Saurav ',
+    manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
+    manufacturerPincode: '120120',
+    brand: 'Brand 1',
+    lining: 'Inner Slip Included',
+    closureType: 'Slip-On / Pull-On',
+    stretchType: 'Medium Stretch',
+    careInstruction: 'Tumble Dry Low',
+    description: 'ecommerce website names'
+}
+
 
     // 1. Patch simple fields
     this.productForm.patchValue(testData);
