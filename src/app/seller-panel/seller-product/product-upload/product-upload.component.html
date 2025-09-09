@@ -415,6 +415,125 @@
                          <!-- PRODUCT DETAILS ENDING     -->
 
 
+
+                         <!-- ADDITIOANL DETAILS STARTING     -->
+                        <div class="row mt-2">
+                            <p class="psi with-line">Additional Details</p>
+                               <div class="col-md-6 mb-2" *ngFor="let field of additionalDetails">
+
+                                <!-- TEXT FIELD STARTING-->
+                                <div *ngIf="field.type === 'TEXT'">
+                                    <label *ngIf="field.type === 'TEXT'" [for]="field.identifier"
+                                        class="tooltip-wrap-uniq">
+                                        {{ field.identifier }}
+                                        <span *ngIf="field.type === 'TEXT'" class="tooltip-icon-uniq ms-1">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                                        </span>
+                                    </label>
+
+                                    <input *ngIf="field.type === 'TEXT'" type="text" class="form-control custom-height"
+                                        [id]="field.identifier" [placeholder]="field.placeHolder"
+                                        [formControlName]="field.identifier" [ngClass]="{
+                                        'is-invalid':
+                                            productForm.get(field.identifier)?.touched &&
+                                            productForm.get(field.identifier)?.invalid
+                                        }" />
+                                </div>
+                                <!-- TEXT FIELD ENDING-->
+
+
+
+                                <!-- NUMBER FIELD STARTING-->
+                                <div *ngIf="field.type === 'NUMBER'">
+                                    <label *ngIf="field.type === 'NUMBER'" [for]="field.identifier"
+                                    class="tooltip-wrap-uniq">
+                                    {{ field.identifier }}
+                                    <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
+                                        <i class="bi bi-exclamation-circle"></i>
+                                        <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                                    </span>
+                                </label>
+
+                                <input *ngIf="field.type === 'NUMBER'" type="text" class="form-control custom-height"
+                                    (keypress)="allowOnlyNumbers($event)" [id]="field.identifier" placeholder="username"
+                                    [formControlName]="field.identifier" [ngClass]="{
+                                        'is-invalid':
+                                            productForm.get(field.identifier)?.touched &&
+                                            productForm.get(field.identifier)?.invalid
+                                        }" />
+                                </div>
+                                <!-- NUMBER FIELD ENDING-->
+
+                                <!-- SINGLE DROPDOWN STARTING-->
+                               <div *ngIf="field.type === 'DROPDOWN'" >
+                                 <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier"
+                                    class="tooltip-wrap-uniq">
+                                    {{ field.identifier }}
+                                    <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
+                                        <i class="bi bi-exclamation-circle"></i>
+                                        <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                                    </span>
+                                </label>
+
+                                <input *ngIf="field.type === 'DROPDOWN'" type="text" class="form-control custom-height"
+                                    [placeholder]="field.placeHolder" [id]="field.identifier" [matAutocomplete]="auto"
+                                    [formControlName]="field.identifier" (blur)="validateDropdownValue(field)"
+                                    (optionSelected)="onDropdownSelect($event, field)" [ngClass]="{
+                                    'is-invalid':
+                                    productForm.get(field.identifier)?.touched &&
+                                    productForm.get(field.identifier)?.invalid
+                                }">
+                               </div>
+
+                                <mat-autocomplete #auto="matAutocomplete">
+                                    <mat-option
+                                        style="background-color: whitesmoke;color: black;font-size: 13px;margin-top: -10px;margin-bottom: -10px;"
+                                        *ngFor="let option of (filteredDropdowns[field.identifier] | async)"
+                                        [value]="option">
+                                        {{ option }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <!-- SINGLE DROPDOWN ENDING-->
+
+
+
+                                <!-- VALIDATION ERRORS STARTING-->
+                                <div class="text-danger fs12 mb-1"
+                                    *ngIf="productForm.get(field.identifier)?.touched && productForm.get(field.identifier)?.invalid">
+
+                                    <small *ngIf="productForm.get(field.identifier)?.errors?.['required']">
+                                        {{ field.name }} is required.
+                                    </small>
+
+                                    <small *ngIf="productForm.get(field.identifier)?.errors?.['minlength']">
+                                        Minimum length is {{ field.minLength }}.
+                                    </small>
+
+                                    <small *ngIf="productForm.get(field.identifier)?.errors?.['maxlength']">
+                                        Maximum length is {{ field.maxLength }}.
+                                    </small>
+
+                                    <small *ngIf="productForm.get(field.identifier)?.errors?.['pattern']">
+                                        Invalid {{ field.name }} format.
+                                    </small>
+
+                                    <!-- 👇 New min/max number validation -->
+                                    <small *ngIf="productForm.get(field.identifier)?.errors?.['min']">
+                                        | Minimum value allowed is {{ field.minValue || 10 }}.
+                                    </small>
+                                    <small *ngIf="productForm.get(field.identifier)?.errors?.['max']">
+                                        | Maximum value allowed is {{ field.maxValue || 9999 }}.
+                                    </small>
+                                </div>
+                                <!-- VALIDATION ERRORS ENDING-->
+
+                            </div>
+                        </div>
+                         <!-- ADDITIOANL DETAILS ENDING     -->
+
+
+
                         <!-- ROW FINISH -->
                         <button type="submit" class="btn btn-primary mt-3">
                             Submit

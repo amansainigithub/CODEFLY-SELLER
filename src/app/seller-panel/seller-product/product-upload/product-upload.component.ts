@@ -20,6 +20,8 @@ export class ProductUploadComponent {
   formfields: any[] = [];
   productDetails: any[] = [];
   dynamicRows: any[] = [];
+  additionalDetails: any[] = [];
+
   filteredDropdowns: { [key: string]: Observable<string[]> } = {};
 
   constructor(
@@ -41,9 +43,11 @@ export class ProductUploadComponent {
         this.formfields = data.inventoryData;
         this.productDetails = data.productDetails;
         this.dynamicRows = data.rows;
+        this.additionalDetails = data.additionalDetails;
 
         this.generateDynamicControls(this.formfields);
         this.generateDynamicControls(this.productDetails);
+        this.generateDynamicControls(this.additionalDetails);
         console.log('Product Form Data');
         console.log(this.productForm);
       },
@@ -262,45 +266,57 @@ export class ProductUploadComponent {
 
   prefillForm() {
     const testData = {
-      tableRows: [
-        {
-          fiberName: 'Data1',
-          batteryList: 'Eveready',
-          __msId: 'brandNames',
-          __msVal: 'Mountain Dew',
-        },
-        {
-          fiberName: 'eeeee',
-          batteryList: 'venom',
-          __msId: 'brandNames',
-          __msVal: 'Pepsi',
-        },
-        {
-          fiberName: 'rere',
-          batteryList: 'tesla',
-          __msId: 'brandNames',
-          __msVal: 'Coca-Cola',
-        },
-        {
-          fiberName: 'rer',
-          batteryList: 'venom',
-          __msId: 'brandNames',
-          __msVal: 'Sprite',
-        },
-        {
-          fiberName: 'ere',
-          batteryList: 'Eveready',
-          __msId: 'brandNames',
-          __msVal: 'Fanta',
-        },
-      ],
-      productName: 'Jacket',
-      defaultName: '111111111',
-      mrpPrice: '500',
-      sellingPrice: '600',
-      nameList: 'Nitin gupta',
-      brandNames: ['Coca-Cola', 'Pepsi', 'Sprite', 'Fanta', 'Mountain Dew'],
-    };
+  tableRows: [
+    {
+      price: '100',
+      MRP: '200',
+      inventory: '500',
+      SKUID: '',
+      chestSize: '22',
+      lengthSize: '20',
+      shoulderSize: '20',
+      __msId: 'brandNames',
+      __msVal: 'XXS'
+    },
+    {
+      price: '4500',
+      MRP: '6000',
+      inventory: '1000',
+      SKUID: '900',
+      chestSize: '20',
+      lengthSize: '25',
+      shoulderSize: '30',
+      __msId: 'brandNames',
+      __msVal: 'XS'
+    },
+    {
+      price: '450',
+      MRP: '500',
+      inventory: '150',
+      SKUID: '12000',
+      chestSize: '24',
+      lengthSize: '21',
+      shoulderSize: '46',
+      __msId: 'brandNames',
+      __msVal: 'M'
+    }
+  ],
+  'Product Name': 'Aman Saini',
+  'Default Name': 'SAini',
+  GST: '10',
+  'HSN Code': '15023',
+  netWeight: '10',
+  brandNames: ['XXS', 'XS', 'M'],
+  Color: 'Crimson',
+  netQuantity: '1',
+  neck: 'Turtle Neck / High Neck',
+  occasion: 'Formal',
+  pattern: 'Sleeveless',
+  countryOfOrigin: 'INDIA',
+  manufacturerName: 'Saurav',
+  manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
+  manufacturerPincode: '247001'
+};
 
     // 1. Patch simple fields
     this.productForm.patchValue(testData);
