@@ -54,9 +54,9 @@ export class ProductUploadComponent {
       (err: any) => console.error(err)
     );
 
-        setTimeout(() => {
-      this.prefillForm();
-    }, 3000);
+    //     setTimeout(() => {
+    //   this.prefillForm();
+    // }, 3000);
   }
 
   generateDynamicControls(dataReceiver: any[]) {
@@ -238,6 +238,32 @@ export class ProductUploadComponent {
 
 
 }
+
+
+// checkRowPrice(row: any, field: string) {
+//   const value = Number(row.get(field)?.value);
+
+//   // ✅ Price / MRP ko sabhi rows me update karna
+//   if (field === 'price' || field === 'MRP') {
+//     this.tableRows.controls.forEach((r: any) => {
+//       r.get(field)?.setValue(value, { emitEvent: false });
+//     });
+//   }
+
+//   // ✅ Validation: Price should not be greater than MRP
+//   const mrp = Number(row.get('MRP')?.value);
+//   const price = Number(row.get('price')?.value);
+
+//   if (!isNaN(mrp) && !isNaN(price) && price > mrp) {
+//     row.get('MRP')?.setErrors({ greater: true });
+//   } else {
+//     if (row.get('MRP')?.hasError('greater')) {
+//       row.get('MRP')?.setErrors(null);
+//     }
+//   }
+// }
+
+
 
 
 

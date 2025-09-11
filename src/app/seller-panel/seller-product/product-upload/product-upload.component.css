@@ -106,3 +106,13 @@ input.is-invalid {
   font-size: 12px;   /* 👈 apne hisaab se chhota karo */
   color: #999;       /* optional - halka color */
 }
+
+
+.custom-font-size{
+  font-size: 12px;
+}
+
+.bootstrap-multiselect {
+    width: 100%;
+    font-size: 12px; /* input aur dropdown text ke liye */
+}

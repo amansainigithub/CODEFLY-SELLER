@@ -1,0 +1,56 @@
+
+
+<div class="container">
+    <p>Select Category</p>
+</div>
+
+
+<div class="category-container d-flex">
+  <!-- Sidebar -->
+  <div class="category-sidebar">
+    <ul class="list-unstyled m-0 p-0">
+      <li class="category-item"
+          *ngFor="let item of categories"
+          [class.active]="activeCategory === item"
+          (click)="setActiveCategory(item)">
+        {{ item }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Sub Categories (only show when main selected) -->
+  <div class="category-submenu" *ngIf="activeCategory === 'Women Fashion'">
+    <ul class="list-unstyled m-0 p-0">
+      <li class="subcategory-item"
+          *ngFor="let sub of subCategories"
+          [class.active]="activeSubCategory === sub"
+          (click)="setActiveSubCategory(sub)">
+        {{ sub }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Accessories Submenu -->
+  <div class="category-submenu" *ngIf="activeSubCategory === 'Accessories'">
+    <ul class="list-unstyled m-0 p-0">
+      <li class="subcategory-item"
+          *ngFor="let sub of accessories"
+          [class.active]="activeAccessory === sub"
+          (click)="setActiveAccessory(sub)">
+        {{ sub }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Hair Accessories Submenu -->
+  <div class="category-submenu" *ngIf="activeAccessory === 'Hair Accessories'">
+    <ul class="list-unstyled m-0 p-0">
+      <li class="subcategory-item"
+          *ngFor="let sub of hairAccessories"
+          [class.active]="activeHairAccessory === sub"
+          (click)="setActiveHairAccessory(sub)">
+        {{ sub }}
+      </li>
+    </ul>
+  </div>
+</div>
