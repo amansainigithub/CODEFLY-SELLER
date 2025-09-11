@@ -41,20 +41,36 @@ export class CategorySelectionComponent {categories = [
     this.activeSubCategory = null;
     this.activeAccessory = null;
     this.activeHairAccessory = null;
+    this.finalCategoryBoxHide();
   }
 
   setActiveSubCategory(sub: string) {
     this.activeSubCategory = sub;
     this.activeAccessory = null;
     this.activeHairAccessory = null;
+    this.finalCategoryBoxHide();
   }
 
   setActiveAccessory(sub: string) {
     this.activeAccessory = sub;
     this.activeHairAccessory = null;
+    this.finalCategoryBoxHide();
   }
 
   setActiveHairAccessory(sub: string) {
     this.activeHairAccessory = sub;
+
+    this.finalCategoryBoxShow();
   }
+
+finalCategory:any = false;
+finalCategoryBoxShow(){
+    this.finalCategory = true;
+}
+
+finalCategoryBoxHide(){
+    this.finalCategory = false;
+  
+}
+
 }

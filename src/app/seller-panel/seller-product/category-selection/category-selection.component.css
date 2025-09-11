@@ -3,8 +3,10 @@
   flex-wrap: wrap;
   font-size: 12px;
   background: #fff;
-  /* border: 1px solid #eee; */
+  border: 1px solid #f4ebeb;
+  border-radius: 12px;
   overflow-x: auto;
+  padding: 5px;
 }
 
 .category-sidebar,
@@ -15,12 +17,20 @@
   border-right: 1px solid #eee;
 }
 
+.category-sidebar {
+  margin-left: 0; /* main category left se stick rahe */
+}
+
+.category-submenu {
+  margin-left: 10px;  /* <-- submenu thoda left se shift */
+}
+
 .category-item,
 .subcategory-item {
   padding: 10px 12px;
   cursor: pointer;
   transition: all 0.2s;
-  border-bottom: 1px solid #eee;   /* <-- Line after each value */
+  border-bottom: 1px solid #eee;   /* line after each */
 }
 
 .category-item:hover,
