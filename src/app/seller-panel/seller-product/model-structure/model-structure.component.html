@@ -1,0 +1,51 @@
+    <!-- Model Starting -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered custom-modal">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="modal-body text-center">
+              <p>Catalog Upload Successfully</p>
+            </div>
+            <div class="d-flex justify-content-center p-1">
+              <button mat-raised-button (click)="closeModal()">close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+     <!-- Modal Ending  -->
+
+
+
+
+
+     <!-- ===================================================================== -->
+
+
+              <!-- IMAGE GUIDLINES MODEL -->
+    <!-- Modal -->
+    <div class="modal fade"  data-bs-backdrop="static" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+      #proceedModel>
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-body text-center ">
+            <div>
+              <i class="bi bi-rocket-takeoff fs20" style="color: #45e832;"></i>
+            </div>
+            <span class="fs12">
+              Are , you sure you went to Proceed
+            </span>
+          </div>
+          <div class="mb-3 text-center">
+            <button mat-raised-button class="me-2" data-bs-dismiss="modal">Close</button>
+            <button mat-raised-button color="primary" >Submit</button>
+          </div>
+
+          <div *ngIf="progressBar">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+    <!-- IMAGE GUIDLINES MODEL --> 

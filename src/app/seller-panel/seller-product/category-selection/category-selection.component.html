@@ -1,61 +1,100 @@
-
-
 <div class="container mt-2 mb-2 ">
-        <button mat-raised-button>Category Selection</button>
-
+  <button mat-raised-button>Category Selection</button>
 </div>
 
-
 <div class="category-container d-flex">
-  <!-- Sidebar -->
+  <!-- Root Categories -->
   <div class="category-sidebar">
     <ul class="list-unstyled m-0 p-0">
       <li class="category-item"
-          *ngFor="let item of categories"
-          [class.active]="activeCategory === item"
-          (click)="setActiveCategory(item)">
-        {{ item }}
+          *ngFor="let item of rootCategories"
+          [class.active]="rootCategory === item.categoryName"
+          (click)="setRootCategory(item.categoryName, item.id)">
+        {{ item.categoryName }}
       </li>
     </ul>
   </div>
 
-  <!-- Sub Categories (only show when main selected) -->
-  <div class="category-submenu" *ngIf="activeCategory === 'Women Fashion'">
+  <!-- Sub Categories -->
+  <div class="category-submenu" *ngIf="subCategories?.length > 0">
     <ul class="list-unstyled m-0 p-0">
       <li class="subcategory-item"
           *ngFor="let sub of subCategories"
-          [class.active]="activeSubCategory === sub"
+          [class.active]="subCategory?.id === sub.id"
           (click)="setActiveSubCategory(sub)">
-        {{ sub }}
+        {{ sub.categoryName }}
       </li>
     </ul>
   </div>
 
-  <!-- Accessories Submenu -->
-  <div class="category-submenu" *ngIf="activeSubCategory === 'Accessories'">
+  <!-- Type Categories -->
+  <div class="category-submenu" *ngIf="typeCategories?.length > 0">
     <ul class="list-unstyled m-0 p-0">
       <li class="subcategory-item"
-          *ngFor="let sub of accessories"
-          [class.active]="activeAccessory === sub"
-          (click)="setActiveAccessory(sub)">
-        {{ sub }}
+          *ngFor="let type of typeCategories"
+          [class.active]="typeCategory?.id === type.id"
+          (click)="setActiveTypeCategory(type)">
+        {{ type.categoryName }}
       </li>
     </ul>
   </div>
 
-  <!-- Hair Accessories Submenu -->
-  <div class="category-submenu" *ngIf="activeAccessory === 'Hair Accessories'">
+  <!-- Variant Categories -->
+  <div class="category-submenu" *ngIf="variantCategories?.length > 0">
     <ul class="list-unstyled m-0 p-0">
       <li class="subcategory-item"
-          *ngFor="let sub of hairAccessories"
-          [class.active]="activeHairAccessory === sub"
-          (click)="setActiveHairAccessory(sub)">
-        {{ sub }}
+          *ngFor="let variant of variantCategories"
+          [class.active]="variantCategory?.id === variant.id"
+          (click)="setActiveVariantCategory(variant)">
+        {{ variant.categoryName }}
       </li>
     </ul>
   </div>
 
-  <div class="" *ngIf="finalCategory">
-    <h1>Hry </h1>
+
+
+  <!-- Final Selection -->
+  <div *ngIf="finalCategory">
+    <p class="fs11"  style="word-wrap: break-word;overflow-wrap: break-word;">
+      ✅ Final: {{ rootCategory }} 
+      <i class="bi bi-chevron-right"></i> 
+      {{ subCategory?.categoryName }}
+       <i class="bi bi-chevron-right"></i>
+      {{ typeCategory?.categoryName }} 
+      <i class="bi bi-chevron-right"></i> 
+      {{ variantCategory?.categoryName }}
+    </p>
+
+     <!-- Button at bottom right -->
+    <button mat-raised-button color="primary" class="scButton" [disabled]="scButton" (click)="openModal()">
+     Save & Continue
+    </button>
+
   </div>
 </div>
+
+
+
+
+    <!-- Model Starting -->
+    <div class="modal fade" id="categorySelectionModel" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm modal-dialog-centered custom-modal">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="text-center">
+              <div>
+                <i class="bi bi-rocket-takeoff fs20" style="color: #45e832;"></i>
+              </div>
+              <span class="fs12">
+                Are , you sure you went to Proceed
+              </span>
+          </div>
+            <div class="d-flex justify-content-center gap-2 p-1 mt-2">
+              <button mat-raised-button color="primary" (click)="proceedWithProduct()">Save & Continue</button>
+              <button mat-raised-button  (click)="closeModal()">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+     <!-- Modal Ending  -->

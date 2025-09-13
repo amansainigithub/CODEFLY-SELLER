@@ -9,6 +9,8 @@ import {
 } from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { SharedDataService } from '../../../_services/sharedService/shared-data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-upload',
@@ -26,19 +28,29 @@ export class ProductUploadComponent {
 
   constructor(
     private productUploadService: ProductUploadService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private sharedService:SharedDataService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
+    
+    //Selected Category [Variant Category]
+     const vData = this.sharedService.getData();
+
+     if(vData === undefined || vData === null || vData === ""){
+        this.router.navigateByUrl("/seller/dashboard/home");
+      }
+
+
     this.productForm = this.formBuilder.group({
       tableRows: this.formBuilder.array([]),
     });
 
     this.productUploadService.getFormBuilder().subscribe(
       (data: any) => {
-        console.log('API Data');
-        console.log(data);
-        console.log('=============================');
+        // console.log(data);
+        // console.log('=============================');
 
         this.formfields = data.inventoryData;
         this.productDetails = data.productDetails;
@@ -48,8 +60,7 @@ export class ProductUploadComponent {
         this.generateDynamicControls(this.formfields);
         this.generateDynamicControls(this.productDetails);
         this.generateDynamicControls(this.additionalDetails);
-        console.log('Product Form Data');
-        console.log(this.productForm);
+        // console.log(this.productForm);
       },
       (err: any) => console.error(err)
     );

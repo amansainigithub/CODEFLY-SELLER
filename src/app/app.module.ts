@@ -40,6 +40,7 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProductUploadComponent } from './seller-panel/seller-product/product-upload/product-upload.component';
 import { CategorySelectionComponent } from './seller-panel/seller-product/category-selection/category-selection.component';
+import { ModelStructureComponent } from './seller-panel/seller-product/model-structure/model-structure.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { CategorySelectionComponent } from './seller-panel/seller-product/catego
     SellerHomeComponent,
     ProductUploadComponent,
     CategorySelectionComponent,
+    ModelStructureComponent,
     
   ],
   imports: [

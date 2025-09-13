@@ -1,76 +1,200 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ProductCategoryService } from '../../../_services/productCategory/product-category.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { SharedDataService } from '../../../_services/sharedService/shared-data.service';
+import { Router } from '@angular/router';
 
+
+declare var bootstrap: any; // Declare bootstrap for accessing modal methods
 @Component({
   selector: 'app-category-selection',
   templateUrl: './category-selection.component.html',
   styleUrl: './category-selection.component.css'
 })
-export class CategorySelectionComponent {categories = [
-    'Men Fashion', 'Women Fashion', 'Home & Living', 
-    'Kids & Toys', 'Personal Care & Wellness', 
-    'Mobiles & Tablets', 'Consumer Electronics','Bootle'
-    ,'Electronic Product','Food Products','Perfume','Clothes',
-    'Spare Parts','Plastic Products'
-  ];
+export class CategorySelectionComponent {
 
-  subCategories = [
-    'Western Wear', 'Accessories', 'Footwear', 
-    'Inner & Sleepwear', 'Sports & Activewear', 
-    'Women Ethnic Wear', 'Maternity'
-  ];
+  rootCategories: any;
+  subCategories: any;
+  typeCategories: any;
+  variantCategories: any;
 
-  accessories = [
-    'Jewellery', 'Belts', 'Fashion Accessories', 
-    'Caps & Hats', 'Hair Accessories', 'Scarves, Stoles & Gloves'
-  ];
+  //SAVE AND CONTINUE BUTTON
+  scButton:any =true;
 
-  hairAccessories = [
-    'Hair Buns', 'Hair Bands', 'Gajra/Floral Hair Accessories',
-    'Hair Extensions & Wigs', 'Hair Clips & Hair Pins'
-  ];
+  constructor(
+    private pcService: ProductCategoryService,
+    private spinner: NgxSpinnerService,
+    private sharedService:SharedDataService,
+    private router: Router,
+  ) {}
 
-  // Active states (Initially null → kuch bhi select nahi hai)
-  activeCategory: string | null = null;
-  activeSubCategory: string | null = null;
-  activeAccessory: string | null = null;
-  activeHairAccessory: string | null = null;
-
-  // Functions
-  setActiveCategory(item: string) {
-    this.activeCategory = item;
-    this.activeSubCategory = null;
-    this.activeAccessory = null;
-    this.activeHairAccessory = null;
-    this.finalCategoryBoxHide();
+  ngOnInit(): void {
+    this.spinner.show();
+    this.pcService.getRootCategory()
+      .subscribe({
+        next: (res: any) => {
+          this.rootCategories = res.data;
+          this.spinner.hide();
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.spinner.hide();
+        }
+      });
   }
 
-  setActiveSubCategory(sub: string) {
-    this.activeSubCategory = sub;
-    this.activeAccessory = null;
-    this.activeHairAccessory = null;
+  // Active states
+  rootCategory: string | null = null;
+  subCategory: any = null;
+  typeCategory: any = null;
+  variantCategory: any = null;
+
+  // Root selection
+  setRootCategory(item: string, id: any) {
+    
+    this.rootCategory = item;
+    this.subCategory = null;
+    this.typeCategory = null;
+    this.variantCategory = null;
     this.finalCategoryBoxHide();
+
+    this.getSubCategory(id);
+
+    //MAKE BLANK (RESET DATA)
+    this.typeCategories = null;
+    this.variantCategories = null;
   }
 
-  setActiveAccessory(sub: string) {
-    this.activeAccessory = sub;
-    this.activeHairAccessory = null;
-    this.finalCategoryBoxHide();
+  getSubCategory(id: any) {
+    this.spinner.show();
+    this.pcService.getSubCategory(id)
+      .subscribe({
+        next: (res: any) => {
+          this.subCategories = res.data;
+          this.spinner.hide();
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.spinner.hide();
+        }
+      });
   }
 
-  setActiveHairAccessory(sub: string) {
-    this.activeHairAccessory = sub;
+  // SubCategory selection → fetch Type
+  setActiveSubCategory(sub: any) {
+    this.subCategory = sub;
+    this.typeCategory = null;
+    this.variantCategory = null;
+    this.finalCategoryBoxHide();
 
+    this.getTypeCategory(sub.id);
+
+    //MAKE BLANK (RESET DATA)
+     this.variantCategories = null;
+  }
+
+  getTypeCategory(id: any) {
+    this.spinner.show();
+    this.pcService.getTypeCategory(id)
+      .subscribe({
+        next: (res: any) => {
+          this.typeCategories = res.data;
+          this.spinner.hide();
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.spinner.hide();
+        }
+      });
+  }
+
+  // Type selection → fetch Variant
+  setActiveTypeCategory(type: any) {
+    this.typeCategory = type;
+    this.variantCategory = null;
+    this.finalCategoryBoxHide();
+
+    this.getVariantCategory(type.id);
+  }
+
+  getVariantCategory(id: any) {
+    this.spinner.show();
+    this.pcService.getVariantCategory(id)
+      .subscribe({
+        next: (res: any) => {
+          this.variantCategories = res.data;
+          this.spinner.hide();
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.spinner.hide();
+        }
+      });
+  }
+
+  // Variant selection → Final
+  setActiveVariantCategory(variant: any) {
+    this.variantCategory = variant;
     this.finalCategoryBoxShow();
+
+    //SAVE AND CONTINUE BUTTON
+    this.scButton =false;
   }
 
-finalCategory:any = false;
-finalCategoryBoxShow(){
+  // Final box show/hide
+  finalCategory: any = false;
+  finalCategoryBoxShow() {
     this.finalCategory = true;
-}
-
-finalCategoryBoxHide(){
+  }
+  finalCategoryBoxHide() {
     this.finalCategory = false;
-  
-}
+  }
 
+
+
+
+  proceedWithProduct(){
+    this.spinner.show();
+    console.log(this.variantCategory);
+    if (this.variantCategory && this.variantCategory.id !== null 
+        && this.variantCategory.id !== undefined && this.variantCategory.id !== "") {
+       //close model
+         this.closeModal();
+
+       //Set Catalog Id to shared Service 
+         this.sharedService.setData({vData:this.variantCategories});
+         this.router.navigate(['/seller/dashboard/home/productUpload']);
+         this.spinner.hide();
+
+    } else {
+      this.spinner.show();
+      console.log("Invalid object (id null/blank/empty)");
+      alert("Invalid object (id null/blank/empty)")
+    }
+
+
+
+    
+  }
+
+
+
+
+
+// ======================================================================================
+      //Open Mode Starting
+    openModal(): void {
+      const modalElement = document.getElementById('categorySelectionModel');
+      const modal = new bootstrap.Modal(modalElement);
+      modal.show(); // Show the modal programmatically
+    }
+    //Open Model Ending
+  
+     // Close model Starting
+     closeModal(): void {
+      const modalElement = document.getElementById('categorySelectionModel');
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      modal.hide(); // Hide the modal programmatically
+    }
+    //Close Model Ending
 }
