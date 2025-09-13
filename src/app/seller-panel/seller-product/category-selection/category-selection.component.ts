@@ -162,7 +162,7 @@ export class CategorySelectionComponent {
          this.closeModal();
 
        //Set Catalog Id to shared Service 
-         this.sharedService.setData({vData:this.variantCategories});
+         this.sharedService.setData({vData:this.variantCategory});
          this.router.navigate(['/seller/dashboard/home/productUpload']);
          this.spinner.hide();
 

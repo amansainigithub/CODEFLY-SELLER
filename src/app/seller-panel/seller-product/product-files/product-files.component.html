@@ -1,0 +1,46 @@
+<p>product-files works!</p>
+
+
+<div class="d-flex gap-3 flex-wrap">
+  <div *ngFor="let slot of imageSlots; let i = index" class="text-center">
+    <div class="upload-card border rounded"
+         (click)="triggerFileInput(i)">
+
+      <!-- Hidden file input -->
+      <input type="file" [id]="'fileInput' + i" hidden
+             (change)="onFileSelected($event, i)" accept="image/*">
+
+      <!-- Agar image nahi hai -->
+      <div *ngIf="!slot"
+           class="upload-placeholder d-flex flex-column align-items-center justify-content-center w-100 h-100">
+        <i class="bi bi-plus-circle-fill text-primary small-icon"></i>
+        <p class="mt-1 mb-0" style="font-size: 10px;">Add</p>
+      </div>
+
+      <!-- Agar image hai -->
+      <div *ngIf="slot"
+           class="image-preview w-100 h-100 position-relative">
+        <img [src]="slot" class="img-fluid rounded">
+
+        <!-- Delete button neeche right -->
+        <button class="btn btn-sm btn-light text-danger delete-btn"
+                (click)="removeImage($event, i)">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Neeche MAIN label sirf first slot ke liye -->
+    <div *ngIf="i === 0" class="mt-1">
+      <span class="badge bg-primary">MAIN *</span>
+    </div>
+  </div>
+</div>
+
+<!-- Submit all button -->
+<button class="btn btn-primary mt-3"
+        (click)="uploadAll()"> <!-- Disable jab tak MAIN image na ho -->
+  Upload All
+</button>
+
+

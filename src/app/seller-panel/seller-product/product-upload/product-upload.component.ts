@@ -23,8 +23,11 @@ export class ProductUploadComponent {
   productDetails: any[] = [];
   dynamicRows: any[] = [];
   additionalDetails: any[] = [];
-
   filteredDropdowns: { [key: string]: Observable<string[]> } = {};
+
+  //Variant Category Selected Data
+  categorySelection:any;
+
 
   constructor(
     private productUploadService: ProductUploadService,
@@ -36,9 +39,9 @@ export class ProductUploadComponent {
   ngOnInit(): void {
     
     //Selected Category [Variant Category]
-     const vData = this.sharedService.getData();
+     this.categorySelection = this.sharedService.getData();
 
-     if(vData === undefined || vData === null || vData === ""){
+     if(this.categorySelection === undefined || this.categorySelection === null || this.categorySelection === ""){
         this.router.navigateByUrl("/seller/dashboard/home");
       }
 
@@ -65,9 +68,9 @@ export class ProductUploadComponent {
       (err: any) => console.error(err)
     );
 
-    //     setTimeout(() => {
-    //   this.prefillForm();
-    // }, 3000);
+        setTimeout(() => {
+      this.prefillForm();
+    }, 3000);
   }
 
   generateDynamicControls(dataReceiver: any[]) {
@@ -289,7 +292,6 @@ export class ProductUploadComponent {
   //SUBMIT AND PREFILL DATA
   onSubmit() {
     console.log('FORM SUBMITTED');
-
     console.log(this.productForm);
 
     if (this.productForm.invalid) {
@@ -299,6 +301,8 @@ export class ProductUploadComponent {
     }
     alert('Form Submitted Successfully!');
     console.log(this.productForm.value);
+    this.router.navigate(['/seller/dashboard/home/productFiles'],
+      { state: { formData: this.productForm.value,finalCategory: this.categorySelection } });
   }
 
   prefillForm() {

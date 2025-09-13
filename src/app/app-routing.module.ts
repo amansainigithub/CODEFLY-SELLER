@@ -9,6 +9,7 @@ import { RegisterCompletedComponent } from './register/register-completed/regist
 import { SellerHomeComponent } from './seller-panel/seller-home/seller-home.component';
 import { ProductUploadComponent } from './seller-panel/seller-product/product-upload/product-upload.component';
 import { CategorySelectionComponent } from './seller-panel/seller-product/category-selection/category-selection.component';
+import { ProductFilesComponent } from './seller-panel/seller-product/product-files/product-files.component';
 
 const routes: Routes = [
 { path: 'register', component: RegisterComponent },
@@ -22,8 +23,11 @@ const routes: Routes = [
       children: [
                   //ADMIN PANEL
                     { path: '', component: SellerHomeComponent },
-                    { path: 'productUpload', component: ProductUploadComponent },
                     { path: 'categorySelection/single-category', component: CategorySelectionComponent },
+                    { path: 'productUpload', component: ProductUploadComponent },
+                    { path: 'productFiles', component: ProductFilesComponent },
+                    
+                    
                   
       ],
 }
