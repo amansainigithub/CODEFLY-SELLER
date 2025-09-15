@@ -38,9 +38,12 @@
   cursor: pointer;
   transition: 0.3s ease;
   width: 100%;
-  max-width: 350px;   /* size controlled */
-  height: 220px;      /* fixed height for balance */
-  padding: 30px 20px; /* proper spacing */
+  max-width: 350px;
+  /* size controlled */
+  height: 220px;
+  /* fixed height for balance */
+  padding: 30px 20px;
+  /* proper spacing */
   background-color: #fafafa;
   display: flex;
   flex-direction: column;
@@ -49,7 +52,8 @@
 }
 
 .upload-box:hover {
-  background: #f0f8ff; /* light hover effect */
+  background: #f0f8ff;
+  /* light hover effect */
   border-color: #0056b3;
 }
 
@@ -75,7 +79,8 @@
 /* Preview simple */
 .preview-box {
   border-radius: 12px;
-  min-height: 300px; /* maintain height */
+  min-height: 300px;
+  /* maintain height */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,3 +95,14 @@
 
 
 
+.guidelines {
+  text-decoration: none;
+  color: inherit;
+  padding: 10px;
+  font-size: 11px;
+  background-color: #FFDD96;
+  border-radius: 7px;
+  display: inline-block;
+  cursor: pointer;
+  color: black;
+}

@@ -130,10 +130,28 @@ videoFile: File | null = null;
 onVideoSelected(event: any) {
   const file = event.target.files[0];
   if (file) {
+    const fileSizeInMB = file.size / (1024 * 1024); // Bytes → MB
+    const fileExtension = file.name.split('.').pop()?.toLowerCase();
+    // Extension check
+    if (fileExtension !== 'mp4') {
+      alert("Only MP4 format is allowed!");
+      return;
+    }
+    // Size check (5MB - 50MB)
+    if (fileSizeInMB < 1) {
+      alert("Video size must be at least 5 MB!");
+      return;
+    }
+    if (fileSizeInMB > 50) {
+      alert("Video size must not exceed 50 MB!");
+      return;
+    }
     this.videoFile = file; // File object store karo
     this.videoUrl = URL.createObjectURL(file); // Preview ke liye
   }
 }
+
+
 
 
 

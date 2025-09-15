@@ -1,99 +1,233 @@
-<p>product-files works!</p>
+<div class="container mt-4">
 
+    <!-- Section Heading -->
+    <div class="row mb-1">
+        <div class="col-12 ">
+            <p class="fw-bold text-primary mb-1 fs12" style="line-height: 1.2;">
+                Image Upload (*)
+            </p>
+            <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.3;">
+                You can upload a image for better presentation
 
-<div class="row">
+                <a href="javascript:void(0)" data-bs-toggle="modal" class="guidelines"  data-bs-target="#imageGuildlines"
+                    >
+                    <i class="bi bi-exclamation-circle"></i>
+                    Image Guidelines – Follow these rules to avoid rejection
+                </a>
+            </p>
+        </div>
+    </div>
 
-    <div class="col-md-8">
+    <div class="row mt-4">
 
-        <div class="d-flex gap-3 flex-wrap">
-            <div *ngFor="let slot of imageSlots; let i = index" class="text-center">
-                <div class="upload-card border rounded" (click)="triggerFileInput(i)">
+        <div class="col-md-8">
 
-                    <!-- Hidden file input -->
-                    <input type="file" [id]="'fileInput' + i" hidden (change)="onFileSelected($event, i)"
-                        accept="image/*">
+            <div class="d-flex gap-3 flex-wrap">
+                <div *ngFor="let slot of imageSlots; let i = index" class="text-center">
+                    <div class="upload-card border rounded" (click)="triggerFileInput(i)">
 
-                    <!-- Agar image nahi hai -->
-                    <div *ngIf="!slot"
-                        class="upload-placeholder d-flex flex-column align-items-center justify-content-center w-100 h-100">
-                        <i class="bi bi-plus-circle-fill text-primary small-icon"></i>
-                        <p class="mt-1 mb-0" style="font-size: 10px;">Add</p>
+                        <!-- Hidden file input -->
+                        <input type="file" [id]="'fileInput' + i" hidden (change)="onFileSelected($event, i)"
+                            accept="image/*">
+
+                        <!-- Agar image nahi hai -->
+                        <div *ngIf="!slot"
+                            class="upload-placeholder d-flex flex-column align-items-center justify-content-center w-100 h-100">
+                            <i class="bi bi-plus-circle-fill text-primary small-icon"></i>
+                            <p class="mt-1 mb-0" style="font-size: 10px;">Add</p>
+                        </div>
+
+                        <!-- Agar image hai -->
+                        <div *ngIf="slot" class="image-preview w-100 h-100 position-relative">
+                            <img [src]="slot" class="img-fluid rounded">
+
+                            <!-- Delete button neeche right -->
+                            <button class="btn btn-sm btn-light text-danger delete-btn"
+                                (click)="removeImage($event, i)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Agar image hai -->
-                    <div *ngIf="slot" class="image-preview w-100 h-100 position-relative">
-                        <img [src]="slot" class="img-fluid rounded">
+                    <!-- Neeche MAIN label sirf first slot ke liye -->
+                    <div *ngIf="i === 0" class="mt-1">
+                        <span class="badge bg-primary">MAIN *</span>
+                    </div>
+                </div>
+            </div>
 
-                        <!-- Delete button neeche right -->
-                        <button class="btn btn-sm btn-light text-danger delete-btn" (click)="removeImage($event, i)">
-                            <i class="bi bi-trash"></i>
-                        </button>
+
+            <hr>
+
+            <div class="container mt-4">
+                <!-- Section Heading -->
+                <div class="row mb-1">
+                    <div class="col-12 ">
+                        <p class="fw-bold text-primary mb-1 fs12" style="line-height: 1.2;">
+                            Video Upload (Optional)
+                        </p>
+                        <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.3;">
+                            You can upload a video for better preatory.
+
+                            <a href="javascript:void(0)" data-bs-toggle="modal" class="guidelines" data-bs-target="#videoGuildlines">
+                                <i class="bi bi-exclamation-circle"></i>
+                                Video Guidelines – Follow these rules to avoid rejection
+                            </a>
+                        </p>
+
                     </div>
                 </div>
 
-                <!-- Neeche MAIN label sirf first slot ke liye -->
-                <div *ngIf="i === 0" class="mt-1">
-                    <span class="badge bg-primary">MAIN *</span>
+                <div class="row">
+                    <!-- Upload Section -->
+                    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
+                        <div class="upload-box text-center p-5" (click)="fileInput.click()">
+                            <i class="bi bi-cloud-arrow-up text-primary upload-icon"></i>
+                            <h5 class="mt-3">Drag Your Videos Here</h5>
+                            <p>or click to browse</p>
+                            <input type="file" #fileInput accept="video/*" hidden (change)="onVideoSelected($event)">
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
+                        <div class="preview-box w-100 text-center p-3">
+                            <div *ngIf="videoUrl; else noVideo">
+                                <video width="100%" height="auto" controls [src]="videoUrl"
+                                    class="video-preview"></video>
+                            </div>
+                            <ng-template #noVideo>
+                                <p class="text-muted">No video selected</p>
+                            </ng-template>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+
+
         </div>
 
+        <div class="col-md-4 d-flex align-items-center">
+            <!-- Left side line -->
+            <div class="border-end pe-3" style="height: 100%;"></div>
 
-        <hr>
-
-        <div class="container mt-4">
-        <!-- Section Heading -->
-        <div class="row mb-1">
-            <div class="col-12 ">
-                <p class="fw-bold text-primary mb-1 fs12" style="line-height: 1.2;">
-                        Video Upload (Optional)
-                </p>
-                <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.3;">
-                You can upload a video for better presentation, but it is not mandatory.
-                </p>
+            <!-- Submit all button -->
+            <div class="container text-center">
+                <button mat-raised-button color="primary" class="mt-3" (click)="submitProduct()">
+                    <!-- Disable jab tak MAIN image na ho -->
+                    Submit Product
+                </button>
             </div>
         </div>
-
-        <div class="row">
-            <!-- Upload Section -->
-            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
-            <div class="upload-box text-center p-5" (click)="fileInput.click()">
-                <i class="bi bi-cloud-arrow-up text-primary upload-icon"></i>
-                <h5 class="mt-3">Drag Your Videos Here</h5>
-                <p>or click to browse</p>
-                <input type="file" #fileInput accept="video/*" hidden (change)="onVideoSelected($event)">
-            </div>
-            </div>
-
-            <!-- Preview Section -->
-            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
-            <div class="preview-box w-100 text-center p-3">
-                <div *ngIf="videoUrl; else noVideo">
-                <video width="100%" height="auto" controls [src]="videoUrl" class="video-preview"></video>
-                </div>
-                <ng-template #noVideo>
-                <p class="text-muted">No video selected</p>
-                </ng-template>
-            </div>
-            </div>
-        </div>
-        </div>
-
 
 
     </div>
-
-    <div class="col-md-4 d-flex align-items-center">
-    <!-- Left side line -->
-    <div class="border-end pe-3" style="height: 100%;"></div>
-
-    <!-- Submit all button -->
-    <div class="container text-center">
-        <button mat-raised-button color="primary" class="mt-3" (click)="submitProduct()"> <!-- Disable jab tak MAIN image na ho -->
-        Submit Product
-    </button>
-    </div>
-    </div>
-
-
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ========================================================MODELS============================================= -->
+<!-- Image Guidlines Starting -->
+<div class="modal fade" id="imageGuildlines" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="fs11">
+                    <div class="mt-3">
+                        <p style="line-height: 0.6px;"><b> Image Guidelines</b></p>
+                        <hr style="width: 100px; margin: 2px 0;">
+                    </div>
+
+
+                    <p class="mt-2"><b>Image format</b></p>
+                    <ul>
+                        <li>We only accept .JPEG images. Any other format is not accepted.</li>
+                        <li>We accept Images only in RGB color space. We don’t accept images in CMYK color space.</li>
+                    </ul>
+
+                    <p><b>Following Images will be rejected</b></p>
+                    <ul>
+                        <li>Graphic/ Inverted/ Pixelated image are not accepted.</li>
+                        <li>Images with text/Watermark are not acceptable in primary images.</li>
+                        <li>Blur images and clutter images are not accepted.</li>
+                        <li>Images should not contain price/brand logo for the product.</li>
+                        <li>Product images must not be shrunk, elongated or stretched.</li>
+                        <li>Partial product image is not allowed.</li>
+                        <li>Offensive/Objectionable images/products are not acceptable.</li>
+                    </ul>
+
+                    <p><b>Image standards</b></p>
+                    <ul>
+                        <li>Solo product image without any props.</li>
+                        <li>Product image should not have any text.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Image Guidlines Ending -->
+
+
+<!-- Video Guidlines Starting -->
+<div class="modal fade" id="videoGuildlines" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="fs11">
+
+                    <div class="mt-2">
+                        <p><b>Video Guidelines</b></p>
+                    </div>
+                    <hr>
+
+                    <p><b>Video format</b></p>
+                    <ul>
+                        <li>We only accept .MP4 videos. Any other format is not accepted.</li>
+                        <li>We accept videos only in standard aspect ratios (16:9 preferred).</li>
+                    </ul>
+
+                    <p><b>Following Videos will be rejected</b></p>
+                    <ul>
+                        <li>Graphic/ Inverted/ Pixelated videos are not accepted.</li>
+                        <li>Videos with watermark, logos, or text overlays are not acceptable.</li>
+                        <li>Blurred, shaky, or cluttered videos are not accepted.</li>
+                        <li>Videos should not contain price, promotional text, or branding for the product.</li>
+                        <li>Stretched, distorted, or compressed videos are not allowed.</li>
+                        <li>Partial product visibility in the video is not acceptable.</li>
+                        <li>Offensive/Objectionable videos/products are not acceptable.</li>
+                    </ul>
+
+                    <p><b>Video standards</b></p>
+                    <ul>
+                        <li>Solo product should be clearly visible without background distractions.</li>
+                        <li>Product should be shown in proper lighting with 360° or multiple angles if possible.</li>
+                        <li>Video should not contain background music, voiceovers, or text unless approved.</li>
+                        <li>Duration should not exceed the recommended length (generally 30–60 seconds).</li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Video Guidlines Ending -->
+<!-- =====================================MODELS============================================= -->
