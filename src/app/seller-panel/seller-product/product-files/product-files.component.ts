@@ -121,8 +121,23 @@ removeImage(event: MouseEvent, index: number) {
   this.files[index] = null;
 }
 
-uploadAll() {
 
+// VIDEO UPLOAD=======================================================================
+
+videoUrl: string | null = null;
+videoFile: File | null = null;
+
+onVideoSelected(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.videoFile = file; // File object store karo
+    this.videoUrl = URL.createObjectURL(file); // Preview ke liye
+  }
+}
+
+
+
+submitProduct() {
   // Check main image slot (index 0)
   if (!this.files[0]) {
     alert("Please upload Main image before submitting!");
@@ -130,11 +145,18 @@ uploadAll() {
   }
 
   const formData = new FormData();
+
+  // Images append karo
   this.files.forEach((file, i) => {
     if (file) {
-      formData.append('files', file); // backend pe same field name "files"
+      formData.append("files", file); // backend me "files" naam ke field ke sath jayega
     }
   });
+
+  // Video append karo
+  if (this.videoFile) {
+    formData.append("video", this.videoFile); // backend pe "video" naam se milega
+  }
 
   this.categoryService.fileUploadService(formData).subscribe({
     next: (res: any) => {
@@ -144,13 +166,8 @@ uploadAll() {
       alert(err);
     }
   });
-
-  // Agar direct http se upload karna ho to:
-  // this.http.post(API_AUTHORIZA_URL+"uploadFiles", formData)
-  //   .subscribe(res => {
-  //     console.log('Upload success:', res);
-  //   });
 }
+
 
 
 

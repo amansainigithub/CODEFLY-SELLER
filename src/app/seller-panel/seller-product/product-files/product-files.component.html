@@ -1,46 +1,99 @@
 <p>product-files works!</p>
 
 
-<div class="d-flex gap-3 flex-wrap">
-  <div *ngFor="let slot of imageSlots; let i = index" class="text-center">
-    <div class="upload-card border rounded"
-         (click)="triggerFileInput(i)">
+<div class="row">
 
-      <!-- Hidden file input -->
-      <input type="file" [id]="'fileInput' + i" hidden
-             (change)="onFileSelected($event, i)" accept="image/*">
+    <div class="col-md-8">
 
-      <!-- Agar image nahi hai -->
-      <div *ngIf="!slot"
-           class="upload-placeholder d-flex flex-column align-items-center justify-content-center w-100 h-100">
-        <i class="bi bi-plus-circle-fill text-primary small-icon"></i>
-        <p class="mt-1 mb-0" style="font-size: 10px;">Add</p>
-      </div>
+        <div class="d-flex gap-3 flex-wrap">
+            <div *ngFor="let slot of imageSlots; let i = index" class="text-center">
+                <div class="upload-card border rounded" (click)="triggerFileInput(i)">
 
-      <!-- Agar image hai -->
-      <div *ngIf="slot"
-           class="image-preview w-100 h-100 position-relative">
-        <img [src]="slot" class="img-fluid rounded">
+                    <!-- Hidden file input -->
+                    <input type="file" [id]="'fileInput' + i" hidden (change)="onFileSelected($event, i)"
+                        accept="image/*">
 
-        <!-- Delete button neeche right -->
-        <button class="btn btn-sm btn-light text-danger delete-btn"
-                (click)="removeImage($event, i)">
-          <i class="bi bi-trash"></i>
-        </button>
-      </div>
+                    <!-- Agar image nahi hai -->
+                    <div *ngIf="!slot"
+                        class="upload-placeholder d-flex flex-column align-items-center justify-content-center w-100 h-100">
+                        <i class="bi bi-plus-circle-fill text-primary small-icon"></i>
+                        <p class="mt-1 mb-0" style="font-size: 10px;">Add</p>
+                    </div>
+
+                    <!-- Agar image hai -->
+                    <div *ngIf="slot" class="image-preview w-100 h-100 position-relative">
+                        <img [src]="slot" class="img-fluid rounded">
+
+                        <!-- Delete button neeche right -->
+                        <button class="btn btn-sm btn-light text-danger delete-btn" (click)="removeImage($event, i)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Neeche MAIN label sirf first slot ke liye -->
+                <div *ngIf="i === 0" class="mt-1">
+                    <span class="badge bg-primary">MAIN *</span>
+                </div>
+            </div>
+        </div>
+
+
+        <hr>
+
+        <div class="container mt-4">
+        <!-- Section Heading -->
+        <div class="row mb-1">
+            <div class="col-12 ">
+                <p class="fw-bold text-primary mb-1 fs12" style="line-height: 1.2;">
+                        Video Upload (Optional)
+                </p>
+                <p class="text-muted mb-0" style="font-size: 11px; line-height: 1.3;">
+                You can upload a video for better presentation, but it is not mandatory.
+                </p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Upload Section -->
+            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
+            <div class="upload-box text-center p-5" (click)="fileInput.click()">
+                <i class="bi bi-cloud-arrow-up text-primary upload-icon"></i>
+                <h5 class="mt-3">Drag Your Videos Here</h5>
+                <p>or click to browse</p>
+                <input type="file" #fileInput accept="video/*" hidden (change)="onVideoSelected($event)">
+            </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
+            <div class="preview-box w-100 text-center p-3">
+                <div *ngIf="videoUrl; else noVideo">
+                <video width="100%" height="auto" controls [src]="videoUrl" class="video-preview"></video>
+                </div>
+                <ng-template #noVideo>
+                <p class="text-muted">No video selected</p>
+                </ng-template>
+            </div>
+            </div>
+        </div>
+        </div>
+
+
+
     </div>
 
-    <!-- Neeche MAIN label sirf first slot ke liye -->
-    <div *ngIf="i === 0" class="mt-1">
-      <span class="badge bg-primary">MAIN *</span>
+    <div class="col-md-4 d-flex align-items-center">
+    <!-- Left side line -->
+    <div class="border-end pe-3" style="height: 100%;"></div>
+
+    <!-- Submit all button -->
+    <div class="container text-center">
+        <button mat-raised-button color="primary" class="mt-3" (click)="submitProduct()"> <!-- Disable jab tak MAIN image na ho -->
+        Submit Product
+    </button>
     </div>
-  </div>
+    </div>
+
+
 </div>
-
-<!-- Submit all button -->
-<button class="btn btn-primary mt-3"
-        (click)="uploadAll()"> <!-- Disable jab tak MAIN image na ho -->
-  Upload All
-</button>
-
-
