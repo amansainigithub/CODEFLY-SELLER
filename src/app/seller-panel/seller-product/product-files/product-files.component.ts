@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { API_AUTHORIZA_URL } from '../../../constants/Constants';
 import { ProductCategoryService } from '../../../_services/productCategory/product-category.service';
 
 @Component({
@@ -34,7 +33,6 @@ constructor(private router: Router,
   }
 
   console.log("==================PRODUCT FILES=====================");
-
   if(this.validateFormAndCategory())
   {
     console.log("✅ Valid data hai");
@@ -44,9 +42,15 @@ constructor(private router: Router,
     console.log("❌ Invalid data (null/blank/empty)");
     this.router.navigateByUrl("/seller/dashboard/home");
   }
-  
-
 }
+
+ngOnInit(): void {
+    // ✅ Component load hone ke 2 second baad sabhi slots + video set hoga
+    setTimeout(() => {
+      this.setDefaultFiles();
+    }, 2000);
+  }
+
 
 
 //Check Category and Product Form Data is Valid or Not
@@ -128,28 +132,44 @@ videoUrl: string | null = null;
 videoFile: File | null = null;
 
 onVideoSelected(event: any) {
-  const file = event.target.files[0];
+  const fileInput = event.target as HTMLInputElement;
+  const file = fileInput.files ? fileInput.files[0] : null;
+
   if (file) {
-    const fileSizeInMB = file.size / (1024 * 1024); // Bytes → MB
+    const fileSizeInMB = file.size / (1024 * 1024); 
     const fileExtension = file.name.split('.').pop()?.toLowerCase();
-    // Extension check
+
     if (fileExtension !== 'mp4') {
       alert("Only MP4 format is allowed!");
+      fileInput.value = ''; // reset input
       return;
     }
-    // Size check (5MB - 50MB)
-    if (fileSizeInMB < 1) {
+    if (fileSizeInMB < 5) {
       alert("Video size must be at least 5 MB!");
+      fileInput.value = ''; // reset input
       return;
     }
     if (fileSizeInMB > 50) {
       alert("Video size must not exceed 50 MB!");
+      fileInput.value = ''; // reset input
       return;
     }
-    this.videoFile = file; // File object store karo
-    this.videoUrl = URL.createObjectURL(file); // Preview ke liye
+
+    this.videoFile = file;
+    this.videoUrl = URL.createObjectURL(file);
   }
+
+  // ✅ Same file dobara upload kar sake iske liye reset karo
+  fileInput.value = '';
 }
+
+
+removeVideo(event: MouseEvent) {
+  event.stopPropagation();
+  this.videoUrl = null;
+  this.videoFile = null;
+}
+
 
 
 
@@ -184,6 +204,35 @@ submitProduct() {
       alert(err);
     }
   });
+}
+
+
+
+
+setDefaultFiles() {
+  const defaultImgUrl = "https://res.cloudinary.com/dgidcgrxs/image/upload/v1744827500/megamart/ProductImages/c1s2axjdbneybvhgyaym.jpg";
+  const defaultVideoUrl = "https://res.cloudinary.com/dgidcgrxs/video/upload/v1758027410/5f795368-928f-47d9-a94c-73210bd3f708_eo2o3v.mp4";
+
+  // 🔹 Sabhi slots ke liye default image set karna
+  this.imageSlots = [defaultImgUrl, defaultImgUrl, defaultImgUrl, defaultImgUrl, defaultImgUrl];
+
+  // 🔹 Image ko fetch karke File[] me convert karna
+  fetch(defaultImgUrl)
+    .then(res => res.blob())
+    .then(blob => {
+      const defaultFile = new File([blob], "default.jpg", { type: blob.type });
+      this.files = [defaultFile, defaultFile, defaultFile, defaultFile, defaultFile];
+    });
+
+  // 🔹 Video preview ke liye default video URL
+  this.videoUrl = defaultVideoUrl;
+
+  // 🔹 Video ko fetch karke File me convert karna
+  fetch(defaultVideoUrl)
+    .then(res => res.blob())
+    .then(blob => {
+      this.videoFile = new File([blob], "default.mp4", { type: blob.type });
+    });
 }
 
 

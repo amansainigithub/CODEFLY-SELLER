@@ -90,21 +90,27 @@
                     </div>
 
                     <!-- Preview Section -->
+                    <!-- Preview Section -->
                     <div class="col-md-6 d-flex flex-column align-items-center justify-content-center p-4">
-                        <div class="preview-box w-100 text-center p-3">
-                            <div *ngIf="videoUrl; else noVideo">
-                                <video width="100%" height="auto" controls [src]="videoUrl"
-                                    class="video-preview"></video>
-                            </div>
-                            <ng-template #noVideo>
-                                <p class="text-muted">No video selected</p>
-                            </ng-template>
+                    <div class="preview-box w-100 text-center p-3">
+                        <div *ngIf="videoUrl; else noVideo" class="position-relative d-inline-block w-100">
+                        <video width="100%" height="auto" controls [src]="videoUrl" class="video-preview rounded"></video>
+
+                        <!-- Remove button (top-right corner) -->
+                        <button class="btn btn-sm btn-light text-danger position-absolute" style="top: 8px; right: 8px;"
+                            (click)="removeVideo($event)">
+                            <i class="bi bi-trash"></i>
+                        </button>
                         </div>
+                        <ng-template #noVideo>
+                        <p class="text-muted">No video selected</p>
+                        </ng-template>
                     </div>
+                    </div>
+
+
                 </div>
             </div>
-
-
 
         </div>
 
