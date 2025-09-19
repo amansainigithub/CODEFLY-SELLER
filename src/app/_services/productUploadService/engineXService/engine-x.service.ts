@@ -11,10 +11,12 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class ProductUploadService {
+export class EngineXService {
 
-      constructor(private http: HttpClient) { }
-  
-
-
+ 
+       constructor(private http: HttpClient) { }
+   
+     getEngineX(): Observable<any> { 
+       return this.http.get(API_AUTHORIZA_URL + 'engineXBuilderController/getEngineX/5',);
+     }
 }

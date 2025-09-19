@@ -11,6 +11,7 @@ import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { SharedDataService } from '../../../_services/sharedService/shared-data.service';
 import { Router } from '@angular/router';
+import { EngineXService } from '../../../_services/productUploadService/engineXService/engine-x.service';
 
 @Component({
   selector: 'app-product-upload',
@@ -26,35 +27,42 @@ export class ProductUploadComponent {
   filteredDropdowns: { [key: string]: Observable<string[]> } = {};
 
   //Variant Category Selected Data
-  categorySelection:any;
-
+  categorySelection: any;
 
   constructor(
-    private productUploadService: ProductUploadService,
+    private engineXService: EngineXService,
     private formBuilder: FormBuilder,
-    private sharedService:SharedDataService,
-    private router: Router,
+    private sharedService: SharedDataService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    
-    //Selected Category [Variant Category]
-     this.categorySelection = this.sharedService.getData();
+    //[Variant Category Data]
+    this.categorySelection = this.sharedService.getData();
 
-     if(this.categorySelection === undefined || this.categorySelection === null || this.categorySelection === ""){
-        this.router.navigateByUrl("/seller/dashboard/home");
-      }
-
+    if (
+      this.categorySelection === undefined ||
+      this.categorySelection === null ||
+      this.categorySelection === ''
+    ) {
+      this.router.navigateByUrl('/seller/dashboard/home');
+    }
 
     this.productForm = this.formBuilder.group({
-      tableRows: this.formBuilder.array([]),
+      productSizeRows: this.formBuilder.array([]),
     });
 
-    this.productUploadService.getFormBuilder().subscribe(
-      (data: any) => {
-        // console.log(data);
-        // console.log('=============================');
+    //Get Engine-X Data--- Form Builder By Engine X Data Dynamically----
+    this.getEngineX();
 
+        setTimeout(() => {
+      this.prefillForm();
+    }, 3000);
+  }
+
+  getEngineX() {
+    this.engineXService.getEngineX().subscribe(
+      (data: any) => {
         this.formfields = data.inventoryData;
         this.productDetails = data.productDetails;
         this.dynamicRows = data.rows;
@@ -67,10 +75,6 @@ export class ProductUploadComponent {
       },
       (err: any) => console.error(err)
     );
-
-        setTimeout(() => {
-      this.prefillForm();
-    }, 3000);
   }
 
   generateDynamicControls(dataReceiver: any[]) {
@@ -147,8 +151,8 @@ export class ProductUploadComponent {
   }
 
   //Multi Dropdown
-  get tableRows(): FormArray {
-    return this.productForm.get('tableRows') as FormArray;
+  get productSizeRows(): FormArray {
+    return this.productForm.get('productSizeRows') as FormArray;
   }
 
   hasMultiSelectValues = false;
@@ -156,21 +160,21 @@ export class ProductUploadComponent {
   onMultiSelectChange(event: any, field: any) {
     const selectedValues: string[] = event.value || [];
     this.hasMultiSelectValues =
-      this.tableRows.length > 0 || selectedValues.length > 0;
+      this.productSizeRows.length > 0 || selectedValues.length > 0;
 
     // Remove unselected rows
-    for (let i = this.tableRows.length - 1; i >= 0; i--) {
-      const row = this.tableRows.at(i) as FormGroup;
+    for (let i = this.productSizeRows.length - 1; i >= 0; i--) {
+      const row = this.productSizeRows.at(i) as FormGroup;
       if (
         row.get('__msId')?.value === field.identifier &&
         !selectedValues.includes(row.get('__msVal')?.value)
       ) {
-        this.tableRows.removeAt(i);
+        this.productSizeRows.removeAt(i);
       }
     }
     // Add new rows
     selectedValues.forEach((val) => {
-      const exists = this.tableRows.controls.some(
+      const exists = this.productSizeRows.controls.some(
         (ctrl) =>
           ctrl.get('__msId')?.value === field.identifier &&
           ctrl.get('__msVal')?.value === val
@@ -203,20 +207,20 @@ export class ProductUploadComponent {
         rowGroup['__msId'] = new FormControl(field.identifier);
         rowGroup['__msVal'] = new FormControl(val);
 
-        this.tableRows.push(this.formBuilder.group(rowGroup));
+        this.productSizeRows.push(this.formBuilder.group(rowGroup));
       }
     });
-    this.hasMultiSelectValues = this.tableRows.length > 0;
+    this.hasMultiSelectValues = this.productSizeRows.length > 0;
   }
 
   // REMOVE TABLE ROWS
   removeTableRow(index: number) {
-    const row = this.tableRows.at(index) as FormGroup;
+    const row = this.productSizeRows.at(index) as FormGroup;
     if (!row) return;
 
     const msId = row.get('__msId')?.value;
     const msVal = row.get('__msVal')?.value;
-    this.tableRows.removeAt(index);
+    this.productSizeRows.removeAt(index);
 
     if (msId) {
       const msCtrl = this.productForm.get(msId);
@@ -236,59 +240,19 @@ export class ProductUploadComponent {
     }
   }
 
-  
-
   checkRowPrice(row: any) {
-  const mrp = Number(row.get('MRP')?.value);
-  const price = Number(row.get('price')?.value);
+    const mrp = Number(row.get('MRP')?.value);
+    const price = Number(row.get('price')?.value);
 
-  if (!isNaN(mrp) && !isNaN(price) && price > mrp) {
-    row.get('MRP')?.setErrors({ greater: true });
-  } else {
-    if (row.get('MRP')?.hasError('greater')) {
-      row.get('MRP')?.setErrors(null);
+    if (!isNaN(mrp) && !isNaN(price) && price > mrp) {
+      row.get('MRP')?.setErrors({ greater: true });
+    } else {
+      if (row.get('MRP')?.hasError('greater')) {
+        row.get('MRP')?.setErrors(null);
+      }
     }
   }
 
-
-}
-
-
-// checkRowPrice(row: any, field: string) {
-//   const value = Number(row.get(field)?.value);
-
-//   // ✅ Price / MRP ko sabhi rows me update karna
-//   if (field === 'price' || field === 'MRP') {
-//     this.tableRows.controls.forEach((r: any) => {
-//       r.get(field)?.setValue(value, { emitEvent: false });
-//     });
-//   }
-
-//   // ✅ Validation: Price should not be greater than MRP
-//   const mrp = Number(row.get('MRP')?.value);
-//   const price = Number(row.get('price')?.value);
-
-//   if (!isNaN(mrp) && !isNaN(price) && price > mrp) {
-//     row.get('MRP')?.setErrors({ greater: true });
-//   } else {
-//     if (row.get('MRP')?.hasError('greater')) {
-//       row.get('MRP')?.setErrors(null);
-//     }
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-  
   //SUBMIT AND PREFILL DATA
   onSubmit() {
     console.log('FORM SUBMITTED');
@@ -301,53 +265,107 @@ export class ProductUploadComponent {
     }
     alert('Form Submitted Successfully!');
     console.log(this.productForm.value);
-    this.router.navigate(['/seller/dashboard/home/productFiles'],
-      { state: { formData: this.productForm.value,finalCategory: this.categorySelection } });
+    this.router.navigate(['/seller/dashboard/home/productFiles'], {
+      state: {
+        formData: this.productForm.value,
+        finalCategory: this.categorySelection,
+      },
+    });
   }
 
   prefillForm() {
     const testData = {
-    tableRows: [
-        {price: '100', MRP: '200', inventory: '100', SKUID: '100', chestSize: '20', lengthSize: '21', shoulderSize: '22', __msId: 'brandNames', __msVal: 'L'},
-        {price: '250', MRP: '250', inventory: '10', SKUID: '100', chestSize: '34', lengthSize: '25', shoulderSize: '24', __msId: 'brandNames', __msVal: '4XL'},
-        {price: '2500', MRP: '3000', inventory: '150', SKUID: '100', chestSize: '28', lengthSize: '25', shoulderSize: '30', __msId: 'brandNames', __msVal: 'XXXL'},
-        {price: '780', MRP: '1000', inventory: '130', SKUID: '100', chestSize: '22', lengthSize: '21', shoulderSize: '46', __msId: 'brandNames', __msVal: 'XXL'},
-        {price: '999', MRP: '1000', inventory: '1200', SKUID: '160', chestSize: '22', lengthSize: '29', shoulderSize: '32', __msId: 'brandNames', __msVal: 'XL'}
-    ],
-    productName: 'Hair Bands Women| Girls | Kids | 24 Pieces Multicolor Elastic Hair Bands H',
-    defaultName: 'Mens Clothing',
-    GST: '18',
-    hsnCode: '44045',
-    netWeight: '200',
-    brandNames: ['L', 'XL', 'XXL', 'XXXL', '4XL'],
-    color: 'SlateBlue',
-    netQuantity: '1',
-    neck: 'V-Neck',
-    occasion: 'Casual',
-    pattern: 'Floral',
-    sleeveLength: 'Sleeveless',
-    countryOfOrigin: 'INDIA',
-    manufacturerName: 'Saurav ',
-    manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
-    manufacturerPincode: '120120',
-    brand: 'Brand 1',
-    lining: 'Inner Slip Included',
-    closureType: 'Slip-On / Pull-On',
-    stretchType: 'Medium Stretch',
-    careInstruction: 'Tumble Dry Low',
-    description: 'ecommerce website names'
-}
-
+      productSizeRows: [
+        {
+          price: '600',
+          MRP: '1200',
+          inventory: '100',
+          SKUID: '1000',
+          chestSize: '30',
+          lengthSize: '23',
+          shoulderSize: '30',
+          __msId: 'productSizes',
+          __msVal: 'XXS',
+        },
+        {
+          price: '100',
+          MRP: '500',
+          inventory: '900',
+          SKUID: '1000',
+          chestSize: '24',
+          lengthSize: '21',
+          shoulderSize: '24',
+          __msId: 'productSizes',
+          __msVal: 'S',
+        },
+        {
+          price: '1200',
+          MRP: '5600',
+          inventory: '900',
+          SKUID: '1000',
+          chestSize: '32',
+          lengthSize: '29',
+          shoulderSize: '30',
+          __msId: 'productSizes',
+          __msVal: 'XL',
+        },
+        {
+          price: '5660',
+          MRP: '5700',
+          inventory: '900',
+          SKUID: '6000',
+          chestSize: '32',
+          lengthSize: '23',
+          shoulderSize: '32',
+          __msId: 'productSizes',
+          __msVal: 'XXL',
+        },
+        {
+          price: '300',
+          MRP: '6000',
+          inventory: '900',
+          SKUID: '1000',
+          chestSize: '28',
+          lengthSize: '23',
+          shoulderSize: '30',
+          __msId: 'productSizes',
+          __msVal: '6XL',
+        },
+      ],
+      productName:
+        'Hair Bands Women| Girls | Kids | 24 Pieces Multicolor Elastic Hair Bands H',
+      defaultName: 'Mens',
+      GST: '7',
+      hsnCode: '65033',
+      netWeight: '200',
+      productSizes: ['XXS', 'S', 'XL', 'XXL', '6XL'],
+      color: 'SeaGreen',
+      netQuantity: '4',
+      neck: 'V-Neck',
+      occasion: 'Sports / Activewear',
+      pattern: 'Checked / Checkered',
+      sleeveLength: 'Short Sleeve / Half Sleeve',
+      countryOfOrigin: 'INDIA',
+      manufacturerName: 'Saurav',
+      manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
+      manufacturerPincode: '120120',
+      brand: 'A23 Lifestyle',
+      lining: 'Inner Slip Included',
+      closureType: 'Drawstring',
+      stretchType: 'Medium Stretch',
+      careInstruction: 'Line Dry / Hang Dry',
+      description: 'software solutions',
+    };
 
     // 1. Patch simple fields
     this.productForm.patchValue(testData);
 
     // 2. Clear old table rows
-    const formArray = this.productForm.get('tableRows') as FormArray;
+    const formArray = this.productForm.get('productSizeRows') as FormArray;
     formArray.clear();
 
     // 3. Create table rows with filter setup
-    testData.tableRows.forEach((rowData: any) => {
+    testData.productSizeRows.forEach((rowData: any) => {
       const rowGroup: { [key: string]: FormControl } = {};
 
       this.dynamicRows.forEach((col) => {

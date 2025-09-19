@@ -19,7 +19,7 @@
                                 <div *ngIf="field.type === 'TEXT'">
                                     <label *ngIf="field.type === 'TEXT'" [for]="field.identifier"
                                         class="tooltip-wrap-uniq">
-                                        {{ field.identifier }}
+                                        {{ field.name }}
                                         <span *ngIf="field.type === 'TEXT'" class="tooltip-icon-uniq ms-1">
                                             <i class="bi bi-exclamation-circle"></i>
                                             <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -43,7 +43,7 @@
                                 <!-- NUMBER FIELD STARTING-->
                                 <label *ngIf="field.type === 'NUMBER'" [for]="field.identifier"
                                     class="tooltip-wrap-uniq">
-                                    {{ field.identifier }}
+                                    {{ field.name }}
                                     <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
                                         <i class="bi bi-exclamation-circle"></i>
                                         <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -71,7 +71,7 @@
                                 <!-- SINGLE DROPDOWN STARTING-->
                                 <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier"
                                     class="tooltip-wrap-uniq">
-                                    {{ field.identifier }}
+                                    {{ field.name }}
                                     <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
                                         <i class="bi bi-exclamation-circle"></i>
                                         <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -103,7 +103,7 @@
                                 <!-- MULTI SELECT DROPDOWN STARTING-->
                                 <label *ngIf="field.type === 'DROPDOWN-MUL'" [for]="field.identifier"
                                     class="tooltip-wrap-uniq">
-                                    {{ field.identifier }}
+                                    {{ field.name }}
                                     <span *ngIf="field.type === 'DROPDOWN-MUL'" class="tooltip-icon-uniq ms-1">
                                         <i class="bi bi-exclamation-circle"></i>
                                         <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -174,7 +174,7 @@
 
                             <!-- TABLE STARTING -->
                           <div style="max-height: 800px; overflow-y: auto; overflow-x: auto;">
-                              <table class="table table-hover table-bordered mt-4" *ngIf="tableRows.length > 0">
+                              <table class="table table-hover table-bordered mt-4" *ngIf="productSizeRows.length > 0">
                                 <thead style="background-color: aliceblue;">
 
                                     <tr class="fs11 text-center" style="color: #2b2d2d;">
@@ -192,8 +192,8 @@
                                     </tr>
                                 </thead>
 
-                                <tbody formArrayName="tableRows">
-                                    <tr *ngFor="let tableRow of tableRows.controls; let i = index" [formGroupName]="i">
+                                <tbody formArrayName="productSizeRows">
+                                    <tr *ngFor="let tableRow of productSizeRows.controls; let i = index" [formGroupName]="i">
 
                                         <td class="fs12">{{ tableRow.get('__msVal')?.value }}</td>
 
@@ -303,7 +303,7 @@
 
 
                         <!-- PRODUCT DETAILS STARTING     -->
-                        <div class="row">
+                        <div class="row mt-3">
                             <p class="psi with-line">Product Details</p>
                                <div class="col-md-6 mb-2" *ngFor="let field of productDetails">
 
@@ -311,7 +311,7 @@
                                 <div *ngIf="field.type === 'TEXT'">
                                     <label *ngIf="field.type === 'TEXT'" [for]="field.identifier"
                                         class="tooltip-wrap-uniq">
-                                        {{ field.identifier }}
+                                        {{ field.name }}
                                         <span *ngIf="field.type === 'TEXT'" class="tooltip-icon-uniq ms-1">
                                             <i class="bi bi-exclamation-circle"></i>
                                             <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -334,7 +334,7 @@
                                 <div *ngIf="field.type === 'NUMBER'">
                                     <label *ngIf="field.type === 'NUMBER'" [for]="field.identifier"
                                     class="tooltip-wrap-uniq">
-                                    {{ field.identifier }}
+                                    {{ field.name }}
                                     <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
                                         <i class="bi bi-exclamation-circle"></i>
                                         <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -355,7 +355,7 @@
                                <div *ngIf="field.type === 'DROPDOWN'" >
                                  <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier"
                                     class="tooltip-wrap-uniq">
-                                    {{ field.identifier }}
+                                    {{ field.name }}
                                     <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
                                         <i class="bi bi-exclamation-circle"></i>
                                         <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -423,13 +423,13 @@
                          <!-- ADDITIOANL DETAILS STARTING     -->
                         <div class="row mt-2">
                             <p class="psi with-line">Additional Details</p>
-                               <div class="col-md-6 mb-2" *ngFor="let field of productDetails">
+                               <div class="col-md-6 mb-2" *ngFor="let field of additionalDetails">
 
                                 <!-- TEXT FIELD STARTING-->
                                 <div *ngIf="field.type === 'TEXT'">
                                     <label *ngIf="field.type === 'TEXT'" [for]="field.identifier"
                                         class="tooltip-wrap-uniq">
-                                        {{ field.identifier }}
+                                        {{ field.name }}
                                         <span *ngIf="field.type === 'TEXT'" class="tooltip-icon-uniq ms-1">
                                             <i class="bi bi-exclamation-circle"></i>
                                             <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -452,7 +452,7 @@
                                 <div *ngIf="field.type === 'NUMBER'">
                                     <label *ngIf="field.type === 'NUMBER'" [for]="field.identifier"
                                     class="tooltip-wrap-uniq">
-                                    {{ field.identifier }}
+                                    {{ field.name }}
                                     <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
                                         <i class="bi bi-exclamation-circle"></i>
                                         <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -473,7 +473,7 @@
                                <div *ngIf="field.type === 'DROPDOWN'" >
                                  <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier"
                                     class="tooltip-wrap-uniq">
-                                    {{ field.identifier }}
+                                    {{ field.name }}
                                     <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
                                         <i class="bi bi-exclamation-circle"></i>
                                         <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
@@ -547,7 +547,7 @@
 
             </div>
 
-            <div class="col-md-4 bg-light p-2" style="border-radius: 12px;">
+            <div class="col-md-4 bg-light p-2" style="border-radius: 12px;max-height: 500px;">
                 <h4>Hey Just Testing</h4>
             </div>
         </div>
