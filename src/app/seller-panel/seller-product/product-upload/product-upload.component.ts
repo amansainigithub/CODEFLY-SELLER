@@ -1,17 +1,14 @@
-import { Component } from '@angular/core';
-import { ProductUploadService } from '../../../_services/productUploadService/productUpload/product-upload.service';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import {FormArray,FormBuilder,FormControl,FormGroup,Validators,} from '@angular/forms';
 import { startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { SharedDataService } from '../../../_services/sharedService/shared-data.service';
 import { Router } from '@angular/router';
 import { EngineXService } from '../../../_services/productUploadService/engineXService/engine-x.service';
+import { NgToastService } from 'ng-angular-popup';
+import { NgxSpinnerService } from 'ngx-spinner';
+
+declare var bootstrap: any; // Declare bootstrap for accessing modal methods
 
 @Component({
   selector: 'app-product-upload',
@@ -29,11 +26,16 @@ export class ProductUploadComponent {
   //Variant Category Selected Data
   categorySelection: any;
 
+  //Progress Bar
+  progressBar: any = false;
+
   constructor(
     private engineXService: EngineXService,
     private formBuilder: FormBuilder,
     private sharedService: SharedDataService,
-    private router: Router
+    private router: Router,
+    private toast: NgToastService,
+    private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class ProductUploadComponent {
       this.categorySelection === null ||
       this.categorySelection === ''
     ) {
-      this.router.navigateByUrl('/seller/dashboard/home');
+      //this.router.navigateByUrl('/seller/dashboard/home');
     }
 
     this.productForm = this.formBuilder.group({
@@ -55,9 +57,9 @@ export class ProductUploadComponent {
     //Get Engine-X Data--- Form Builder By Engine X Data Dynamically----
     this.getEngineX();
 
-        setTimeout(() => {
+    setTimeout(() => {
       this.prefillForm();
-    }, 3000);
+    }, 2000);
   }
 
   getEngineX() {
@@ -241,14 +243,14 @@ export class ProductUploadComponent {
   }
 
   checkRowPrice(row: any) {
-    const mrp = Number(row.get('MRP')?.value);
+    const mrp = Number(row.get('mrp')?.value);
     const price = Number(row.get('price')?.value);
 
     if (!isNaN(mrp) && !isNaN(price) && price > mrp) {
-      row.get('MRP')?.setErrors({ greater: true });
+      row.get('mrp')?.setErrors({ greater: true });
     } else {
-      if (row.get('MRP')?.hasError('greater')) {
-        row.get('MRP')?.setErrors(null);
+      if (row.get('mrp')?.hasError('greater')) {
+        row.get('mrp')?.setErrors(null);
       }
     }
   }
@@ -260,101 +262,169 @@ export class ProductUploadComponent {
 
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
-      alert('Please fill all required fields');
+      this.toast.error({
+        detail: 'Please fill all required fields',
+        summary: 'Error',
+        position: 'bottomRight',
+        duration: 2000,
+      });
       return;
     }
-    alert('Form Submitted Successfully!');
-    console.log(this.productForm.value);
-    this.router.navigate(['/seller/dashboard/home/productFiles'], {
-      state: {
-        formData: this.productForm.value,
-        finalCategory: this.categorySelection,
-      },
-    });
+
+    //Show Models
+    this.productProceedModelShow();
+
+    // alert('Form Submitted Successfully!');
+    // console.log(this.productForm.value);
+    // this.router.navigate(['/seller/dashboard/home/productFiles'], {
+    //   state: {
+    //     formData: this.productForm.value,
+    //     finalCategory: this.categorySelection,
+    //   },
+    // });
   }
+
+  proceedWithProduct() {
+    this.spinner.show();
+
+    setTimeout(() => {
+      if (
+        this.productForm.value &&
+        Object.keys(this.productForm.value).length > 0 &&
+        this.categorySelection !== null
+      ) {
+        this.router.navigate(['/seller/dashboard/home/productFiles'], {
+          state: {
+            formData: this.productForm.value,
+            finalCategory: this.categorySelection,
+          },
+        });
+
+        //Spinner Close
+        this.spinner.hide();
+
+        //Close Model
+        this.proceedModelClose();
+      } else {
+        this.toast.error({detail:"Please Enter a Valid mobile number",summary:"Error", position:"bottomRight",duration:2000});
+      }
+    }, 3000);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // MODEL PROPERTIES STARTING
+  @ViewChild('proceedModel') proceedModel!: ElementRef;
+  productProceedModelShow() {
+    const modal = new bootstrap.Modal(this.proceedModel.nativeElement);
+    modal.show();
+  }
+  proceedModelClose() {
+    const modal = bootstrap.Modal.getInstance(this.proceedModel.nativeElement);
+    modal?.hide();
+  }
+  // MODEL PROPERTIES ENDING
+
+  // ============================================================================================
 
   prefillForm() {
     const testData = {
       productSizeRows: [
         {
-          price: '600',
-          MRP: '1200',
+          price: '456',
+          mrp: '600',
           inventory: '100',
-          SKUID: '1000',
-          chestSize: '30',
-          lengthSize: '23',
-          shoulderSize: '30',
+          skuCode: '150',
+          chestSize: '22',
+          lengthSize: '20',
+          shoulderSize: '22',
           __msId: 'productSizes',
           __msVal: 'XXS',
         },
         {
-          price: '100',
-          MRP: '500',
-          inventory: '900',
-          SKUID: '1000',
-          chestSize: '24',
-          lengthSize: '21',
+          price: '122',
+          mrp: '200',
+          inventory: '150',
+          skuCode: '1500',
+          chestSize: '28',
+          lengthSize: '23',
           shoulderSize: '24',
           __msId: 'productSizes',
           __msVal: 'S',
         },
         {
-          price: '1200',
-          MRP: '5600',
-          inventory: '900',
-          SKUID: '1000',
-          chestSize: '32',
-          lengthSize: '29',
-          shoulderSize: '30',
-          __msId: 'productSizes',
-          __msVal: 'XL',
-        },
-        {
-          price: '5660',
-          MRP: '5700',
-          inventory: '900',
-          SKUID: '6000',
-          chestSize: '32',
-          lengthSize: '23',
-          shoulderSize: '32',
-          __msId: 'productSizes',
-          __msVal: 'XXL',
-        },
-        {
-          price: '300',
-          MRP: '6000',
-          inventory: '900',
-          SKUID: '1000',
+          price: '111',
+          mrp: '2222',
+          inventory: '111',
+          skuCode: '150',
           chestSize: '28',
           lengthSize: '23',
-          shoulderSize: '30',
+          shoulderSize: '24',
           __msId: 'productSizes',
-          __msVal: '6XL',
+          __msVal: 'M',
+        },
+        {
+          price: '5555',
+          mrp: '6666',
+          inventory: '888',
+          skuCode: '150',
+          chestSize: '28',
+          lengthSize: '28',
+          shoulderSize: '24',
+          __msId: 'productSizes',
+          __msVal: '10XL',
+        },
+        {
+          price: '900',
+          mrp: '8000',
+          inventory: '1000',
+          skuCode: '150',
+          chestSize: '32',
+          lengthSize: '25',
+          shoulderSize: '34',
+          __msId: 'productSizes',
+          __msVal: '7XL',
         },
       ],
       productName:
         'Hair Bands Women| Girls | Kids | 24 Pieces Multicolor Elastic Hair Bands H',
-      defaultName: 'Mens',
-      GST: '7',
-      hsnCode: '65033',
-      netWeight: '200',
-      productSizes: ['XXS', 'S', 'XL', 'XXL', '6XL'],
-      color: 'SeaGreen',
+      defaultName: 'Mens Clothing',
+      gst: '15',
+      hsnCode: '44045',
+      netWeight: '10',
+      productSizes: ['XXS', 'S', 'M', '7XL', '10XL'],
+      color: 'RoyalBlue',
       netQuantity: '4',
-      neck: 'V-Neck',
+      neck: 'Polo Collar / Collar Neck',
       occasion: 'Sports / Activewear',
-      pattern: 'Checked / Checkered',
-      sleeveLength: 'Short Sleeve / Half Sleeve',
+      pattern: 'Geometric',
+      sleeveLength: 'Elbow Length',
       countryOfOrigin: 'INDIA',
-      manufacturerName: 'Saurav',
+      manufacturerName: 'Saurav ',
       manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
       manufacturerPincode: '120120',
       brand: 'A23 Lifestyle',
-      lining: 'Inner Slip Included',
-      closureType: 'Drawstring',
+      lining: 'Attached Lining',
+      closureType: 'Slip-On / Pull-On',
       stretchType: 'Medium Stretch',
-      careInstruction: 'Line Dry / Hang Dry',
-      description: 'software solutions',
+      careInstruction: 'Tumble Dry Low',
+      description: 'software company name',
     };
 
     // 1. Patch simple fields

@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductCategoryService } from '../../../_services/productCategory/product-category.service';
+import { ProductDetailsService } from '../../../_services/productUploadService/productDetails/product-details.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-product-files',
@@ -9,13 +11,15 @@ import { ProductCategoryService } from '../../../_services/productCategory/produ
   styleUrl: './product-files.component.css',
 })
 export class ProductFilesComponent {
-  formData: any;
+  productData: any;
   finalCategory: any;
 
   constructor(
     private router: Router,
     private http: HttpClient,
-    private categoryService: ProductCategoryService
+    private categoryService: ProductCategoryService,
+    private productDetails: ProductDetailsService,
+    private spinner: NgxSpinnerService,
   ) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation?.extras?.state as {
@@ -24,7 +28,7 @@ export class ProductFilesComponent {
     };
 
     if (state && state.formData !== undefined && state.formData !== null) {
-      this.formData = state.formData;
+      this.productData = state.formData;
     } else {
       this.router.navigateByUrl('/seller/dashboard/home');
     }
@@ -40,10 +44,8 @@ export class ProductFilesComponent {
     }
 
     if (this.validateFormAndCategory()) {
-      console.log('==================PRODUCT FILES=====================');
-
       console.log('✅ Valid data hai');
-      console.log(this.formData);
+      console.log(this.productData);
       console.log(this.finalCategory);
     } else {
       console.log('Invalid data (null/blank/empty)');
@@ -61,8 +63,8 @@ export class ProductFilesComponent {
   //Check Category and Product Form Data is Valid or Not
   validateFormAndCategory(): boolean {
     if (
-      this.formData &&
-      Object.keys(this.formData).length > 0 &&
+      this.productData &&
+      Object.keys(this.productData).length > 0 &&
       this.finalCategory &&
       Object.keys(this.finalCategory).length > 0 &&
       this.finalCategory.vData &&
@@ -170,8 +172,48 @@ export class ProductFilesComponent {
     this.videoFile = null;
   }
 
+  // ==========================SAVE PRODUCT DETAILS======================================
+
   submitProduct() {
-    // Check main image slot (index 0)
+    //Save Product Details
+    this.saveProductDetails();
+  }
+
+
+  saveProductDetails() {
+  //SPINNER SHOWING  
+  this.spinner.show();
+
+  this.productDetails.saveProductDetails(this.productData, this.finalCategory.vData.id)
+    .subscribe({
+      next: async (res: any) => {
+        if (res.data.id) {
+          console.log('Product ID:', res.data.id);
+          try {
+            // Wait until the response is received
+            const fileRes = await this.saveProductFiles(res.data.id);
+            console.log('Files response:', fileRes);
+            alert("Product Upload Successfully");
+          } catch (err) {
+            console.log(err);
+            alert(err);
+          }
+        } else {
+          console.log('Product ID Not Found....');
+        }
+        this.spinner.hide();
+      },
+      error: (err: any) => {
+        alert(err);
+        this.spinner.hide();
+      },
+    });
+}
+
+
+saveProductFiles(productId: any): Promise<any> {
+  return new Promise((resolve, reject) => {
+
     if (!this.files[0]) {
       alert('Please upload Main image before submitting!');
       return;
@@ -179,27 +221,105 @@ export class ProductFilesComponent {
 
     const formData = new FormData();
 
-    // Images append karo
-    this.files.forEach((file, i) => {
+    this.files.forEach((file) => {
       if (file) {
-        formData.append('files', file); // backend me "files" naam ke field ke sath jayega
+        formData.append('files', file);
       }
     });
 
-    // Video append karo
     if (this.videoFile) {
-      formData.append('video', this.videoFile); // backend pe "video" naam se milega
+      formData.append('video', this.videoFile);
     }
 
-    this.categoryService.fileUploadService(formData).subscribe({
-      next: (res: any) => {
-        alert(res);
-      },
-      error: (err: any) => {
-        alert(err);
-      },
+    this.productDetails.fileUploadService(formData, productId).subscribe({
+      next: (res: any) => resolve(res),
+      error: (err: any) => reject(err),
     });
-  }
+  });
+}
+
+
+
+
+// =============================================================================================
+  //save Product Details
+  // saveProductDetails() {
+
+  //   this.spinner.show();
+  //   this.productDetails
+  //     .saveProductDetails(this.productData, this.finalCategory.vData.id)
+  //     .subscribe({
+  //       next: (res: any) => {
+  //         console.log(res);
+  //         if (res.data.id !== null && res.data.id !== undefined && res.data.id !== '') {
+  //           console.log('Product ID:', res.data.id);
+
+  //           //save Product Files
+  //           this.saveProductFiles(res.data.id);
+  //         } else {
+  //           console.log('Invalid ID');
+  //         }
+  //         this.spinner.hide();
+  //       },
+  //       error: (err: any) => {
+  //         alert(err);
+  //         this.spinner.hide();
+  //       },
+  //     });
+  // }
+
+  //  saveProductFiles(productId:any) {
+  //   // Check main image slot (index 0)
+  //   if (!this.files[0]) {
+  //     alert('Please upload Main image before submitting!');
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+
+  //   // Images append karo
+  //   this.files.forEach((file, i) => {
+  //     if (file) {
+  //       formData.append('files', file); // backend me "files" naam ke field ke sath jayega
+  //     }
+  //   });
+
+  //   // Video append karo
+  //   if (this.videoFile) {
+  //     formData.append('video', this.videoFile); // backend pe "video" naam se milega
+  //   }
+
+  //   this.productDetails.fileUploadService(formData,productId).subscribe({
+  //     next: (res: any) => {
+  //       alert("Product Upload Successfully");
+  //     },
+  //     error: (err: any) => {
+  //       alert(err);
+  //     },
+  //   });
+  // }
+
+// =============================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   //PRE-FILL DATA

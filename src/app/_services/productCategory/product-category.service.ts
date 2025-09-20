@@ -30,9 +30,7 @@ getVariantCategory(id: any): Observable<any> {
   return this.http.get(API_AUTHORIZA_URL + "productCategoryController/" + 'getVariantCategory/' + id, httpOptions);
 }
 
-fileUploadService(files:any): Observable<any> {
-  return this.http.post(API_AUTHORIZA_URL + "productCategoryController/"+"uploadFiles",files);
-}
+
 
 
 }

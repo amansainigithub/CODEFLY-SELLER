@@ -539,9 +539,12 @@
 
 
                         <!-- ROW FINISH -->
-                        <button type="submit" class="btn btn-primary mt-3">
-                            Submit
-                        </button>
+                        <div class="d-flex justify-content-end p-3">
+                            <button type="submit" mat-raised-button color="primary" class="btn btn-primary mt-3">
+                                Continue
+                            </button>
+                        </div>
+
                     </form>
                 </div>
 
@@ -553,3 +556,47 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+<!-- ===================================================================== -->
+
+
+              <!-- IMAGE GUIDLINES MODEL -->
+    <!-- Modal -->
+    <div class="modal fade"  data-bs-backdrop="static" id="exampleModal" tabindex="-1"
+         aria-labelledby="exampleModalLabel" aria-hidden="true" #proceedModel>
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-body text-center ">
+            <div>
+              <i class="bi bi-rocket-takeoff fs20" style="color: #45e832;"></i>
+            </div>
+            <span class="fs11"  >
+                <p style="line-height: 1.1;">
+                    Are you sure you want to continue? Once you proceed, 
+                    you won’t be able to go back and any unsaved data will be lost.
+                </p>
+            </span>
+
+          </div>
+          <div class="mb-3 text-center">
+            <button mat-raised-button class="me-2" data-bs-dismiss="modal">Close</button>
+            <button mat-raised-button color="primary" (click)="proceedWithProduct()" >Continue</button>
+          </div>
+
+          <div *ngIf="progressBar">
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+    <!-- IMAGE GUIDLINES MODEL --> 
