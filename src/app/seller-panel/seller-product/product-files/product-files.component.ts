@@ -1,9 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductCategoryService } from '../../../_services/productCategory/product-category.service';
 import { ProductDetailsService } from '../../../_services/productUploadService/productDetails/product-details.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgToastService } from 'ng-angular-popup';
+
+declare var bootstrap: any; // Declare bootstrap for accessing modal methods
+
 
 @Component({
   selector: 'app-product-files',
@@ -14,18 +18,17 @@ export class ProductFilesComponent {
   productData: any;
   finalCategory: any;
 
+  //Progress Bar
+  progressBar: any = false;
+
   constructor(
     private router: Router,
-    private http: HttpClient,
-    private categoryService: ProductCategoryService,
     private productDetails: ProductDetailsService,
     private spinner: NgxSpinnerService,
+    private toast:NgToastService,
   ) {
     const navigation = this.router.getCurrentNavigation();
-    const state = navigation?.extras?.state as {
-      formData: any;
-      finalCategory: any;
-    };
+    const state = navigation?.extras?.state as {formData: any;finalCategory: any;};
 
     if (state && state.formData !== undefined && state.formData !== null) {
       this.productData = state.formData;
@@ -54,10 +57,9 @@ export class ProductFilesComponent {
   }
 
   ngOnInit(): void {
-    // ✅ Component load hone ke 2 second baad sabhi slots + video set hoga
-    setTimeout(() => {
-      this.prefillFiles();
-    }, 2000);
+    // setTimeout(() => {
+    //   this.prefillFiles();
+    // }, 2000);
   }
 
   //Check Category and Product Form Data is Valid or Not
@@ -174,13 +176,25 @@ export class ProductFilesComponent {
 
   // ==========================SAVE PRODUCT DETAILS======================================
 
+  productUploadStatus:any = false;
+
   submitProduct() {
-    //Save Product Details
-    this.saveProductDetails();
+    if (!this.files[0]) {
+      this.toast.error({
+          detail: 'Please upload Main image before submitting!',
+          summary: 'Error',
+          position: 'bottomRight',
+          duration: 2000,
+        });
+      return;
+    }else{
+    //Show Model
+    this.productProceedModelShow();
+    }
   }
 
 
-  saveProductDetails() {
+  productSubmit() {
   //SPINNER SHOWING  
   this.spinner.show();
 
@@ -193,13 +207,33 @@ export class ProductFilesComponent {
             // Wait until the response is received
             const fileRes = await this.saveProductFiles(res.data.id);
             console.log('Files response:', fileRes);
-            alert("Product Upload Successfully");
+
+            //CHANGE PRODUCT UPLOAD STATUS VALUE
+            this.productUploadStatus = true;
+
+            //SPINNER CLOSE
+            this.spinner.hide();
+
+            //CLOSING MODEL AFER SOME TIME
+             setTimeout(() => {
+              this.router.navigate(['/seller/dashboard/home']);
+            //CLOSING MODEL
+              this.proceedModelClose();
+            }, 2000);
+            
           } catch (err) {
-            console.log(err);
-            alert(err);
+            this.toast.error({detail:"Failed to save Product Details",summary:"Error", position:"bottomRight",duration:2000});
+            //SPINNER CLOSE
+            this.spinner.hide();
+            //CLOSING MODEL
+            this.proceedModelClose();
+            this.router.navigate(['/seller/dashboard/home']);
           }
         } else {
           console.log('Product ID Not Found....');
+          this.toast.error({detail:"Product ID Not Found....",summary:"Error", position:"bottomRight",duration:2000});
+          //SPINNER CLOSE
+          this.spinner.hide();
         }
         this.spinner.hide();
       },
@@ -220,7 +254,6 @@ saveProductFiles(productId: any): Promise<any> {
     }
 
     const formData = new FormData();
-
     this.files.forEach((file) => {
       if (file) {
         formData.append('files', file);
@@ -230,7 +263,6 @@ saveProductFiles(productId: any): Promise<any> {
     if (this.videoFile) {
       formData.append('video', this.videoFile);
     }
-
     this.productDetails.fileUploadService(formData, productId).subscribe({
       next: (res: any) => resolve(res),
       error: (err: any) => reject(err),
@@ -241,65 +273,25 @@ saveProductFiles(productId: any): Promise<any> {
 
 
 
-// =============================================================================================
-  //save Product Details
-  // saveProductDetails() {
 
-  //   this.spinner.show();
-  //   this.productDetails
-  //     .saveProductDetails(this.productData, this.finalCategory.vData.id)
-  //     .subscribe({
-  //       next: (res: any) => {
-  //         console.log(res);
-  //         if (res.data.id !== null && res.data.id !== undefined && res.data.id !== '') {
-  //           console.log('Product ID:', res.data.id);
 
-  //           //save Product Files
-  //           this.saveProductFiles(res.data.id);
-  //         } else {
-  //           console.log('Invalid ID');
-  //         }
-  //         this.spinner.hide();
-  //       },
-  //       error: (err: any) => {
-  //         alert(err);
-  //         this.spinner.hide();
-  //       },
-  //     });
-  // }
 
-  //  saveProductFiles(productId:any) {
-  //   // Check main image slot (index 0)
-  //   if (!this.files[0]) {
-  //     alert('Please upload Main image before submitting!');
-  //     return;
-  //   }
 
-  //   const formData = new FormData();
+  // ============================================================================================
 
-  //   // Images append karo
-  //   this.files.forEach((file, i) => {
-  //     if (file) {
-  //       formData.append('files', file); // backend me "files" naam ke field ke sath jayega
-  //     }
-  //   });
+  // MODEL PROPERTIES STARTING
+  @ViewChild('proceedModel') proceedModel!: ElementRef;
+  productProceedModelShow() {
+    const modal = new bootstrap.Modal(this.proceedModel.nativeElement);
+    modal.show();
+  }
+  proceedModelClose() {
+    const modal = bootstrap.Modal.getInstance(this.proceedModel.nativeElement);
+    modal?.hide();
+  }
+  // MODEL PROPERTIES ENDING
 
-  //   // Video append karo
-  //   if (this.videoFile) {
-  //     formData.append('video', this.videoFile); // backend pe "video" naam se milega
-  //   }
-
-  //   this.productDetails.fileUploadService(formData,productId).subscribe({
-  //     next: (res: any) => {
-  //       alert("Product Upload Successfully");
-  //     },
-  //     error: (err: any) => {
-  //       alert(err);
-  //     },
-  //   });
-  // }
-
-// =============================================================================================
+  // ============================================================================================
 
 
 
@@ -322,7 +314,7 @@ saveProductFiles(productId: any): Promise<any> {
 
 
 
-  //PRE-FILL DATA
+  //======================PRE-FILL DATA STARTING=======================
   prefillFiles() {
     const defaultImgUrl =
       'https://res.cloudinary.com/dgidcgrxs/image/upload/v1744827500/megamart/ProductImages/c1s2axjdbneybvhgyaym.jpg';
@@ -364,4 +356,6 @@ saveProductFiles(productId: any): Promise<any> {
         this.videoFile = new File([blob], 'default.mp4', { type: blob.type });
       });
   }
+    //======================PRE-FILL DATA ENDING=======================
+
 }

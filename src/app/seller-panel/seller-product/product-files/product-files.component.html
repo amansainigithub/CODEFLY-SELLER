@@ -236,3 +236,71 @@
 </div>
 <!-- Video Guidlines Ending -->
 <!-- =====================================MODELS============================================= -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =====================MODEL PRODUCT PROCESS OPEN========================= -->
+    <!-- Modal Open-->
+    <div class="modal fade" data-bs-backdrop="static" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true" #proceedModel>
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+            <div class="modal-content">
+                <div *ngIf="!productUploadStatus" class="modal-body text-center ">
+                    <div>
+                        <i class="bi bi-rocket-takeoff fs20" style="color: #45e832;"></i>
+                    </div>
+                    <span class="fs11">
+                        <p style="line-height: 1.1;">
+                            Are you sure you want to upload this product?
+                            Once uploaded, you won’t be able to undo this action.
+                        </p>
+                    </span>
+    
+                    <div class="mb-3 text-center">
+                        <button mat-raised-button class="me-2" data-bs-dismiss="modal">Close</button>
+                        <button mat-raised-button color="primary" (click)="productSubmit()">Submit Product</button>
+                    </div>
+                </div>
+    
+                <div *ngIf="productUploadStatus" class="modal-body text-center ">
+                    <div>
+                        <img src="../../../../assets/SuccessIcons/successAnimation.gif" alt="Loading..." />
+                    </div>
+    
+                    <span class="fs11">
+                        <p class="fs17">Product uploaded successfully</p>
+                        <p style="line-height: 1.1;">
+                            Please do not reload the page or close the window. you’ll be redirected automatically.
+                        </p>
+                    </span>
+                </div>
+    
+                <div *ngIf="progressBar">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Modal Close-->
+    <!-- =====================MODEL PRODUCT PROCESS CLOSING======================== -->
+
+
+
+
+
+
+
+
+
+

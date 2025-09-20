@@ -42,11 +42,9 @@ export class ProductUploadComponent {
     //[Variant Category Data]
     this.categorySelection = this.sharedService.getData();
 
-    if (
-      this.categorySelection === undefined ||
+    if (this.categorySelection === undefined ||
       this.categorySelection === null ||
-      this.categorySelection === ''
-    ) {
+      this.categorySelection === '') {
       //this.router.navigateByUrl('/seller/dashboard/home');
     }
 
@@ -63,6 +61,7 @@ export class ProductUploadComponent {
   }
 
   getEngineX() {
+    this.spinner.show();
     this.engineXService.getEngineX().subscribe(
       (data: any) => {
         this.formfields = data.inventoryData;
@@ -74,8 +73,12 @@ export class ProductUploadComponent {
         this.generateDynamicControls(this.productDetails);
         this.generateDynamicControls(this.additionalDetails);
         // console.log(this.productForm);
+        this.spinner.hide();
       },
-      (err: any) => console.error(err)
+      (err: any) => {
+        console.error(err);
+        this.spinner.hide();
+      } 
     );
   }
 
@@ -160,60 +163,90 @@ export class ProductUploadComponent {
   hasMultiSelectValues = false;
   filteredTableDropdowns: { [key: string]: Observable<string[]> } = {};
   onMultiSelectChange(event: any, field: any) {
-    const selectedValues: string[] = event.value || [];
-    this.hasMultiSelectValues =
-      this.productSizeRows.length > 0 || selectedValues.length > 0;
+  const selectedValues: string[] = event.value || [];
+  this.hasMultiSelectValues =
+    this.productSizeRows.length > 0 || selectedValues.length > 0;
 
-    // Remove unselected rows
-    for (let i = this.productSizeRows.length - 1; i >= 0; i--) {
-      const row = this.productSizeRows.at(i) as FormGroup;
-      if (
-        row.get('__msId')?.value === field.identifier &&
-        !selectedValues.includes(row.get('__msVal')?.value)
-      ) {
-        this.productSizeRows.removeAt(i);
+  // Remove unselected rows
+  for (let i = this.productSizeRows.length - 1; i >= 0; i--) {
+    const row = this.productSizeRows.at(i) as FormGroup;
+    if (
+      row.get('__msId')?.value === field.identifier &&
+      !selectedValues.includes(row.get('__msVal')?.value)
+    ) {
+      this.productSizeRows.removeAt(i);
+    }
+  }
+
+  // Add new rows
+  selectedValues.forEach((val) => {
+    const exists = this.productSizeRows.controls.some(
+      (ctrl) =>
+        ctrl.get('__msId')?.value === field.identifier &&
+        ctrl.get('__msVal')?.value === val
+    );
+
+    if (!exists) {
+      const rowGroup: { [key: string]: FormControl } = {};
+
+      this.dynamicRows.forEach((col) => {
+        const validators = [];
+        if (col.required) validators.push(Validators.required);
+        if (col.minLength) validators.push(Validators.minLength(+col.minLength));
+        if (col.min) validators.push(Validators.min(Number(col.min)));
+        if (col.max) validators.push(Validators.max(Number(col.max)));
+
+        rowGroup[col.identifier] = new FormControl('', validators);
+
+        // Table dropdown filter setup
+        if (col.type === 'DROPDOWN') {
+          const control = rowGroup[col.identifier];
+          this.filteredTableDropdowns[`${col.identifier}_${val}`] =
+            control.valueChanges.pipe(
+              startWith(''),
+              map((value) => this._filter(value || '', col.values))
+            );
+        }
+      });
+
+      rowGroup['__msId'] = new FormControl(field.identifier);
+      rowGroup['__msVal'] = new FormControl(val);
+
+      // ✅ Only ONE push
+      const newRow = this.formBuilder.group(rowGroup);
+      this.productSizeRows.push(newRow);
+
+      // Subscribe to MRP and Price fields
+      const mrpControl = newRow.get('mrp');
+      const priceControl = newRow.get('price');
+
+      if (mrpControl) {
+        mrpControl.valueChanges.subscribe((value) => {
+          this.updateAllRows('mrp', value, newRow);
+        });
+      }
+      if (priceControl) {
+        priceControl.valueChanges.subscribe((value) => {
+          this.updateAllRows('price', value, newRow);
+        });
       }
     }
-    // Add new rows
-    selectedValues.forEach((val) => {
-      const exists = this.productSizeRows.controls.some(
-        (ctrl) =>
-          ctrl.get('__msId')?.value === field.identifier &&
-          ctrl.get('__msVal')?.value === val
-      );
+  });
 
-      if (!exists) {
-        const rowGroup: { [key: string]: FormControl } = {};
+  this.hasMultiSelectValues = this.productSizeRows.length > 0;
+}
 
-        this.dynamicRows.forEach((col) => {
-          const validators = [];
-          if (col.required) validators.push(Validators.required);
-          if (col.minLength)
-            validators.push(Validators.minLength(+col.minLength));
-          if (col.min) validators.push(Validators.min(Number(col.min)));
-          if (col.max) validators.push(Validators.max(Number(col.max)));
+// 🔑 propagate same value to all rows
+updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
+  this.productSizeRows.controls.forEach((row: any) => {
+    if (row !== sourceRow) {
+      row.get(fieldName)?.setValue(value, { emitEvent: false });
+    }
+  });
+}
 
-          rowGroup[col.identifier] = new FormControl('', validators);
 
-          // Table dropdown filter setup
-          if (col.type === 'DROPDOWN') {
-            const control = rowGroup[col.identifier];
-            this.filteredTableDropdowns[`${col.identifier}_${val}`] =
-              control.valueChanges.pipe(
-                startWith(''),
-                map((value) => this._filter(value || '', col.values))
-              );
-          }
-        });
 
-        rowGroup['__msId'] = new FormControl(field.identifier);
-        rowGroup['__msVal'] = new FormControl(val);
-
-        this.productSizeRows.push(this.formBuilder.group(rowGroup));
-      }
-    });
-    this.hasMultiSelectValues = this.productSizeRows.length > 0;
-  }
 
   // REMOVE TABLE ROWS
   removeTableRow(index: number) {
@@ -247,10 +280,10 @@ export class ProductUploadComponent {
     const price = Number(row.get('price')?.value);
 
     if (!isNaN(mrp) && !isNaN(price) && price > mrp) {
-      row.get('mrp')?.setErrors({ greater: true });
+      row.get('price')?.setErrors({ greater: true });
     } else {
-      if (row.get('mrp')?.hasError('greater')) {
-        row.get('mrp')?.setErrors(null);
+      if (row.get('price')?.hasError('greater')) {
+        row.get('price')?.setErrors(null);
       }
     }
   }
@@ -270,23 +303,15 @@ export class ProductUploadComponent {
       });
       return;
     }
-
-    //Show Models
+    else{
     this.productProceedModelShow();
-
-    // alert('Form Submitted Successfully!');
-    // console.log(this.productForm.value);
-    // this.router.navigate(['/seller/dashboard/home/productFiles'], {
-    //   state: {
-    //     formData: this.productForm.value,
-    //     finalCategory: this.categorySelection,
-    //   },
-    // });
+    }
   }
 
+
+  // PLRODUCT PROCCEED
   proceedWithProduct() {
     this.spinner.show();
-
     setTimeout(() => {
       if (
         this.productForm.value &&
@@ -306,9 +331,14 @@ export class ProductUploadComponent {
         //Close Model
         this.proceedModelClose();
       } else {
-        this.toast.error({detail:"Please Enter a Valid mobile number",summary:"Error", position:"bottomRight",duration:2000});
+          this.toast.error({
+          detail: 'Something went Wrong Please try again after some time!',
+          summary: 'Error',
+          position: 'bottomRight',
+          duration: 2000,
+        });
       }
-    }, 3000);
+    }, 2000);
   }
 
 
@@ -328,6 +358,7 @@ export class ProductUploadComponent {
 
 
 
+  // ============================================================================================
 
   // MODEL PROPERTIES STARTING
   @ViewChild('proceedModel') proceedModel!: ElementRef;
@@ -340,92 +371,112 @@ export class ProductUploadComponent {
     modal?.hide();
   }
   // MODEL PROPERTIES ENDING
-
   // ============================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // ========================PREFILL DATA STARTING=======================
 
   prefillForm() {
     const testData = {
-      productSizeRows: [
-        {
-          price: '456',
-          mrp: '600',
-          inventory: '100',
-          skuCode: '150',
-          chestSize: '22',
-          lengthSize: '20',
-          shoulderSize: '22',
-          __msId: 'productSizes',
-          __msVal: 'XXS',
-        },
-        {
-          price: '122',
-          mrp: '200',
-          inventory: '150',
-          skuCode: '1500',
-          chestSize: '28',
-          lengthSize: '23',
-          shoulderSize: '24',
-          __msId: 'productSizes',
-          __msVal: 'S',
-        },
-        {
-          price: '111',
-          mrp: '2222',
-          inventory: '111',
-          skuCode: '150',
-          chestSize: '28',
-          lengthSize: '23',
-          shoulderSize: '24',
-          __msId: 'productSizes',
-          __msVal: 'M',
-        },
-        {
-          price: '5555',
-          mrp: '6666',
-          inventory: '888',
-          skuCode: '150',
-          chestSize: '28',
-          lengthSize: '28',
-          shoulderSize: '24',
-          __msId: 'productSizes',
-          __msVal: '10XL',
-        },
-        {
-          price: '900',
-          mrp: '8000',
-          inventory: '1000',
-          skuCode: '150',
-          chestSize: '32',
-          lengthSize: '25',
-          shoulderSize: '34',
-          __msId: 'productSizes',
-          __msVal: '7XL',
-        },
-      ],
-      productName:
-        'Hair Bands Women| Girls | Kids | 24 Pieces Multicolor Elastic Hair Bands H',
-      defaultName: 'Mens Clothing',
-      gst: '15',
-      hsnCode: '44045',
-      netWeight: '10',
-      productSizes: ['XXS', 'S', 'M', '7XL', '10XL'],
-      color: 'RoyalBlue',
-      netQuantity: '4',
-      neck: 'Polo Collar / Collar Neck',
-      occasion: 'Sports / Activewear',
-      pattern: 'Geometric',
-      sleeveLength: 'Elbow Length',
-      countryOfOrigin: 'INDIA',
-      manufacturerName: 'Saurav ',
-      manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
-      manufacturerPincode: '120120',
-      brand: 'A23 Lifestyle',
-      lining: 'Attached Lining',
-      closureType: 'Slip-On / Pull-On',
-      stretchType: 'Medium Stretch',
-      careInstruction: 'Tumble Dry Low',
-      description: 'software company name',
-    };
+    productSizeRows: [
+                    {
+                        mrp: '150',
+                        price: '140',
+                        inventory: '100',
+                        skuCode: '150',
+                        chestSize: '22',
+                        lengthSize: '20',
+                        shoulderSize: '22',
+                        __msId: 'productSizes',
+                        __msVal: 'LX'
+                    },
+                    {
+                        mrp: '150',
+                        price: '140',
+                        inventory: '100',
+                        skuCode: '888',
+                        chestSize: '28',
+                        lengthSize: '25',
+                        shoulderSize: '24',
+                        __msId: 'productSizes',
+                        __msVal: '10XL'
+                    },
+                    {
+                        mrp: '150',
+                        price: '140',
+                        inventory: '100',
+                        skuCode: '456',
+                        chestSize: '32',
+                        lengthSize: '24',
+                        shoulderSize: '42',
+                        __msId: 'productSizes',
+                        __msVal: 'M'
+                    },
+                    {
+                        mrp: '150',
+                        price: '140',
+                        inventory: '100',
+                        skuCode: '777',
+                        chestSize: '34',
+                        lengthSize: '29',
+                        shoulderSize: '48',
+                        __msId: 'productSizes',
+                        __msVal: '7XL'
+                    },
+                    {
+                        mrp: '150',
+                        price: '140',
+                        inventory: '100',
+                        skuCode: '150',
+                        chestSize: '38',
+                        lengthSize: '24',
+                        shoulderSize: '30',
+                        __msId: 'productSizes',
+                        __msVal: 'Free Size'
+                    }
+                ],
+                productName: 'Hair Bands Women| Girls | Kids | 24 Pieces Multicolor Elastic Hair Bands H',
+                defaultName: 'Mens Clothing',
+                gst: '18',
+                hsnCode: '44045',
+                netWeight: '10',
+                productSizes: [
+                    'M',
+                    '7XL',
+                    '10XL',
+                    'LX',
+                    'Free Size'
+                ],
+                color: 'Crimson',
+                netQuantity: '2',
+                neck: 'V-Neck',
+                occasion: 'Party',
+                pattern: 'Floral',
+                sleeveLength: 'Full Sleeve / Long Sleeve',
+                countryOfOrigin: 'INDIA',
+                manufacturerName: 'Saurav ',
+                manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
+                manufacturerPincode: '120120',
+                brand: 'neha 1111',
+                lining: 'Detachable Lining',
+                closureType: 'Drawstring',
+                stretchType: 'Low Stretch',
+                careInstruction: 'Do Not Bleach',
+                description: 'coding company'
+            };
+
 
     // 1. Patch simple fields
     this.productForm.patchValue(testData);
@@ -463,4 +514,18 @@ export class ProductUploadComponent {
     // 4. Show table
     this.hasMultiSelectValues = formArray.length > 0;
   }
+  // ========================PREFILL DATA ENDING=======================
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
