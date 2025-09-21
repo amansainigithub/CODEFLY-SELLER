@@ -42,9 +42,11 @@ export class ProductUploadComponent {
     //[Variant Category Data]
     this.categorySelection = this.sharedService.getData();
 
-    if (this.categorySelection === undefined ||
+    if (
+      this.categorySelection === undefined ||
       this.categorySelection === null ||
-      this.categorySelection === '') {
+      this.categorySelection === ''
+    ) {
       //this.router.navigateByUrl('/seller/dashboard/home');
     }
 
@@ -55,9 +57,9 @@ export class ProductUploadComponent {
     //Get Engine-X Data--- Form Builder By Engine X Data Dynamically----
     this.getEngineX();
 
-    setTimeout(() => {
-      this.prefillForm();
-    }, 2000);
+    // setTimeout(() => {
+    //   this.prefillForm();
+    // }, 2000);
   }
 
   getEngineX() {
@@ -78,7 +80,7 @@ export class ProductUploadComponent {
       (err: any) => {
         console.error(err);
         this.spinner.hide();
-      } 
+      }
     );
   }
 
@@ -163,90 +165,88 @@ export class ProductUploadComponent {
   hasMultiSelectValues = false;
   filteredTableDropdowns: { [key: string]: Observable<string[]> } = {};
   onMultiSelectChange(event: any, field: any) {
-  const selectedValues: string[] = event.value || [];
-  this.hasMultiSelectValues =
-    this.productSizeRows.length > 0 || selectedValues.length > 0;
+    const selectedValues: string[] = event.value || [];
+    this.hasMultiSelectValues =
+      this.productSizeRows.length > 0 || selectedValues.length > 0;
 
-  // Remove unselected rows
-  for (let i = this.productSizeRows.length - 1; i >= 0; i--) {
-    const row = this.productSizeRows.at(i) as FormGroup;
-    if (
-      row.get('__msId')?.value === field.identifier &&
-      !selectedValues.includes(row.get('__msVal')?.value)
-    ) {
-      this.productSizeRows.removeAt(i);
+    // Remove unselected rows
+    for (let i = this.productSizeRows.length - 1; i >= 0; i--) {
+      const row = this.productSizeRows.at(i) as FormGroup;
+      if (
+        row.get('__msId')?.value === field.identifier &&
+        !selectedValues.includes(row.get('__msVal')?.value)
+      ) {
+        this.productSizeRows.removeAt(i);
+      }
     }
+
+    // Add new rows
+    selectedValues.forEach((val) => {
+      const exists = this.productSizeRows.controls.some(
+        (ctrl) =>
+          ctrl.get('__msId')?.value === field.identifier &&
+          ctrl.get('__msVal')?.value === val
+      );
+
+      if (!exists) {
+        const rowGroup: { [key: string]: FormControl } = {};
+
+        this.dynamicRows.forEach((col) => {
+          const validators = [];
+          if (col.required) validators.push(Validators.required);
+          if (col.minLength)
+            validators.push(Validators.minLength(+col.minLength));
+          if (col.min) validators.push(Validators.min(Number(col.min)));
+          if (col.max) validators.push(Validators.max(Number(col.max)));
+
+          rowGroup[col.identifier] = new FormControl('', validators);
+
+          // Table dropdown filter setup
+          if (col.type === 'DROPDOWN') {
+            const control = rowGroup[col.identifier];
+            this.filteredTableDropdowns[`${col.identifier}_${val}`] =
+              control.valueChanges.pipe(
+                startWith(''),
+                map((value) => this._filter(value || '', col.values))
+              );
+          }
+        });
+
+        rowGroup['__msId'] = new FormControl(field.identifier);
+        rowGroup['__msVal'] = new FormControl(val);
+
+        // ✅ Only ONE push
+        const newRow = this.formBuilder.group(rowGroup);
+        this.productSizeRows.push(newRow);
+
+        // Subscribe to MRP and Price fields
+        const mrpControl = newRow.get('mrp');
+        const priceControl = newRow.get('price');
+
+        if (mrpControl) {
+          mrpControl.valueChanges.subscribe((value) => {
+            this.updateAllRows('mrp', value, newRow);
+          });
+        }
+        if (priceControl) {
+          priceControl.valueChanges.subscribe((value) => {
+            this.updateAllRows('price', value, newRow);
+          });
+        }
+      }
+    });
+
+    this.hasMultiSelectValues = this.productSizeRows.length > 0;
   }
 
-  // Add new rows
-  selectedValues.forEach((val) => {
-    const exists = this.productSizeRows.controls.some(
-      (ctrl) =>
-        ctrl.get('__msId')?.value === field.identifier &&
-        ctrl.get('__msVal')?.value === val
-    );
-
-    if (!exists) {
-      const rowGroup: { [key: string]: FormControl } = {};
-
-      this.dynamicRows.forEach((col) => {
-        const validators = [];
-        if (col.required) validators.push(Validators.required);
-        if (col.minLength) validators.push(Validators.minLength(+col.minLength));
-        if (col.min) validators.push(Validators.min(Number(col.min)));
-        if (col.max) validators.push(Validators.max(Number(col.max)));
-
-        rowGroup[col.identifier] = new FormControl('', validators);
-
-        // Table dropdown filter setup
-        if (col.type === 'DROPDOWN') {
-          const control = rowGroup[col.identifier];
-          this.filteredTableDropdowns[`${col.identifier}_${val}`] =
-            control.valueChanges.pipe(
-              startWith(''),
-              map((value) => this._filter(value || '', col.values))
-            );
-        }
-      });
-
-      rowGroup['__msId'] = new FormControl(field.identifier);
-      rowGroup['__msVal'] = new FormControl(val);
-
-      // ✅ Only ONE push
-      const newRow = this.formBuilder.group(rowGroup);
-      this.productSizeRows.push(newRow);
-
-      // Subscribe to MRP and Price fields
-      const mrpControl = newRow.get('mrp');
-      const priceControl = newRow.get('price');
-
-      if (mrpControl) {
-        mrpControl.valueChanges.subscribe((value) => {
-          this.updateAllRows('mrp', value, newRow);
-        });
+  // 🔑 propagate same value to all rows
+  updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
+    this.productSizeRows.controls.forEach((row: any) => {
+      if (row !== sourceRow) {
+        row.get(fieldName)?.setValue(value, { emitEvent: false });
       }
-      if (priceControl) {
-        priceControl.valueChanges.subscribe((value) => {
-          this.updateAllRows('price', value, newRow);
-        });
-      }
-    }
-  });
-
-  this.hasMultiSelectValues = this.productSizeRows.length > 0;
-}
-
-// 🔑 propagate same value to all rows
-updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
-  this.productSizeRows.controls.forEach((row: any) => {
-    if (row !== sourceRow) {
-      row.get(fieldName)?.setValue(value, { emitEvent: false });
-    }
-  });
-}
-
-
-
+    });
+  }
 
   // REMOVE TABLE ROWS
   removeTableRow(index: number) {
@@ -288,9 +288,140 @@ updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
     }
   }
 
-  //SUBMIT AND PREFILL DATA
+
+  //================CALCULATED GST, TCS TDS AMOUNT STARTING=================
+  actualPrice:any;
+  mrpValue:any;
+  gstAmount: any;
+  tcsAmount: any;
+  tdsAmount: any;
+  bankSettlementAmount :any
+  shippingCharges:any=70.00;
+  finalSettlementAmount:any;
+
+  // onPriceChange(rowIndex: number) {
+  //    const row = this.productForm.value.productSizeRows.at(rowIndex);
+  //    console.log("row :: " ,row);
+     
+  //   const rowGroup = this.productSizeRows.at(rowIndex);
+
+  //   const priceValue = Number(rowGroup.get('price')?.value);
+  //   const mrpValue = Number(rowGroup.get('mrp')?.value);
+
+  //   if (mrpValue >= priceValue ) {
+  //     this.actualPrice = priceValue;
+
+  //     const gstPercentage = this.productForm.value.gst || 0;
+  //     this.gstAmount = this.calculateGST(priceValue, gstPercentage);
+  //     this.tcsAmount = this.calculateTCS(priceValue, gstPercentage);
+  //     this.tdsAmount = this.calculateTDS(priceValue);
+
+  //     this.bankSettlementAmount = this.bankSettlement
+  //                                 (this.actualPrice, this.gstAmount,this.tdsAmount,this.tcsAmount);
+
+  //     this.finalSettlementAmount = this.finalSettlement(this.bankSettlementAmount ,this.shippingCharges);
+  //   } else if (priceValue > mrpValue) {
+  //     // console.log("Selling Price can't be greater than MRP");
+  //     return
+  //   }
+  // }
+
+
+  onPriceChange(rowIndex: number): void {
+          if (rowIndex === 0) {
+            this.actualPrice = 0;
+          }
+        
+          // Calculate total priceActual
+          this.actualPrice = 0;
+          this.productForm.value.productSizeRows.forEach((row: any) => {
+            this.actualPrice = parseFloat(row.price || 0);
+            this.mrpValue = parseFloat(row.mrp || 0);
+          });
+          const gstPercentage = this.productForm.value.gst || 0;
+
+          if (gstPercentage > 0 ) {
+          // Calculate GST, TCS, and TDS
+          if(gstPercentage !== "" || gstPercentage !== null || gstPercentage !== undefined ){
+            this.gstAmount = this.calculateGST(this.actualPrice, gstPercentage);
+            this.tcsAmount = this.calculateTCS(this.actualPrice, gstPercentage);
+            this.tdsAmount = this.calculateTDS(this.actualPrice);            
+            this.bankSettlementAmount = this.roundToTwo(this.actualPrice -
+                                        (this.gstAmount + this.tcsAmount + this.tdsAmount + 
+                                         parseFloat('0')));    
+            this.finalSettlementAmount = this.finalSettlement(this.bankSettlementAmount ,this.shippingCharges);                
+          }
+        }else{
+          return;
+        }
+  }
+
+
+  onGstChange(data:any){
+    console.log(data);
+    //Change Price
+    this.onPriceChange(0);  
+  }
+
+
+  // GST CALCULATION
+  calculateGST(price: number, gstPercentage:any): number {
+      gstPercentage = parseFloat(gstPercentage);
+      return this.roundToTwo((price * gstPercentage) / 100);
+  }
+
+  // TCS CALCULATION
+  calculateTCS(price: number, gstPercentage: string | number): number {
+    const gstAmount = this.calculateGST(price, gstPercentage);
+    const totalPrice = price + gstAmount;
+    const tcsRate = 1; // TCS rate in percentage
+    return this.roundToTwo((totalPrice * tcsRate) / 100);
+  }
+
+  // TDS CALCULATION
+  calculateTDS(price: number): number {
+    const tdsRate = 1;
+    return this.roundToTwo((price * tdsRate) / 100);
+  }
+
+  //Bank Settlement
+  bankSettlement(actualPrice:any, gstAmount:any, tcsAmount:any,tdsAmount:any){
+  return this.roundToTwo(actualPrice -(gstAmount + tcsAmount + tdsAmount +  parseFloat('0')));
+  }
+
+  finalSettlement(bankSettlementAmount:any,shippingCharges:any )
+  {
+   return this.roundToTwo( parseFloat(bankSettlementAmount) + parseFloat(shippingCharges));
+  }
+  // Utility method to round numbers to two decimal places
+  roundToTwo(value: number): number {
+    return Math.round(value * 100) / 100;
+  }
+  //================CALCULATED GST, TCS TDS AMOUNT ENDING=================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //SUBMIT DATA 
   onSubmit() {
-    console.log('FORM SUBMITTED');
     console.log(this.productForm);
 
     if (this.productForm.invalid) {
@@ -302,12 +433,10 @@ updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
         duration: 2000,
       });
       return;
-    }
-    else{
-    this.productProceedModelShow();
+    } else {
+      this.productProceedModelShow();
     }
   }
-
 
   // PLRODUCT PROCCEED
   proceedWithProduct() {
@@ -331,7 +460,7 @@ updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
         //Close Model
         this.proceedModelClose();
       } else {
-          this.toast.error({
+        this.toast.error({
           detail: 'Something went Wrong Please try again after some time!',
           summary: 'Error',
           position: 'bottomRight',
@@ -340,23 +469,6 @@ updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
       }
     }, 2000);
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   // ============================================================================================
 
@@ -373,110 +485,91 @@ updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
   // MODEL PROPERTIES ENDING
   // ============================================================================================
 
-
-
-
-
-
-
-
-
-
-
-
-
-
   // ========================PREFILL DATA STARTING=======================
 
   prefillForm() {
     const testData = {
-    productSizeRows: [
-                    {
-                        mrp: '150',
-                        price: '140',
-                        inventory: '100',
-                        skuCode: '150',
-                        chestSize: '22',
-                        lengthSize: '20',
-                        shoulderSize: '22',
-                        __msId: 'productSizes',
-                        __msVal: 'LX'
-                    },
-                    {
-                        mrp: '150',
-                        price: '140',
-                        inventory: '100',
-                        skuCode: '888',
-                        chestSize: '28',
-                        lengthSize: '25',
-                        shoulderSize: '24',
-                        __msId: 'productSizes',
-                        __msVal: '10XL'
-                    },
-                    {
-                        mrp: '150',
-                        price: '140',
-                        inventory: '100',
-                        skuCode: '456',
-                        chestSize: '32',
-                        lengthSize: '24',
-                        shoulderSize: '42',
-                        __msId: 'productSizes',
-                        __msVal: 'M'
-                    },
-                    {
-                        mrp: '150',
-                        price: '140',
-                        inventory: '100',
-                        skuCode: '777',
-                        chestSize: '34',
-                        lengthSize: '29',
-                        shoulderSize: '48',
-                        __msId: 'productSizes',
-                        __msVal: '7XL'
-                    },
-                    {
-                        mrp: '150',
-                        price: '140',
-                        inventory: '100',
-                        skuCode: '150',
-                        chestSize: '38',
-                        lengthSize: '24',
-                        shoulderSize: '30',
-                        __msId: 'productSizes',
-                        __msVal: 'Free Size'
-                    }
-                ],
-                productName: 'Hair Bands Women| Girls | Kids | 24 Pieces Multicolor Elastic Hair Bands H',
-                defaultName: 'Mens Clothing',
-                gst: '18',
-                hsnCode: '44045',
-                netWeight: '10',
-                productSizes: [
-                    'M',
-                    '7XL',
-                    '10XL',
-                    'LX',
-                    'Free Size'
-                ],
-                color: 'Crimson',
-                netQuantity: '2',
-                neck: 'V-Neck',
-                occasion: 'Party',
-                pattern: 'Floral',
-                sleeveLength: 'Full Sleeve / Long Sleeve',
-                countryOfOrigin: 'INDIA',
-                manufacturerName: 'Saurav ',
-                manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
-                manufacturerPincode: '120120',
-                brand: 'neha 1111',
-                lining: 'Detachable Lining',
-                closureType: 'Drawstring',
-                stretchType: 'Low Stretch',
-                careInstruction: 'Do Not Bleach',
-                description: 'coding company'
-            };
-
+      productSizeRows: [
+        {
+          mrp: '150',
+          price: '140',
+          inventory: '100',
+          skuCode: '150',
+          chestSize: '22',
+          lengthSize: '20',
+          shoulderSize: '22',
+          __msId: 'productSizes',
+          __msVal: 'LX',
+        },
+        {
+          mrp: '150',
+          price: '140',
+          inventory: '100',
+          skuCode: '888',
+          chestSize: '28',
+          lengthSize: '25',
+          shoulderSize: '24',
+          __msId: 'productSizes',
+          __msVal: '10XL',
+        },
+        {
+          mrp: '150',
+          price: '140',
+          inventory: '100',
+          skuCode: '456',
+          chestSize: '32',
+          lengthSize: '24',
+          shoulderSize: '42',
+          __msId: 'productSizes',
+          __msVal: 'M',
+        },
+        {
+          mrp: '150',
+          price: '140',
+          inventory: '100',
+          skuCode: '777',
+          chestSize: '34',
+          lengthSize: '29',
+          shoulderSize: '48',
+          __msId: 'productSizes',
+          __msVal: '7XL',
+        },
+        {
+          mrp: '150',
+          price: '140',
+          inventory: '100',
+          skuCode: '150',
+          chestSize: '38',
+          lengthSize: '24',
+          shoulderSize: '30',
+          __msId: 'productSizes',
+          __msVal: 'Free Size',
+        },
+      ],
+      productName:
+        'Hair Bands Women| Girls | Kids | 24 Pieces Multicolor Elastic Hair Bands H',
+      defaultName: 'Mens Clothing',
+      gst: '18',
+      hsnCode: '44045',
+      netWeight: '10',
+      productSizes: ['M', '7XL', '10XL', 'LX', 'Free Size'],
+      color: 'Crimson',
+      netQuantity: '2',
+      neck: 'V-Neck',
+      occasion: 'Party',
+      pattern: 'Floral',
+      sleeveLength: 'Full Sleeve / Long Sleeve',
+      countryOfOrigin: 'INDIA',
+      manufacturerName: 'Saurav ',
+      manufacturerAddress: 'H/82414 Mata gadh near shiv mandir',
+      manufacturerPincode: '120120',
+      brand: 'neha 1111',
+      lining: 'Detachable Lining',
+      closureType: 'Drawstring',
+      stretchType: 'Low Stretch',
+      careInstruction: 'Do Not Bleach',
+      description: 'coding company',
+    };
 
     // 1. Patch simple fields
     this.productForm.patchValue(testData);
@@ -515,17 +608,4 @@ updateAllRows(fieldName: string, value: any, sourceRow: FormGroup) {
     this.hasMultiSelectValues = formArray.length > 0;
   }
   // ========================PREFILL DATA ENDING=======================
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

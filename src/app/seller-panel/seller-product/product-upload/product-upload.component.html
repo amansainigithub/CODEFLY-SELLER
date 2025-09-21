@@ -1,9 +1,12 @@
 <div class="mt-5">
     <div class="container">
         <div class="row">
+
+
+            <!-- ================PRODUCT FORM SECTION STARTING============== -->
             <div class="col-md-8">
 
-                <div class="container formbg">
+                <div class="container bg-light formbg">
                     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
 
                         <div class="row">
@@ -26,14 +29,15 @@
                                         </span>
                                     </label>
 
-                                    <input *ngIf="field.type === 'TEXT'" type="text" class="form-control custom-height custom-font-size"
-                                        [id]="field.identifier" [placeholder]="field.placeHolder"
-                                        [formControlName]="field.identifier" [ngClass]="{
+                                    <input *ngIf="field.type === 'TEXT'" type="text"
+                                        class="form-control custom-height custom-font-size" [id]="field.identifier"
+                                        [placeholder]="field.placeHolder" [formControlName]="field.identifier"
+                                        [ngClass]="{
                                         'is-invalid':
                                             productForm.get(field.identifier)?.touched &&
                                             productForm.get(field.identifier)?.invalid
                                         }" />
-                                        
+
                                 </div>
 
                                 <!-- TEXT FIELD ENDING-->
@@ -50,7 +54,8 @@
                                     </span>
                                 </label>
 
-                                <input *ngIf="field.type === 'NUMBER'" type="text" class="form-control custom-height custom-font-size"
+                                <input *ngIf="field.type === 'NUMBER'" type="text"
+                                    class="form-control custom-height custom-font-size"
                                     (keypress)="allowOnlyNumbers($event)" [id]="field.identifier" placeholder="username"
                                     [formControlName]="field.identifier" [ngClass]="{
                                         'is-invalid':
@@ -78,7 +83,8 @@
                                     </span>
                                 </label>
 
-                                <input *ngIf="field.type === 'DROPDOWN'" type="text" class="form-control custom-height custom-font-size"
+                                <input *ngIf="field.type === 'DROPDOWN'" type="text"
+                                    class="form-control custom-height custom-font-size"
                                     placeholder="Search for a street" [id]="field.identifier" [matAutocomplete]="auto"
                                     [formControlName]="field.identifier" (blur)="validateDropdownValue(field)"
                                     (optionSelected)="onDropdownSelect($event, field)" [ngClass]="{
@@ -91,14 +97,14 @@
                                     <mat-option
                                         style="background-color: whitesmoke;color: black;font-size: 13px;margin-top: -10px;margin-bottom: -10px;"
                                         *ngFor="let option of (filteredDropdowns[field.identifier] | async)"
-                                        [value]="option">
+                                        [value]="option" (click)="onGstChange(option)" >
                                         {{ option }}
                                     </mat-option>
                                 </mat-autocomplete>
                                 <!-- SINGLE DROPDOWN ENDING-->
 
 
-                                
+
 
                                 <!-- MULTI SELECT DROPDOWN STARTING-->
                                 <label *ngIf="field.type === 'DROPDOWN-MUL'" [for]="field.identifier"
@@ -126,7 +132,7 @@
                                                     {{ (productForm.get(field.identifier)?.value?.length || 0) === 2 ?
                                                     'other' : 'others' }})
                                                 </span>
-                                            </mat-select-trigger>   
+                                            </mat-select-trigger>
 
                                             <mat-option *ngFor="let drink of field.values" [value]="drink">
                                                 {{ drink }}
@@ -169,31 +175,32 @@
                                 <!-- VALIDATION ERRORS ENDING-->
 
                             </div>
-                            
+
                         </div>
 
-                            <!-- TABLE STARTING -->
-                          <div style="max-height: 800px; overflow-y: auto; overflow-x: auto;">
-                              <table class="table table-hover table-bordered mt-4" *ngIf="productSizeRows.length > 0">
+                        <!-- TABLE STARTING -->
+                        <div style="max-height: 800px; overflow-y: auto; overflow-x: auto;">
+                            <table class="table table-hover table-bordered mt-4" *ngIf="productSizeRows.length > 0">
                                 <thead style="background-color: aliceblue;">
 
                                     <tr class="fs11 text-center" style="color: #2b2d2d;">
                                         <th>Size</th>
                                         <th *ngFor="let columnName of dynamicRows">
-                                        {{ columnName.name }}
-                                        <span *ngIf="columnName.required" class="text-danger">*</span>
+                                            {{ columnName.name }}
+                                            <span *ngIf="columnName.required" class="text-danger">*</span>
 
-                                        <span class="tooltip-icon-uniq mx-1">
-                                            <i class="bi bi-exclamation-circle"></i>
-                                            <span class="tooltip-text-uniq">{{ columnName.exclamationDesc }}</span>
-                                        </span>
+                                            <span class="tooltip-icon-uniq mx-1">
+                                                <i class="bi bi-exclamation-circle"></i>
+                                                <span class="tooltip-text-uniq">{{ columnName.exclamationDesc }}</span>
+                                            </span>
                                         </th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
 
                                 <tbody formArrayName="productSizeRows">
-                                    <tr *ngFor="let tableRow of productSizeRows.controls; let i = index" [formGroupName]="i">
+                                    <tr *ngFor="let tableRow of productSizeRows.controls; let i = index"
+                                        [formGroupName]="i">
 
                                         <td class="fs12">{{ tableRow.get('__msVal')?.value }}</td>
 
@@ -204,9 +211,9 @@
                                             <div *ngIf="col.type === 'TEXT'">
                                                 <input style="width: 150px;" type="text"
                                                     [formControlName]="col.identifier" [id]="col.identifier"
-                                                    class="form-control custom-height custom-font-size" [placeholder]="col.placeHolder"
-                                                    [minlength]="col.minLength" [maxlength]="col.maxLength"
-                                                    aria-label="file example" [ngClass]="{
+                                                    class="form-control custom-height custom-font-size"
+                                                    [placeholder]="col.placeHolder" [minlength]="col.minLength"
+                                                    [maxlength]="col.maxLength" aria-label="file example" [ngClass]="{
                                                     'is-invalid':
                                                         tableRow.get(col.identifier)?.touched &&
                                                         tableRow.get(col.identifier)?.invalid
@@ -218,28 +225,30 @@
                                             <div *ngIf="col.type === 'NUMBER'">
                                                 <input style="width: 150px;" type="text"
                                                     [formControlName]="col.identifier" [id]="col.identifier"
-                                                    (keypress)="allowOnlyNumbers($event)" (input)="checkRowPrice(tableRow)"
-                                                    class="form-control custom-height custom-font-size" [placeholder]="col.placeHolder"
-                                                    aria-label="file example" [ngClass]="{
+                                                    (keypress)="allowOnlyNumbers($event)"
+                                                    (input)="checkRowPrice(tableRow)"
+                                                    (input)="col.identifier === 'price' ? onPriceChange(i) : null"
+                                                    class="form-control custom-height custom-font-size"
+                                                    [placeholder]="col.placeHolder" aria-label="file example" [ngClass]="{
                                                     'is-invalid':
                                                         tableRow.get(col.identifier)?.touched &&
                                                         tableRow.get(col.identifier)?.invalid
                                                     }" />
 
-                                                    <!-- 👇 NEW ERROR MSG -->
-                                                    <div
-                                                        *ngIf="tableRow.get(col.identifier)?.errors?.['greater']"
-                                                        class="text-danger fs11" >
-                                                        Selling Price cannot be greater than MRP.
-                                                    </div>
+                                                <!-- 👇 NEW ERROR MSG -->
+                                                <div *ngIf="tableRow.get(col.identifier)?.errors?.['greater']"
+                                                    class="text-danger fs11">
+                                                    Selling Price cannot be greater than MRP.
+                                                </div>
                                             </div>
                                             <!-- NUMBER COLUMN ENDING-->
 
                                             <!-- DROPDOWN COLUMN STARTING-->
                                             <div *ngIf="col.type === 'DROPDOWN'">
-                                                <input type="text" class="form-control custom-height custom-font-size" style="width: 150px;"
-                                                    placeholder="Search for a street" [id]="col.identifier"
-                                                    [matAutocomplete]="autoTable" [formControlName]="col.identifier"
+                                                <input type="text" class="form-control custom-height custom-font-size"
+                                                    style="width: 150px;" placeholder="Search for a street"
+                                                    [id]="col.identifier" [matAutocomplete]="autoTable"
+                                                    [formControlName]="col.identifier"
                                                     (blur)="validateDropdownValue(col)" [placeholder]="col.placeHolder"
                                                     (optionSelected)="onDropdownSelect($event, col)" [ngClass]="{
                                                 'is-invalid':
@@ -276,7 +285,7 @@
                                                 </small>
                                                 <!-- 👇 New min/max number validation -->
                                                 <small *ngIf="tableRow.get(col.identifier)?.errors?.['min']">
-                                                    Minimum value allowed is {{ col.min  }}.
+                                                    Minimum value allowed is {{ col.min }}.
                                                 </small>
                                                 <small *ngIf="tableRow.get(col.identifier)?.errors?.['max']">
                                                     Maximum value allowed is {{ col.max }}.
@@ -285,9 +294,9 @@
                                             <!-- ERROR MESSAGES ENDING -->
                                         </td>
 
-                                       
+
                                         <td>
-                                             <!-- REMOVE BUTTON STARTING-->
+                                            <!-- REMOVE BUTTON STARTING-->
                                             <button mat-raised-button color="warn" type="button"
                                                 (click)="removeTableRow(i)">
                                                 Remove
@@ -297,15 +306,15 @@
                                     </tr>
                                 </tbody>
                             </table>
-                          </div>
-                            <!-- TABLE ENDING -->
+                        </div>
+                        <!-- TABLE ENDING -->
 
 
 
                         <!-- PRODUCT DETAILS STARTING     -->
                         <div class="row mt-3">
                             <p class="psi with-line">Product Details</p>
-                               <div class="col-md-6 mb-2" *ngFor="let field of productDetails">
+                            <div class="col-md-6 mb-2" *ngFor="let field of productDetails">
 
                                 <!-- TEXT FIELD STARTING-->
                                 <div *ngIf="field.type === 'TEXT'">
@@ -318,9 +327,10 @@
                                         </span>
                                     </label>
 
-                                    <input *ngIf="field.type === 'TEXT'" type="text" class="form-control custom-height custom-font-size"
-                                        [id]="field.identifier" [placeholder]="field.placeHolder"
-                                        [formControlName]="field.identifier" [ngClass]="{
+                                    <input *ngIf="field.type === 'TEXT'" type="text"
+                                        class="form-control custom-height custom-font-size" [id]="field.identifier"
+                                        [placeholder]="field.placeHolder" [formControlName]="field.identifier"
+                                        [ngClass]="{
                                         'is-invalid':
                                             productForm.get(field.identifier)?.touched &&
                                             productForm.get(field.identifier)?.invalid
@@ -333,17 +343,18 @@
                                 <!-- NUMBER FIELD STARTING-->
                                 <div *ngIf="field.type === 'NUMBER'">
                                     <label *ngIf="field.type === 'NUMBER'" [for]="field.identifier"
-                                    class="tooltip-wrap-uniq">
-                                    {{ field.name }}
-                                    <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
-                                        <i class="bi bi-exclamation-circle"></i>
-                                        <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
-                                    </span>
-                                </label>
+                                        class="tooltip-wrap-uniq">
+                                        {{ field.name }}
+                                        <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                                        </span>
+                                    </label>
 
-                                <input *ngIf="field.type === 'NUMBER'" type="text" class="form-control custom-height custom-font-size"
-                                    (keypress)="allowOnlyNumbers($event)" [id]="field.identifier" placeholder="username"
-                                    [formControlName]="field.identifier" [ngClass]="{
+                                    <input *ngIf="field.type === 'NUMBER'" type="text"
+                                        class="form-control custom-height custom-font-size"
+                                        (keypress)="allowOnlyNumbers($event)" [id]="field.identifier"
+                                        placeholder="username" [formControlName]="field.identifier" [ngClass]="{
                                         'is-invalid':
                                             productForm.get(field.identifier)?.touched &&
                                             productForm.get(field.identifier)?.invalid
@@ -352,25 +363,27 @@
                                 <!-- NUMBER FIELD ENDING-->
 
                                 <!-- SINGLE DROPDOWN STARTING-->
-                               <div *ngIf="field.type === 'DROPDOWN'" >
-                                 <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier"
-                                    class="tooltip-wrap-uniq">
-                                    {{ field.name }}
-                                    <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
-                                        <i class="bi bi-exclamation-circle"></i>
-                                        <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
-                                    </span>
-                                </label>
+                                <div *ngIf="field.type === 'DROPDOWN'">
+                                    <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier"
+                                        class="tooltip-wrap-uniq">
+                                        {{ field.name }}
+                                        <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                                        </span>
+                                    </label>
 
-                                <input *ngIf="field.type === 'DROPDOWN'" type="text" class="form-control custom-height custom-font-size"
-                                    [placeholder]="field.placeHolder" [id]="field.identifier" [matAutocomplete]="auto"
-                                    [formControlName]="field.identifier" (blur)="validateDropdownValue(field)"
-                                    (optionSelected)="onDropdownSelect($event, field)" [ngClass]="{
+                                    <input *ngIf="field.type === 'DROPDOWN'" type="text"
+                                        class="form-control custom-height custom-font-size"
+                                        [placeholder]="field.placeHolder" [id]="field.identifier"
+                                        [matAutocomplete]="auto" [formControlName]="field.identifier"
+                                        (blur)="validateDropdownValue(field)"
+                                        (optionSelected)="onDropdownSelect($event, field)" [ngClass]="{
                                     'is-invalid':
                                     productForm.get(field.identifier)?.touched &&
                                     productForm.get(field.identifier)?.invalid
                                 }">
-                               </div>
+                                </div>
 
                                 <mat-autocomplete #auto="matAutocomplete">
                                     <mat-option
@@ -416,14 +429,14 @@
 
                             </div>
                         </div>
-                         <!-- PRODUCT DETAILS ENDING     -->
+                        <!-- PRODUCT DETAILS ENDING     -->
 
 
 
-                         <!-- ADDITIOANL DETAILS STARTING     -->
+                        <!-- ADDITIOANL DETAILS STARTING     -->
                         <div class="row mt-2">
                             <p class="psi with-line">Additional Details</p>
-                               <div class="col-md-6 mb-2" *ngFor="let field of additionalDetails">
+                            <div class="col-md-6 mb-2" *ngFor="let field of additionalDetails">
 
                                 <!-- TEXT FIELD STARTING-->
                                 <div *ngIf="field.type === 'TEXT'">
@@ -436,9 +449,10 @@
                                         </span>
                                     </label>
 
-                                    <input *ngIf="field.type === 'TEXT'" type="text" class="form-control custom-height custom-font-size"
-                                        [id]="field.identifier" [placeholder]="field.placeHolder"
-                                        [formControlName]="field.identifier" [ngClass]="{
+                                    <input *ngIf="field.type === 'TEXT'" type="text"
+                                        class="form-control custom-height custom-font-size" [id]="field.identifier"
+                                        [placeholder]="field.placeHolder" [formControlName]="field.identifier"
+                                        [ngClass]="{
                                         'is-invalid':
                                             productForm.get(field.identifier)?.touched &&
                                             productForm.get(field.identifier)?.invalid
@@ -451,17 +465,18 @@
                                 <!-- NUMBER FIELD STARTING-->
                                 <div *ngIf="field.type === 'NUMBER'">
                                     <label *ngIf="field.type === 'NUMBER'" [for]="field.identifier"
-                                    class="tooltip-wrap-uniq">
-                                    {{ field.name }}
-                                    <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
-                                        <i class="bi bi-exclamation-circle"></i>
-                                        <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
-                                    </span>
-                                </label>
+                                        class="tooltip-wrap-uniq">
+                                        {{ field.name }}
+                                        <span *ngIf="field.type === 'NUMBER'" class="tooltip-icon-uniq ms-1">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                                        </span>
+                                    </label>
 
-                                <input *ngIf="field.type === 'NUMBER'" type="text" class="form-control custom-height custom-font-size"
-                                    (keypress)="allowOnlyNumbers($event)" [id]="field.identifier" placeholder="username"
-                                    [formControlName]="field.identifier" [ngClass]="{
+                                    <input *ngIf="field.type === 'NUMBER'" type="text"
+                                        class="form-control custom-height custom-font-size"
+                                        (keypress)="allowOnlyNumbers($event)" [id]="field.identifier"
+                                        placeholder="username" [formControlName]="field.identifier" [ngClass]="{
                                         'is-invalid':
                                             productForm.get(field.identifier)?.touched &&
                                             productForm.get(field.identifier)?.invalid
@@ -470,25 +485,27 @@
                                 <!-- NUMBER FIELD ENDING-->
 
                                 <!-- SINGLE DROPDOWN STARTING-->
-                               <div *ngIf="field.type === 'DROPDOWN'" >
-                                 <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier"
-                                    class="tooltip-wrap-uniq">
-                                    {{ field.name }}
-                                    <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
-                                        <i class="bi bi-exclamation-circle"></i>
-                                        <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
-                                    </span>
-                                </label>
+                                <div *ngIf="field.type === 'DROPDOWN'">
+                                    <label *ngIf="field.type === 'DROPDOWN'" [for]="field.identifier"
+                                        class="tooltip-wrap-uniq">
+                                        {{ field.name }}
+                                        <span *ngIf="field.type === 'DROPDOWN'" class="tooltip-icon-uniq ms-1">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            <span class="tooltip-text-uniq">{{ field.exclamationDesc }}</span>
+                                        </span>
+                                    </label>
 
-                                <input *ngIf="field.type === 'DROPDOWN'" type="text" class="form-control custom-height custom-font-size"
-                                    [placeholder]="field.placeHolder" [id]="field.identifier" [matAutocomplete]="auto"
-                                    [formControlName]="field.identifier" (blur)="validateDropdownValue(field)"
-                                    (optionSelected)="onDropdownSelect($event, field)" [ngClass]="{
+                                    <input *ngIf="field.type === 'DROPDOWN'" type="text"
+                                        class="form-control custom-height custom-font-size"
+                                        [placeholder]="field.placeHolder" [id]="field.identifier"
+                                        [matAutocomplete]="auto" [formControlName]="field.identifier"
+                                        (blur)="validateDropdownValue(field)"
+                                        (optionSelected)="onDropdownSelect($event, field)" [ngClass]="{
                                     'is-invalid':
                                     productForm.get(field.identifier)?.touched &&
                                     productForm.get(field.identifier)?.invalid
                                 }">
-                               </div>
+                                </div>
 
                                 <mat-autocomplete #auto="matAutocomplete">
                                     <mat-option
@@ -534,7 +551,7 @@
 
                             </div>
                         </div>
-                         <!-- ADDITIOANL DETAILS ENDING     -->
+                        <!-- ADDITIOANL DETAILS ENDING     -->
 
 
 
@@ -549,13 +566,110 @@
                 </div>
 
             </div>
+            <!-- ================PRODUCT FORM SECTION STARTING============== -->
 
-            <div class="col-md-4 bg-light p-2" style="border-radius: 12px;max-height: 500px;">
-                <h4>Hey Just Testing</h4>
+
+
+
+            <!-- ==============SETTLEMENT AMOUNT SECTION STARTING=================-->
+            <div class="col-md-4 bg-light p-1" style="border-radius: 12px;max-height: 300px;">
+            
+                <!-- Bank Settlement Breakdown -->
+                <div class=" mb-2 mt-1">
+                    <div class="card bg-light border-0">
+                        <div class="card-body fs11">
+                            <p class="card-title fs11 fwBolder">Settlement Amount</p>
+                            <hr>
+                            <div class="d-flex justify-content-between">
+                                <span>Price
+                                    <i class="bi bi-exclamation-circle" #tooltip="matTooltip"
+                                        matTooltip="details option in admin panel where admin can see use">
+                                    </i>
+                                </span>
+                                <span>&#8377;{{actualPrice}}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>Commission Fee (0%)
+                                    <i class="bi bi-exclamation-circle" #tooltip="matTooltip"
+                                        matTooltip="admin can add subadmin with to that role.">
+                                    </i>
+                                </span>
+                                <span>&#8377;0</span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>Tax (GST)
+                                    <i class="bi bi-exclamation-circle" #tooltip="matTooltip"
+                                        matTooltip="admin can add subadmin with a role and admin can add role">
+                                    </i>
+                                </span>
+                                <span>&#8377;{{gstAmount}} </span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>Tax (TCS)
+                                    <i class="bi bi-exclamation-circle" #tooltip="matTooltip"
+                                        matTooltip="admin can add subadmin with a role and admin can add role">
+                                    </i>
+                                </span>
+                                <span>&#8377;{{tcsAmount}} </span>
+                            </div>
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>Tax (TDS)
+                                    <i class="bi bi-exclamation-circle" #tooltip="matTooltip"
+                                        matTooltip="admin can add subadmin with a role and admin can add role">
+                                    </i>
+                                </span>
+                                <span>&#8377;{{tdsAmount}}</span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between ">
+                                <span class="fwBolder">Bank Transfer Amount
+                                    <i class="bi bi-exclamation-circle" #tooltip="matTooltip"
+                                        matTooltip="Category: admin can add tax on parent categories as some many">
+                                    </i>
+                                </span>
+                                <span>&#8377;{{bankSettlementAmount}}</span>
+                            </div>
+            
+                            <div class="d-flex justify-content-between mt-1">
+                                <span>Shipping Charges (separatly)
+                                    <i class="bi bi-exclamation-circle" #tooltip="matTooltip"
+                                        matTooltip="Category: admin can add tax on parent categories as some many">
+                                    </i>
+                                </span>
+                                <span>&#8377;70</span>
+                            </div>
+            
+                            <hr>
+                            <div class="d-flex justify-content-between fw-bold">
+                                <span>Total</span>
+                                <div *ngIf="finalSettlementAmount !== null || finalSettlementAmount !== undefined">
+                                    <span>&#8377; {{finalSettlementAmount}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-1 bg-light p-3" style="border-radius: 12px;">
+                    <p class="p-1 small fs10" style="color: #9cabad;">
+                        GST (Goods and Services Tax) goods aur services par lagta hai.
+                        TCS (Tax Collected at Source) seller buyer se tax collect karta hai. TDS (Tax Deducted at Source)
+                        payer payment ke samay tax deduct karke government ko jama karta hai. Ye teeno
+                        taxes business settlement aur pricing me important role play karte hain.
+                    </p>
+                </div>
+
             </div>
+            <!-- ==============SETTLEMENT AMOUNT SECTION ENDING=================-->
+
+
+
+
+
+
         </div>
     </div>
-</div>
 
 
 
@@ -566,35 +680,35 @@
 
 
 
-<!-- =====================MODEL OPEN========================= -->
+    <!-- =====================MODEL OPEN========================= -->
     <!-- Modal Open-->
-    <div class="modal fade"  data-bs-backdrop="static" id="exampleModal" tabindex="-1"
-         aria-labelledby="exampleModalLabel" aria-hidden="true" #proceedModel>
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-          <div class="modal-body text-center ">
-            <div>
-              <i class="bi bi-rocket-takeoff fs20" style="color: #45e832;"></i>
+    <div class="modal fade" data-bs-backdrop="static" id="exampleModal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" #proceedModel>
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center ">
+                    <div>
+                        <i class="bi bi-rocket-takeoff fs20" style="color: #45e832;"></i>
+                    </div>
+                    <span class="fs11">
+                        <p style="line-height: 1.1;">
+                            Are you sure you want to continue? Once you proceed,
+                            you won’t be able to go back and any unsaved data will be lost.
+                        </p>
+                    </span>
+
+                </div>
+                <div class="mb-3 text-center">
+                    <button mat-raised-button class="me-2" data-bs-dismiss="modal">Close</button>
+                    <button mat-raised-button color="primary" (click)="proceedWithProduct()">Continue</button>
+                </div>
+
+                <div *ngIf="progressBar">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+
             </div>
-            <span class="fs11"  >
-                <p style="line-height: 1.1;">
-                    Are you sure you want to continue? Once you proceed, 
-                    you won’t be able to go back and any unsaved data will be lost.
-                </p>
-            </span>
-
-          </div>
-          <div class="mb-3 text-center">
-            <button mat-raised-button class="me-2" data-bs-dismiss="modal">Close</button>
-            <button mat-raised-button color="primary" (click)="proceedWithProduct()" >Continue</button>
-          </div>
-
-          <div *ngIf="progressBar">
-            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-          </div>
-    
         </div>
-      </div>
     </div>
-     <!-- Modal Close-->
+    <!-- Modal Close-->
     <!-- =====================MODEL CLOSING======================== -->

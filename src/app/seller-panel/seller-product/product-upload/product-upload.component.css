@@ -30,8 +30,8 @@
   visibility: hidden;
   width: max-content;
   max-width: 220px;
-  background-color: #212529;
-  color: #fff;
+  background-color: #282b2f;
+  color: #dcd4d4;
   text-align: left;
   padding: 6px 10px;
   border-radius: 6px;
@@ -80,7 +80,6 @@ input.is-invalid {
 /* FORM BG */
 
 .formbg {
-  background-color: #f0f4f6;
   padding-left: 25px;   /* left padding */
   padding-right: 25px;  /* right padding */
   padding-top: 20px;
@@ -110,3 +109,6 @@ input.is-invalid {
     width: 100%;
     font-size: 12px; /* input aur dropdown text ke liye */
 }
+
+
+
