@@ -578,7 +578,7 @@
                 <div class=" mb-2 mt-1">
                     <div class="card bg-light border-0">
                         <div class="card-body fs11">
-                            <p class="card-title fs11 fwBolder">Settlement Amount</p>
+                            <p class="card-title fs11 settle-amt">Settlement Amount</p>
                             <hr>
                             <div class="d-flex justify-content-between">
                                 <span>Price
@@ -622,7 +622,7 @@
                             </div>
                             <hr>
                             <div class="d-flex justify-content-between ">
-                                <span class="fwBolder">Bank Transfer Amount
+                                <span>Bank Transfer Amount
                                     <i class="bi bi-exclamation-circle" #tooltip="matTooltip"
                                         matTooltip="Category: admin can add tax on parent categories as some many">
                                     </i>
@@ -641,7 +641,7 @@
             
                             <hr>
                             <div class="d-flex justify-content-between fw-bold">
-                                <span>Total</span>
+                                <span class="settle-amt">Total</span>
                                 <div *ngIf="finalSettlementAmount !== null || finalSettlementAmount !== undefined">
                                     <span>&#8377; {{finalSettlementAmount}}
                                     </span>

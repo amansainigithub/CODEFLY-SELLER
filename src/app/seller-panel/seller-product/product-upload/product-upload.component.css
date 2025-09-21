@@ -15,7 +15,7 @@
 .tooltip-wrap-uniq {
   position: relative;
   display: inline-block;
-  font-size: 13px;
+  font-size: 11.5px;
 }
 
 /* Icon container */
@@ -112,3 +112,9 @@ input.is-invalid {
 
 
 
+
+
+.settle-amt{
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 400;
+}

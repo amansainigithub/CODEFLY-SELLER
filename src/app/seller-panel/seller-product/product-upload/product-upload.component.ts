@@ -57,9 +57,9 @@ export class ProductUploadComponent {
     //Get Engine-X Data--- Form Builder By Engine X Data Dynamically----
     this.getEngineX();
 
-    // setTimeout(() => {
-    //   this.prefillForm();
-    // }, 2000);
+    setTimeout(() => {
+      this.prefillForm();
+    }, 2000);
   }
 
   getEngineX() {
@@ -298,34 +298,6 @@ export class ProductUploadComponent {
   bankSettlementAmount :any
   shippingCharges:any=70.00;
   finalSettlementAmount:any;
-
-  // onPriceChange(rowIndex: number) {
-  //    const row = this.productForm.value.productSizeRows.at(rowIndex);
-  //    console.log("row :: " ,row);
-     
-  //   const rowGroup = this.productSizeRows.at(rowIndex);
-
-  //   const priceValue = Number(rowGroup.get('price')?.value);
-  //   const mrpValue = Number(rowGroup.get('mrp')?.value);
-
-  //   if (mrpValue >= priceValue ) {
-  //     this.actualPrice = priceValue;
-
-  //     const gstPercentage = this.productForm.value.gst || 0;
-  //     this.gstAmount = this.calculateGST(priceValue, gstPercentage);
-  //     this.tcsAmount = this.calculateTCS(priceValue, gstPercentage);
-  //     this.tdsAmount = this.calculateTDS(priceValue);
-
-  //     this.bankSettlementAmount = this.bankSettlement
-  //                                 (this.actualPrice, this.gstAmount,this.tdsAmount,this.tcsAmount);
-
-  //     this.finalSettlementAmount = this.finalSettlement(this.bankSettlementAmount ,this.shippingCharges);
-  //   } else if (priceValue > mrpValue) {
-  //     // console.log("Selling Price can't be greater than MRP");
-  //     return
-  //   }
-  // }
-
 
   onPriceChange(rowIndex: number): void {
           if (rowIndex === 0) {
