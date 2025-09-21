@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { SellerGuardService } from './sellerGuard/seller-guard.service';
@@ -26,16 +26,18 @@ const routes: Routes = [
                     { path: 'categorySelection/single-category', component: CategorySelectionComponent },
                     { path: 'productUpload', component: ProductUploadComponent },
                     { path: 'productFiles', component: ProductFilesComponent },
-                    
-                    
-                  
       ],
 }
-
 ];
 
+const routerOptions: ExtraOptions = {
+  scrollPositionRestoration: 'top', // har route change par top scroll
+  anchorScrolling: 'enabled',       // agar #id use ho to scroll kare
+  scrollOffset: [0, 0]              // optional, top se offset
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

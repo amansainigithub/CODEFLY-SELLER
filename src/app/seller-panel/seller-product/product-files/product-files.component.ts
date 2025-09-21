@@ -44,19 +44,19 @@ export class ProductFilesComponent {
 
     if (this.validateFormAndCategory()) {
       console.log('✅ Valid data hai');
-      console.log(this.productData);
-      console.log(this.finalCategory);
     } else {
       console.log('Invalid data (null/blank/empty)');
       this.router.navigateByUrl('/seller/dashboard/home');
     }
   }
 
-  // ngOnInit(): void {
-  //   setTimeout(() => {
-  //     this.prefillFiles();
-  //   }, 2000);
-  // }
+
+
+  ngOnInit(): void {
+    // setTimeout(() => {
+    //   this.prefillFiles();
+    // }, 2000);
+  }
 
   //Check Category and Product Form Data is Valid or Not
   validateFormAndCategory(): boolean {
