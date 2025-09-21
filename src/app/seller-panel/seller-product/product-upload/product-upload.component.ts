@@ -47,7 +47,7 @@ export class ProductUploadComponent {
       this.categorySelection === null ||
       this.categorySelection === ''
     ) {
-      //this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard/home');
     }
 
     this.productForm = this.formBuilder.group({

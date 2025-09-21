@@ -135,10 +135,13 @@ export class CategorySelectionComponent {
   // Variant selection → Final
   setActiveVariantCategory(variant: any) {
     this.variantCategory = variant;
+    
     this.finalCategoryBoxShow();
 
     //SAVE AND CONTINUE BUTTON
     this.scButton =false;
+
+    console.log(this.variantCategory);
   }
 
   // Final box show/hide

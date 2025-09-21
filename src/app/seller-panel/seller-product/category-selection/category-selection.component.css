@@ -62,5 +62,11 @@
 
 
 
+.selectedCategory-file{
+  object-fit: cover; 
+  border-radius: 8px;
+  height: 250px;
+}
+
 
 

@@ -36,11 +36,7 @@ export class ProductFilesComponent {
       this.router.navigateByUrl('/seller/dashboard/home');
     }
 
-    if (
-      state &&
-      state.finalCategory !== undefined &&
-      state.finalCategory !== null
-    ) {
+    if (state && state.finalCategory !== undefined && state.finalCategory !== null) {
       this.finalCategory = state.finalCategory;
     } else {
       this.router.navigateByUrl('/seller/dashboard/home');

@@ -55,22 +55,41 @@
 
   <!-- Final Selection -->
   <div *ngIf="finalCategory">
-    <p class="fs11"  style="word-wrap: break-word;overflow-wrap: break-word;">
-      ✅ Final: {{ rootCategory }} 
-      <i class="bi bi-chevron-right"></i> 
-      {{ subCategory?.categoryName }}
-       <i class="bi bi-chevron-right"></i>
-      {{ typeCategory?.categoryName }} 
-      <i class="bi bi-chevron-right"></i> 
-      {{ variantCategory?.categoryName }}
-    </p>
-
-     <!-- Button at bottom right -->
-    <button mat-raised-button color="primary" class="scButton" [disabled]="scButton" (click)="openModal()">
-     Save & Continue
-    </button>
-
+  
+    <div class="container text-center mt-4">
+      <div class="card border-0" style="width: 18rem;">
+  
+        <div>
+          <p class="fs11">
+            Final: {{ rootCategory }}
+            <i class="bi bi-chevron-right"></i>
+            {{ subCategory?.categoryName }}
+            <i class="bi bi-chevron-right"></i>
+            {{ typeCategory?.categoryName }}
+            <i class="bi bi-chevron-right"></i>
+            {{ variantCategory?.categoryName }}
+          </p>
+        </div>
+  
+        <div>
+          <img [src]="variantCategory.categoryFile" class="card-img-top selectedCategory-file"
+            [alt]="variantCategory.categoryName">
+        </div>
+  
+        <div class="card-body">
+          <p class="card-text">{{variantCategory.categoryName}}</p>
+        </div>
+  
+        <div class="text-center mb-4">
+          <button mat-raised-button color="primary" class="scButton" [disabled]="scButton" (click)="openModal()">
+            Save & Continue
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
+
+
 </div>
 
 
