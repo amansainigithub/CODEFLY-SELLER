@@ -10,6 +10,7 @@ import { SellerHomeComponent } from './seller-panel/seller-home/seller-home.comp
 import { ProductUploadComponent } from './seller-panel/seller-product/product-upload/product-upload.component';
 import { CategorySelectionComponent } from './seller-panel/seller-product/category-selection/category-selection.component';
 import { ProductFilesComponent } from './seller-panel/seller-product/product-files/product-files.component';
+import { ProductOverviewComponent } from './seller-panel/product-overview/product-overview.component';
 
 const routes: Routes = [
 { path: 'register', component: RegisterComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
                     { path: 'categorySelection/single-category', component: CategorySelectionComponent },
                     { path: 'productUpload', component: ProductUploadComponent },
                     { path: 'productFiles', component: ProductFilesComponent },
+                    { path: 'product-Overview', component: ProductOverviewComponent },
       ],
 }
 ];
