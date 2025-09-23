@@ -1,26 +1,71 @@
-<p>product-overview works!</p>
-
-
-<div class="container bg-white p-4" style="border-radius: 12px;">
+<div class="container bg-white p-4 mt-4" style="border-radius: 12px;">
 
   <ul class="nav nav-tabs fs11" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab"
-        aria-controls="home" aria-selected="true">Home</button>
+      <button class="nav-link active" id="All-tab" data-bs-toggle="tab" data-bs-target="#All" type="button" role="tab"
+        aria-controls="All" aria-selected="true">All</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab"
-        aria-controls="profile" aria-selected="false">Profile</button>
+      <button class="nav-link" id="underReview-tab" data-bs-toggle="tab" data-bs-target="#underReview" type="button"
+        role="tab" aria-controls="underReview" aria-selected="false">Under Review</button>
     </li>
     <li class="nav-item" role="presentation">
-      <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab"
-        aria-controls="contact" aria-selected="false">Contact</button>
+      <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button"
+        role="tab" aria-controls="approved" aria-selected="false">Product Approved</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="error-tab" data-bs-toggle="tab" data-bs-target="#error" type="button" role="tab"
+        aria-controls="error" aria-selected="false">Product Error</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft" type="button" role="tab"
+        aria-controls="draft" aria-selected="false">Product Draft</button>
     </li>
   </ul>
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">First Tab</div>
-    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Second Tab</div>
-    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Third Tab</div>
+    <div class="tab-pane fade show active" id="All" role="tabpanel" aria-labelledby="All-tab">First Tab</div>
+
+
+
+
+
+    <div class="tab-pane fade" id="underReview" role="tabpanel" aria-labelledby="underReview-tab">
+
+      <div class="container p-4 bg-white mt-2 border-radius20">
+
+          <table class=" table table-sm table-hover table-bordered fs11">
+            <thead>
+
+              <tr style="background-color: #e7e8e8;">
+                <th scope="col">id</th>
+                <th scope="col">product Name</th>
+                <th scope="col">product Key</th>
+                <th scope="col">product Status</th>
+              </tr>
+
+            </thead>
+            <tbody>
+              <tr scope="row" *ngFor="let data of underReviewData">
+                <td>{{ data.id }}</td>
+                <td>{{ data.productName }}</td>
+                <td>{{ data.productKey }}</td>
+                <td>{{ data.productStatus }}</td>
+              </tr>
+            </tbody>
+          </table>
+        <mat-paginator [pageSizeOptions]="[2, 4, 5, 8]" [pageSize]="2" [length]="totalElements"
+          (page)="nextPage($event)" showFirstLastButtons>
+        </mat-paginator>
+
+      </div>
+
+    </div>
+
+
+
+    <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">Third Tab</div>
+    <div class="tab-pane fade" id="error" role="tabpanel" aria-labelledby="error-tab">Fourth Tab</div>
+    <div class="tab-pane fade" id="draft" role="tabpanel" aria-labelledby="draft-tab">Fifth Tab</div>
   </div>
 
 </div>
