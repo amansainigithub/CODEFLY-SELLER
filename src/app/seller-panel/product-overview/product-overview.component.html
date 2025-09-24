@@ -1,65 +1,105 @@
 <div class="container bg-white p-4 mt-4" style="border-radius: 12px;">
 
-  <ul class="nav nav-tabs fs11" id="myTab" role="tablist">
-    <li class="nav-item" role="presentation">
-      <button class="nav-link active" id="All-tab" data-bs-toggle="tab" data-bs-target="#All" type="button" role="tab"
-        aria-controls="All" aria-selected="true">All</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="underReview-tab" data-bs-toggle="tab" data-bs-target="#underReview" type="button"
-        role="tab" aria-controls="underReview" aria-selected="false">Under Review</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button"
-        role="tab" aria-controls="approved" aria-selected="false">Product Approved</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="error-tab" data-bs-toggle="tab" data-bs-target="#error" type="button" role="tab"
-        aria-controls="error" aria-selected="false">Product Error</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft" type="button" role="tab"
-        aria-controls="draft" aria-selected="false">Product Draft</button>
-    </li>
-  </ul>
+
+<!-- TABS STARTING -->
+  <div>
+    <ul class="nav nav-tabs fs11" id="myTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="All-tab" data-bs-toggle="tab" data-bs-target="#All" type="button" role="tab"
+          aria-controls="All" aria-selected="true">All</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="underReview-tab" data-bs-toggle="tab" data-bs-target="#underReview" type="button"
+          role="tab" aria-controls="underReview" aria-selected="false" (click)="getProductUnderReview()">Under
+          Review</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button"
+          role="tab" aria-controls="approved" aria-selected="false">Product Approved</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="error-tab" data-bs-toggle="tab" data-bs-target="#error" type="button" role="tab"
+          aria-controls="error" aria-selected="false">Product Error</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft" type="button" role="tab"
+          aria-controls="draft" aria-selected="false">Product Draft</button>
+      </li>
+    </ul>
+  </div>
+<!-- TABS ENDING -->
+
+
+
+
+
+<!-- TAB DEFINATION STARTING -->
   <div class="tab-content" id="myTabContent">
-    <div class="tab-pane fade show active" id="All" role="tabpanel" aria-labelledby="All-tab">First Tab</div>
+    <div class="tab-pane fade show active" id="All" role="tabpanel" aria-labelledby="All-tab">
+      First Tab
+    </div>
 
 
 
 
 
+    <!-- PRODUCT UNDER REVIEW START-->
     <div class="tab-pane fade" id="underReview" role="tabpanel" aria-labelledby="underReview-tab">
-
       <div class="container p-4 bg-white mt-2 border-radius20">
 
+        <div *ngIf="isLoaderValid">
+          <ngx-skeleton-loader count="10" appearance="line" />
+        </div>
+
+        <div *ngIf="!isLoaderValid">
           <table class=" table table-sm table-hover table-bordered fs11">
             <thead>
 
-              <tr style="background-color: #e7e8e8;">
+              <tr class="text-center" style="background-color: #e7e8e8;">
                 <th scope="col">id</th>
-                <th scope="col">product Name</th>
-                <th scope="col">product Key</th>
-                <th scope="col">product Status</th>
+                <th scope="col">Product</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Product Key</th>
+                <th scope="col">Date Time</th>
+                <th scope="col">Product Status</th>
+                <th scope="col">Variant</th>
               </tr>
 
             </thead>
             <tbody>
-              <tr scope="row" *ngFor="let data of underReviewData">
-                <td>{{ data.id }}</td>
+              <tr scope="row" *ngFor="let data of underReviewData; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <img [src]="data.productMainFile" height="65" width="65" class="p-1" style="border-radius: 6px;object-fit: cover;" alt="">
+                </td>
                 <td>{{ data.productName }}</td>
                 <td>{{ data.productKey }}</td>
-                <td>{{ data.productStatus }}</td>
+                <td>{{ data.productDate }} | {{ data.productTime }}</td>
+                <td>
+                  <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 4px;" >
+                    {{ data.productStatus }}
+                    <i class="bi bi-dot blink-dot"></i>
+                  </div>
+                </td>
+                <td>
+              <button mat-raised-button color="primary" class="small-btn" >
+                <span class="fs11">Add Variant</span>
+              </button>
+
+
+                </td>
               </tr>
             </tbody>
           </table>
-        <mat-paginator [pageSizeOptions]="[2, 4, 5, 8]" [pageSize]="2" [length]="totalElements"
-          (page)="nextPage($event)" showFirstLastButtons>
-        </mat-paginator>
+          <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" [pageSize]="10" [length]="totalElements"
+            (page)="nextPage($event)" showFirstLastButtons>
+          </mat-paginator>
+        </div>
 
       </div>
-
     </div>
+    <!-- PRODUCT UNDER REVIEW ENDING -->
+
 
 
 
@@ -67,5 +107,7 @@
     <div class="tab-pane fade" id="error" role="tabpanel" aria-labelledby="error-tab">Fourth Tab</div>
     <div class="tab-pane fade" id="draft" role="tabpanel" aria-labelledby="draft-tab">Fifth Tab</div>
   </div>
+<!-- TAB DEFINATION STARTING -->
+
 
 </div>

@@ -16,7 +16,9 @@ export class ProductOverviewService {
   constructor(private http: HttpClient) { }
 
 
-    getUnderReviewProduct(request:any): Observable<any> {
-    return this.http.post(API_AUTHORIZA_URL + "productOverviewController/"+ 'getUnderReviewProduct?page='+request.page + '&size=' +request.size, httpOptions);
+    getUnderReviewProduct(request:any , username:any): Observable<any> {
+    return this.http.post(API_AUTHORIZA_URL + "productOverviewController/"+ 
+                          'getUnderReviewProduct?page='+request.page + '&size=' +request.size+ '&username=' +username ,
+                           httpOptions);
   }
 }
