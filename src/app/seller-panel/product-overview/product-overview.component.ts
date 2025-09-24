@@ -13,6 +13,8 @@ import { TokenStorageService } from '../../_services/token-storage.service';
 export class ProductOverviewComponent {
   isChecked = true;
   underReviewData: any;
+
+
   totalElements: number = 0;
   currentPage: number = 1;
   itemsPerPage: number = 10;
@@ -33,42 +35,55 @@ export class ProductOverviewComponent {
 
   // UNDER REVIEW PRODUCT STARTING
   getProductUnderReview() {
-    this.getUnderReviewProduct({ page: '0', size: '10' });
+    this.getUnderReviewProduct({ page: "0", size: "10" });
   }
 
   getUnderReviewProduct(request: any) {
-
     this.isLoaderValid = true;
 
-    //Current User Start
     const user = this.tokenStorageService.getUser();
-    //Current User Ending
 
     this.productOverviewService
       .getUnderReviewProduct(request, user.username)
       .subscribe({
         next: (res: any) => {
-          this.underReviewData = res.data['content'];
-          console.log(this.underReviewData);
-          
-          this.totalElements = res.data['totalElements'];
+          this.underReviewData = res.data.content;
+          this.totalElements = res.data.totalElements;
+          this.currentPage = res.data.pageable.pageNumber;
+          this.itemsPerPage = res.data.pageable.pageSize;
           this.isLoaderValid = false;
-          this.toast.success({ detail: 'Success',summary: 'Data Fetch Success', position: 'bottomRight', duration: 3000,});
+
+          this.toast.success({
+            detail: 'Success',
+            summary: 'Data Fetch Success',
+            position: 'bottomRight',
+            duration: 3000,
+          });
         },
         error: (err: any) => {
           this.isLoaderValid = false;
-          console.log(err);
-          this.toast.error({detail: 'Error',summary: err.error.data.message,position: 'bottomRight', duration: 3000,});
+          this.toast.error({
+            detail: 'Error',
+            summary: err.error.data?.message || 'Something went wrong',
+            position: 'bottomRight',
+            duration: 3000,
+          });
         },
       });
-  }
+}
 
-  nextPage(event: PageEvent) {
-    console.log(event);
-    const request: any = {};
-    request['page'] = event.pageIndex.toString();
-    request['size'] = event.pageSize.toString();
+
+nextPage(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.itemsPerPage = event.pageSize;
+
+    const request = {
+        page: this.currentPage.toString(),
+        size: this.itemsPerPage.toString()
+    };
+
     this.getUnderReviewProduct(request);
-  }
+}
+
    // UNDER REVIEW PRODUCT ENDING
 }

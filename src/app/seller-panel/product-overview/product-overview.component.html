@@ -68,15 +68,15 @@
             </thead>
             <tbody>
               <tr scope="row" *ngFor="let data of underReviewData; let i = index">
-                <td>{{ i + 1 }}</td>
+                <td class="p-3">{{ data.id }}</td>
                 <td>
-                  <img [src]="data.productMainFile" height="65" width="65" class="p-1" style="border-radius: 6px;object-fit: cover;" alt="">
+                  <img [src]="data.productMainFile" height="65" width="65" class="p-1" style="border-radius: 8px;object-fit: cover;" alt="">
                 </td>
                 <td>{{ data.productName }}</td>
                 <td>{{ data.productKey }}</td>
                 <td>{{ data.productDate }} | {{ data.productTime }}</td>
                 <td>
-                  <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 4px;" >
+                  <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 2px;" >
                     {{ data.productStatus }}
                     <i class="bi bi-dot blink-dot"></i>
                   </div>
@@ -91,9 +91,15 @@
               </tr>
             </tbody>
           </table>
-          <mat-paginator [pageSizeOptions]="[10, 20, 30, 50]" [pageSize]="10" [length]="totalElements"
-            (page)="nextPage($event)" showFirstLastButtons>
+            <mat-paginator 
+              [pageSizeOptions]="[2, 4, 5, 50]" 
+              [pageSize]="itemsPerPage"
+              [length]="totalElements"
+              [pageIndex]="currentPage"
+              (page)="nextPage($event)"
+              showFirstLastButtons>
           </mat-paginator>
+
         </div>
 
       </div>
