@@ -15,15 +15,31 @@
 
 
 
-.blink-dot {
+.blink-dot-underReview {
   font-size: 1rem; /* size increase, adjust as needed */
   color: #ffc107; /* Bootstrap warning yellow */
   text-shadow: 0 0 8px rgba(255, 193, 7, 0.8); /* soft glow */
-  animation: blink 1.5s infinite ease-in-out;
+  animation: blinkUnderreview 1.5s infinite ease-in-out;
 }
 
-@keyframes blink {
+@keyframes blinkUnderreview {
   0%   { opacity: 0.2; text-shadow: 0 0 2px rgba(255,193,7,0.5); }
   50%  { opacity: 1;   text-shadow: 0 0 12px rgba(255,193,7,1); }
   100% { opacity: 0.2; text-shadow: 0 0 2px rgba(255,193,7,0.5); }
 }
+
+
+/* BLINK DOT APPROVED */
+.blink-dot-approved {
+  font-size:1rem; /* size increase, adjust as needed */
+  color: #09fb19; /* Bootstrap warning yellow */
+  text-shadow: 0 0 8px rgba(7, 248, 15, 0.8); /* soft glow */
+  animation: blinkApproved 1.5s infinite ease-in-out;
+}
+
+@keyframes blinkApproved {
+  0%   { opacity: 0.2; text-shadow: 0 0 2px rgba(66, 213, 7, 0.5); }
+  50%  { opacity: 1;   text-shadow: 0 0 12px rgb(46, 147, 9); }
+  100% { opacity: 0.2; text-shadow: 0 0 2px rgba(10, 134, 39, 0.5); }
+}
+/* BLINK DOT APPROVED */

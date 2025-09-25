@@ -15,7 +15,7 @@
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button"
-          role="tab" aria-controls="approved" aria-selected="false">Product Approved</button>
+          role="tab" aria-controls="approved" aria-selected="false" (click)="getProductApproved()">Product Approved</button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="error-tab" data-bs-toggle="tab" data-bs-target="#error" type="button" role="tab"
@@ -47,11 +47,11 @@
     <div class="tab-pane fade" id="underReview" role="tabpanel" aria-labelledby="underReview-tab">
       <div class="container p-4 bg-white mt-2 border-radius20">
 
-        <div *ngIf="isLoaderValid">
+        <div *ngIf="underReview_skeleton">
           <ngx-skeleton-loader count="10" appearance="line" />
         </div>
 
-        <div *ngIf="!isLoaderValid">
+        <div *ngIf="!underReview_skeleton">
           <table class=" table table-sm table-hover table-bordered fs11">
             <thead>
 
@@ -78,7 +78,7 @@
                 <td>
                   <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 2px;" >
                     {{ data.productStatus }}
-                    <i class="bi bi-dot blink-dot"></i>
+                    <i class="bi bi-dot blink-dot-underReview "></i>
                   </div>
                 </td>
                 <td>
@@ -93,10 +93,10 @@
           </table>
             <mat-paginator 
               [pageSizeOptions]="[2, 4, 5, 50]" 
-              [pageSize]="itemsPerPage"
-              [length]="totalElements"
-              [pageIndex]="currentPage"
-              (page)="nextPage($event)"
+              [pageSize]="underReview_itemsPerPage"
+              [length]="underReview_totalElements"
+              [pageIndex]="underReview_currentPage"
+              (page)="nextPageUnderReview($event)"
               showFirstLastButtons>
           </mat-paginator>
 
@@ -109,7 +109,85 @@
 
 
 
-    <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">Third Tab</div>
+
+
+
+
+   <!-- PRODUCT APPROVED STARTING -->
+    <div class="tab-pane fade" id="approved" role="tabpanel" aria-labelledby="approved-tab">
+      <div class="container p-4 bg-white mt-2 border-radius20">
+
+        <div *ngIf="approved_skeleton">
+          <ngx-skeleton-loader count="10" appearance="line" />
+        </div>
+
+        <div *ngIf="!approved_skeleton">
+          <table class=" table table-sm table-hover table-bordered fs11">
+            <thead>
+
+              <tr class="text-center" style="background-color: #e7e8e8;">
+                <th scope="col">id</th>
+                <th scope="col">Product</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Product Key</th>
+                <th scope="col">Date Time</th>
+                <th scope="col">Product Status</th>
+                <th scope="col">Variant</th>
+              </tr>
+
+            </thead>
+            <tbody>
+              <tr scope="row" *ngFor="let data of approvedData; let i = index">
+                <td class="p-3">{{ data.id }}</td>
+                <td>
+                  <img [src]="data.productMainFile" height="65" width="65" class="p-1" style="border-radius: 8px;object-fit: cover;" alt="">
+                </td>
+                <td>{{ data.productName }}</td>
+                <td>{{ data.productKey }}</td>
+                <td>{{ data.productDate }} | {{ data.productTime }}</td>
+                <td>
+                  <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 2px;" >
+                    {{ data.productStatus }}
+                    <i class="bi bi-dot blink-dot-approved"></i>
+                  </div>
+                </td>
+                <td>
+              <button mat-raised-button color="primary" class="small-btn" >
+                <span class="fs11">Add Variant</span>
+              </button>
+
+
+                </td>
+              </tr>
+            </tbody>
+          </table>
+            <mat-paginator 
+              [pageSizeOptions]="[2, 4, 5, 50]" 
+              [pageSize]="approved_itemsPerPage"
+              [length]="approved_totalElements"
+              [pageIndex]="approved_currentPage"
+              (page)="nextPageApproved($event)"
+              showFirstLastButtons>
+          </mat-paginator>
+
+        </div>
+
+      </div>
+    </div>
+   <!-- PRODUCT APPROVED ENDING -->
+
+
+
+
+
+
+
+
+
+
+
+
+
     <div class="tab-pane fade" id="error" role="tabpanel" aria-labelledby="error-tab">Fourth Tab</div>
     <div class="tab-pane fade" id="draft" role="tabpanel" aria-labelledby="draft-tab">Fifth Tab</div>
   </div>
