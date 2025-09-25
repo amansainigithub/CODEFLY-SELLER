@@ -290,44 +290,59 @@ export class ProductUploadComponent {
 
 
   //================CALCULATED GST, TCS TDS AMOUNT STARTING=================
-  actualPrice:any;
-  mrpValue:any;
+  actualPrice: any;
+  mrpValue: any;
   gstAmount: any;
   tcsAmount: any;
   tdsAmount: any;
-  bankSettlementAmount :any
-  shippingCharges:any=70.00;
-  finalSettlementAmount:any;
+  bankSettlementAmount: any;
+  shippingCharges: any = 70.00;
+  finalSettlementAmount: any;
 
   onPriceChange(rowIndex: number): void {
-          if (rowIndex === 0) {
-            this.actualPrice = 0;
-          }
-        
-          // Calculate total priceActual
-          this.actualPrice = 0;
-          this.productForm.value.productSizeRows.forEach((row: any) => {
-            this.actualPrice = parseFloat(row.price || 0);
-            this.mrpValue = parseFloat(row.mrp || 0);
-          });
-          const gstPercentage = this.productForm.value.gst || 0;
+    if (rowIndex === 0) {
+      this.actualPrice = 0;
+    }
 
-          if (gstPercentage > 0 ) {
-          // Calculate GST, TCS, and TDS
-          if(gstPercentage !== "" || gstPercentage !== null || gstPercentage !== undefined ){
-            this.gstAmount = this.calculateGST(this.actualPrice, gstPercentage);
-            this.tcsAmount = this.calculateTCS(this.actualPrice, gstPercentage);
-            this.tdsAmount = this.calculateTDS(this.actualPrice);            
-            this.bankSettlementAmount = this.roundToTwo(this.actualPrice -
-                                        (this.gstAmount + this.tcsAmount + this.tdsAmount + 
-                                         parseFloat('0')));    
-            this.finalSettlementAmount = this.finalSettlement(this.bankSettlementAmount ,this.shippingCharges);                
-          }
-        }else{
-          return;
-        }
+    // Reset total
+    this.actualPrice = 0;
+
+    // Calculate actualPrice and mrpValue
+    this.productForm.value.productSizeRows.forEach((row: any) => {
+      this.actualPrice = parseFloat(row.price || 0);
+      this.mrpValue = parseFloat(row.mrp || 0);
+    });
+
+    const gstPercentage = parseFloat(this.productForm.value.gst || 0);
+
+    if (gstPercentage > 0) {
+      // GST, TCS, TDS
+      this.gstAmount = this.calculateGST(this.actualPrice, gstPercentage);
+      this.tcsAmount = this.calculateTCS(this.actualPrice, gstPercentage);
+      this.tdsAmount = this.calculateTDS(this.actualPrice);
+
+      console.log("GST :: " +this.gstAmount);
+      console.log("tcsAmount :: " +this.tcsAmount);
+      console.log("tdsAmount :: " +this.tdsAmount);
+      console.log("actualPrice :: " +this.actualPrice);
+      
+
+      // Bank Settlement
+this.bankSettlementAmount = Number(this.actualPrice || 0) 
+                          - (Number(this.gstAmount || 0) 
+                             + Number(this.tcsAmount || 0) 
+                             + Number(this.tdsAmount || 0));
+      console.log("bankSettlementAmount :: " +this.bankSettlementAmount);
+
+      // Final Settlement
+      this.finalSettlementAmount = this.finalSettlement(
+        this.bankSettlementAmount,
+        this.shippingCharges
+      );
+    } else {
+      return;
+    }
   }
-
 
   onGstChange(data:any){
     console.log(data);
@@ -336,39 +351,43 @@ export class ProductUploadComponent {
   }
 
 
-  // GST CALCULATION
-  calculateGST(price: number, gstPercentage:any): number {
-      gstPercentage = parseFloat(gstPercentage);
-      return this.roundToTwo((price * gstPercentage) / 100);
+    // GST CALCULATION
+  calculateGST(price: number, gstPercentage: any): string {
+    gstPercentage = parseFloat(gstPercentage);
+    return this.roundToTwo((price * gstPercentage) / 100);
   }
 
   // TCS CALCULATION
-  calculateTCS(price: number, gstPercentage: string | number): number {
-    const gstAmount = this.calculateGST(price, gstPercentage);
+  calculateTCS(price: number, gstPercentage: string | number): string {
+    const gstAmount = parseFloat(this.calculateGST(price, gstPercentage));
     const totalPrice = price + gstAmount;
     const tcsRate = 1; // TCS rate in percentage
     return this.roundToTwo((totalPrice * tcsRate) / 100);
   }
 
   // TDS CALCULATION
-  calculateTDS(price: number): number {
+  calculateTDS(price: number): string {
     const tdsRate = 1;
     return this.roundToTwo((price * tdsRate) / 100);
   }
 
-  //Bank Settlement
-  bankSettlement(actualPrice:any, gstAmount:any, tcsAmount:any,tdsAmount:any){
-  return this.roundToTwo(actualPrice -(gstAmount + tcsAmount + tdsAmount +  parseFloat('0')));
+  // Bank Settlement
+  bankSettlement(actualPrice: number, gstAmount: string, tcsAmount: string, tdsAmount: string): string {
+    return this.roundToTwo(
+      actualPrice - (parseFloat(gstAmount) + parseFloat(tcsAmount) + parseFloat(tdsAmount))
+    );
   }
 
-  finalSettlement(bankSettlementAmount:any,shippingCharges:any )
-  {
-   return this.roundToTwo( parseFloat(bankSettlementAmount) + parseFloat(shippingCharges));
+  // Final Settlement
+  finalSettlement(bankSettlementAmount: string, shippingCharges: string): string {
+    return this.roundToTwo(parseFloat(bankSettlementAmount) + parseFloat(shippingCharges));
   }
+
   // Utility method to round numbers to two decimal places
-  roundToTwo(value: number): number {
-    return Math.round(value * 100) / 100;
+  roundToTwo(value: number): string {
+    return value.toFixed(2); // returns "9.80" instead of "9.8"
   }
+
   //================CALCULATED GST, TCS TDS AMOUNT ENDING=================
 
 
