@@ -1,0 +1,120 @@
+.psi {
+  display: inline-block;
+  border-bottom: 2px solid #e5dada; /* नीचे line */
+  line-height: 0.8;             /* text ke height ke बराबर line chipak जाएगी */
+  padding-bottom: 10px;  
+  color: #5A5E66;    
+  font-size: 13px;    /* thoda gap dena hai toh */
+}
+
+
+
+
+
+/* Wrapper */
+.tooltip-wrap-uniq {
+  position: relative;
+  display: inline-block;
+  font-size: 11.5px;
+}
+
+/* Icon container */
+.tooltip-icon-uniq {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Tooltip content */
+.tooltip-text-uniq {
+  visibility: hidden;
+  width: max-content;
+  max-width: 220px;
+  background-color: #282b2f;
+  color: #dcd4d4;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  line-height: 1.2;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.2);
+  white-space: normal;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out; /* 👈 Smooth fade */
+  
+}
+
+/* Arrow */
+.tooltip-text-uniq::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #212529 transparent transparent transparent;
+}
+
+/* Hover effect */
+.tooltip-icon-uniq:hover .tooltip-text-uniq {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+
+input.is-invalid {
+  background-image: none !important; /* Remove red exclamation icon */
+}
+
+
+
+
+/* FORM BG */
+
+.formbg {
+  padding-left: 25px;   /* left padding */
+  padding-right: 25px;  /* right padding */
+  padding-top: 20px;
+  border-radius: 12px;
+}
+
+
+
+.form-control:focus {
+  border-color: #4814cc;       /* border ka color change */
+  box-shadow: 0 0 2px #321aae; /* shadow halka kar diya */
+  outline: none;               /* default outline hata diya */
+}
+
+
+::placeholder {
+  font-size: 12px;   /* 👈 apne hisaab se chhota karo */
+  color: #999;       /* optional - halka color */
+}
+
+
+.custom-font-size{
+  font-size: 12px;
+}
+
+.bootstrap-multiselect {
+    width: 100%;
+    font-size: 12px; /* input aur dropdown text ke liye */
+}
+
+
+
+
+
+.settle-amt{
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 400;
+}

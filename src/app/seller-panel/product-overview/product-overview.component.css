@@ -1,19 +1,10 @@
+/* UNDER REVIEW STARTING...*/
+
 .small-btn {
   padding: 1px 7px; /* smaller size */
   font-size: 11px;   /* agar text chhota chahiye */
   min-width: auto;   /* Angular Material ka default min-width override */
 }
-
-
-
-
-
-
-
-
-
-
-
 
 .blink-dot-underReview {
   font-size: 1rem; /* size increase, adjust as needed */
@@ -27,8 +18,12 @@
   50%  { opacity: 1;   text-shadow: 0 0 12px rgba(255,193,7,1); }
   100% { opacity: 0.2; text-shadow: 0 0 2px rgba(255,193,7,0.5); }
 }
+/* UNDER REVIEW ENDING*/
 
 
+
+
+/* APPROVED STARTING...*/
 /* BLINK DOT APPROVED */
 .blink-dot-approved {
   font-size:1rem; /* size increase, adjust as needed */
@@ -42,4 +37,9 @@
   50%  { opacity: 1;   text-shadow: 0 0 12px rgb(46, 147, 9); }
   100% { opacity: 0.2; text-shadow: 0 0 2px rgba(10, 134, 39, 0.5); }
 }
+
+
+
+
 /* BLINK DOT APPROVED */
+/* APPROVED STARTING...*/

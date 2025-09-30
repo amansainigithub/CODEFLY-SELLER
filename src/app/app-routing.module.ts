@@ -11,6 +11,7 @@ import { ProductUploadComponent } from './seller-panel/seller-product/product-up
 import { CategorySelectionComponent } from './seller-panel/seller-product/category-selection/category-selection.component';
 import { ProductFilesComponent } from './seller-panel/seller-product/product-files/product-files.component';
 import { ProductOverviewComponent } from './seller-panel/product-overview/product-overview.component';
+import { ProductVariantsComponent } from './seller-panel/seller-product/product-variants/product-variants.component';
 
 const routes: Routes = [
 { path: 'register', component: RegisterComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
                     { path: 'productUpload', component: ProductUploadComponent },
                     { path: 'productFiles', component: ProductFilesComponent },
                     { path: 'product-Overview', component: ProductOverviewComponent },
+                    { path: 'product-Variant', component: ProductVariantsComponent },
       ],
 }
 ];

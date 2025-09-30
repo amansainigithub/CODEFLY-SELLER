@@ -43,6 +43,7 @@ import { CategorySelectionComponent } from './seller-panel/seller-product/catego
 import { ModelStructureComponent } from './seller-panel/seller-product/model-structure/model-structure.component';
 import { ProductFilesComponent } from './seller-panel/seller-product/product-files/product-files.component';
 import { ProductOverviewComponent } from './seller-panel/product-overview/product-overview.component';
+import { ProductVariantsComponent } from './seller-panel/seller-product/product-variants/product-variants.component';
 
 
 @NgModule({
@@ -59,6 +60,7 @@ import { ProductOverviewComponent } from './seller-panel/product-overview/produc
     ModelStructureComponent,
     ProductFilesComponent,
     ProductOverviewComponent,
+    ProductVariantsComponent,
     
   ],
   imports: [

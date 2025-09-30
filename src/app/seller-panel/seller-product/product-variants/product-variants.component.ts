@@ -1,21 +1,27 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import {FormArray,FormBuilder,FormControl,FormGroup,Validators,} from '@angular/forms';
-import { startWith, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { SharedDataService } from '../../../_services/sharedService/shared-data.service';
 import { Router } from '@angular/router';
 import { EngineXService } from '../../../_services/productUploadService/engineXService/engine-x.service';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { SharedDataService } from '../../../_services/sharedService/shared-data.service';
 import { NgToastService } from 'ng-angular-popup';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { map, Observable, startWith } from 'rxjs';
+import { ProductVariantService } from '../../../_services/productUploadService/productVariants/product-variant.service';
 
 declare var bootstrap: any; // Declare bootstrap for accessing modal methods
 
 @Component({
-  selector: 'app-product-upload',
-  templateUrl: './product-upload.component.html',
-  styleUrl: './product-upload.component.css',
+  selector: 'app-product-variants',
+  templateUrl: './product-variants.component.html',
+  styleUrl: './product-variants.component.css',
 })
-export class ProductUploadComponent {
+export class ProductVariantsComponent {
   productForm!: FormGroup;
   formfields: any[] = [];
   productDetails: any[] = [];
@@ -28,44 +34,50 @@ export class ProductUploadComponent {
 
   //Progress Bar
   progressBar: any = false;
-
+  productData: any;
   constructor(
     private engineXService: EngineXService,
     private formBuilder: FormBuilder,
-    private sharedService: SharedDataService,
     private router: Router,
     private toast: NgToastService,
-    private spinner: NgxSpinnerService
-  ) {}
+    private spinner: NgxSpinnerService,
+    private variantService: ProductVariantService
+  ) {
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras.state as { productData: any };
 
-  ngOnInit(): void {
-    //[Variant Category Data]
-    this.categorySelection = this.sharedService.getData();
-    console.log(this.categorySelection);
-    
+    this.productData = navigation?.extras.state as {
+      productId: number;
+      productKey: string;
+      variantId: number;
+    };
 
-    if (
-      this.categorySelection === undefined ||
-      this.categorySelection === null ||
-      this.categorySelection === ''
-    ) {
-      this.router.navigateByUrl('/seller/dashboard/home');
+    //Load DYNAMIC FORM USING IN ENGINE-X DATA
+    this.categorySelection = { vData: { id: this.productData.variantId } };
+
+    if (state) {
+      this.productForm = this.formBuilder.group({
+        productSizeRows: this.formBuilder.array([]),
+      });
+
+      //Get Engine-X Data--- Form Builder By Engine X Data Dynamically----
+      this.getEngineX();
+
+      //LOAD PRODUCT DETAILS DATA
+      this.loadProductData();
+
+      // setTimeout(() => {
+      //   this.prefillForm();
+      // }, 2000);
+    } else {
+      alert('Product Id Not Found Here...');
+      return;
     }
-
-    this.productForm = this.formBuilder.group({
-      productSizeRows: this.formBuilder.array([]),
-    });
-
-    //Get Engine-X Data--- Form Builder By Engine X Data Dynamically----
-    this.getEngineX();
-
-    setTimeout(() => {
-      this.prefillForm();
-    }, 2000);
   }
 
   getEngineX() {
-    
+    console.log('Load Engine X Data....');
+
     this.spinner.show();
     this.engineXService.getEngineX(this.categorySelection.vData.id).subscribe(
       (data: any) => {
@@ -291,7 +303,6 @@ export class ProductUploadComponent {
     }
   }
 
-
   //================CALCULATED GST, TCS TDS AMOUNT STARTING=================
   actualPrice: any;
   mrpValue: any;
@@ -299,7 +310,7 @@ export class ProductUploadComponent {
   tcsAmount: any;
   tdsAmount: any;
   bankSettlementAmount: any;
-  shippingCharges: any = 70.00;
+  shippingCharges: any = 70.0;
   finalSettlementAmount: any;
 
   onPriceChange(rowIndex: number): void {
@@ -324,18 +335,18 @@ export class ProductUploadComponent {
       this.tcsAmount = this.calculateTCS(this.actualPrice, gstPercentage);
       this.tdsAmount = this.calculateTDS(this.actualPrice);
 
-      console.log("GST :: " +this.gstAmount);
-      console.log("tcsAmount :: " +this.tcsAmount);
-      console.log("tdsAmount :: " +this.tdsAmount);
-      console.log("actualPrice :: " +this.actualPrice);
-      
+      console.log('GST :: ' + this.gstAmount);
+      console.log('tcsAmount :: ' + this.tcsAmount);
+      console.log('tdsAmount :: ' + this.tdsAmount);
+      console.log('actualPrice :: ' + this.actualPrice);
 
       // Bank Settlement
-this.bankSettlementAmount = Number(this.actualPrice || 0) 
-                          - (Number(this.gstAmount || 0) 
-                             + Number(this.tcsAmount || 0) 
-                             + Number(this.tdsAmount || 0));
-      console.log("bankSettlementAmount :: " +this.bankSettlementAmount);
+      this.bankSettlementAmount =
+        Number(this.actualPrice || 0) -
+        (Number(this.gstAmount || 0) +
+          Number(this.tcsAmount || 0) +
+          Number(this.tdsAmount || 0));
+      console.log('bankSettlementAmount :: ' + this.bankSettlementAmount);
 
       // Final Settlement
       this.finalSettlementAmount = this.finalSettlement(
@@ -347,14 +358,13 @@ this.bankSettlementAmount = Number(this.actualPrice || 0)
     }
   }
 
-  onGstChange(data:any){
+  onGstChange(data: any) {
     console.log(data);
     //Change Price
-    this.onPriceChange(0);  
+    this.onPriceChange(0);
   }
 
-
-    // GST CALCULATION
+  // GST CALCULATION
   calculateGST(price: number, gstPercentage: any): string {
     gstPercentage = parseFloat(gstPercentage);
     return this.roundToTwo((price * gstPercentage) / 100);
@@ -375,15 +385,26 @@ this.bankSettlementAmount = Number(this.actualPrice || 0)
   }
 
   // Bank Settlement
-  bankSettlement(actualPrice: number, gstAmount: string, tcsAmount: string, tdsAmount: string): string {
+  bankSettlement(
+    actualPrice: number,
+    gstAmount: string,
+    tcsAmount: string,
+    tdsAmount: string
+  ): string {
     return this.roundToTwo(
-      actualPrice - (parseFloat(gstAmount) + parseFloat(tcsAmount) + parseFloat(tdsAmount))
+      actualPrice -
+        (parseFloat(gstAmount) + parseFloat(tcsAmount) + parseFloat(tdsAmount))
     );
   }
 
   // Final Settlement
-  finalSettlement(bankSettlementAmount: string, shippingCharges: string): string {
-    return this.roundToTwo(parseFloat(bankSettlementAmount) + parseFloat(shippingCharges));
+  finalSettlement(
+    bankSettlementAmount: string,
+    shippingCharges: string
+  ): string {
+    return this.roundToTwo(
+      parseFloat(bankSettlementAmount) + parseFloat(shippingCharges)
+    );
   }
 
   // Utility method to round numbers to two decimal places
@@ -393,28 +414,7 @@ this.bankSettlementAmount = Number(this.actualPrice || 0)
 
   //================CALCULATED GST, TCS TDS AMOUNT ENDING=================
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //SUBMIT DATA 
+  //SUBMIT DATA
   onSubmit() {
     console.log(this.productForm);
 
@@ -464,16 +464,6 @@ this.bankSettlementAmount = Number(this.actualPrice || 0)
     }, 2000);
   }
 
-
-
-
-
-
-
-
-
-
-  
   // ============================================================================================
 
   // MODEL PROPERTIES STARTING
@@ -499,15 +489,125 @@ this.bankSettlementAmount = Number(this.actualPrice || 0)
 
 
 
+  // PRODUCT DETAILS LOAD DATA STARTING
+  loadData: any;
+  loadProductData() {
+    this.spinner.show();
+    this.variantService
+      .loadProductDetails(this.productData.productId)
+      .subscribe({
+        next: (res: any) => {
+          console.log('Variant Data Load Starting.....');
+          console.log(res);
+          this.loadData = res.data;
+
+          // 1. Patch simple fields
+          this.productForm.patchValue(this.loadData);
+
+          // 2. Clear old table rows
+          const formArray = this.productForm.get(
+            'productSizeRows'
+          ) as FormArray;
+          formArray.clear();
+
+          // 3. Create table rows with filter setup
+          this.loadData.productSizeRows.forEach((rowData: any) => {
+            const rowGroup: { [key: string]: FormControl } = {};
+
+            this.dynamicRows.forEach((col) => {
+              const control = new FormControl(
+                rowData[col.identifier] || '',
+                col.required ? [Validators.required] : []
+              );
+              rowGroup[col.identifier] = control;
+
+              if (col.type === 'DROPDOWN') {
+                this.filteredTableDropdowns[
+                  `${col.identifier}_${rowData.__msVal}`
+                ] = control.valueChanges.pipe(
+                  startWith(rowData[col.identifier] || ''),
+                  map((value) => this._filter(value || '', col.values))
+                );
+              }
+            });
+
+            rowGroup['__msId'] = new FormControl(rowData.__msId);
+            rowGroup['__msVal'] = new FormControl(rowData.__msVal);
+
+            formArray.push(this.formBuilder.group(rowGroup));
+          });
+
+          // 4. Show table
+          this.hasMultiSelectValues = formArray.length > 0;
+
+          this.spinner.hide();
+        },
+        error: (err: any) => {
+          console.log(err);
+          this.spinner.hide();
+        },
+      });
+  }
+  // PRODUCT DETAILS LOAD DATA ENDING.....
 
 
 
 
 
 
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   // ========================PREFILL DATA STARTING=======================
-
   prefillForm() {
     const testData = {
       productSizeRows: [
@@ -628,5 +728,5 @@ this.bankSettlementAmount = Number(this.actualPrice || 0)
     // 4. Show table
     this.hasMultiSelectValues = formArray.length > 0;
   }
-  // ========================PREFILL DATA ENDING=======================
+  // ========================PREFILL DATA ENDING=======================.-
 }

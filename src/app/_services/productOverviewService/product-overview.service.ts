@@ -39,4 +39,12 @@ export class ProductOverviewService {
       httpOptions
     );
   }
+
+
+  getOldProductDetails(request: any, username: any): Observable<any> {
+    return this.http.post(
+      API_AUTHORIZA_URL +
+        'productOverviewController/' +
+        'getOldProductDetails?productId=' +request +'&username=' + username,httpOptions);
+  }
 }

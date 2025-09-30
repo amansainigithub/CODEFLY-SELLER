@@ -76,14 +76,14 @@
                 <td>{{ data.productKey }}</td>
                 <td>{{ data.productDate }} | {{ data.productTime }}</td>
                 <td>
-                  <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 2px;" >
+                  <div  style="background-color: #e9edf5;border-radius: 4px;padding: 2px 2px;" >
                     {{ data.productStatus }}
                     <i class="bi bi-dot blink-dot-underReview "></i>
                   </div>
                 </td>
                 <td>
-              <button mat-raised-button color="primary" class="small-btn" >
-                <span class="fs11">Add Variant</span>
+              <button mat-raised-button color="primary" class="small-btn"  (click)="addVariant(data)">
+                <span class="fs11" >Add Variant</span>
               </button>
 
 
@@ -153,7 +153,7 @@
                 </td>
                 <td>
               <button mat-raised-button color="primary" class="small-btn" >
-                <span class="fs11">Add Variant</span>
+                <span class="fs11" (click)="addVariant(data)" >Add Variant</span>
               </button>
 
 
@@ -179,15 +179,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
     <div class="tab-pane fade" id="error" role="tabpanel" aria-labelledby="error-tab">Fourth Tab</div>
     <div class="tab-pane fade" id="draft" role="tabpanel" aria-labelledby="draft-tab">Fifth Tab</div>
   </div>
@@ -195,3 +186,64 @@
 
 
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =====================MODEL OPEN========================= -->
+    <!-- Modal Open-->
+    <div class="modal fade" data-bs-backdrop="static" id="exampleModal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" #variantModel>
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center ">
+                    <div>
+                        <!-- <i class="bi bi-rocket-takeoff fs20" style="color: #45e832;"></i> -->
+                         <i class="bi bi-plus-square-dotted fs20" style="color: #45e832;"></i>
+                    </div>
+                    <span class="fs12">
+                        <p style="line-height: 1.5;">
+                            Are you sure you want to continue? Once you proceed,
+                            Would you like to keep your previous product data ?
+                        </p>
+                    </span>
+
+                </div>
+                <div class="mb-3 text-center">
+                    <button mat-raised-button class="me-2" data-bs-dismiss="modal">Close</button>
+                    <button mat-raised-button color="primary" (click)="continueAddVariant()">Continue</button>
+                </div>
+
+                <div *ngIf="progressBar">
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal Close-->
+    <!-- =====================MODEL CLOSING======================== -->

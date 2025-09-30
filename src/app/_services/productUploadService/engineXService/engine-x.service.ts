@@ -4,19 +4,18 @@ import { Observable } from 'rxjs';
 import { API_AUTHORIZA_URL } from '../../../constants/Constants';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class EngineXService {
+  constructor(private http: HttpClient) {}
 
- 
-       constructor(private http: HttpClient) { }
-   
-     getEngineX(): Observable<any> { 
-       return this.http.get(API_AUTHORIZA_URL + 'engineXBuilderController/getEngineX/5',);
-     }
+  getEngineX(engineXId: any): Observable<any> {
+    return this.http.get(
+      API_AUTHORIZA_URL + 'engineXBuilderController/getEngineX/' + engineXId
+    );
+  }
 }
