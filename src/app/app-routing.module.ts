@@ -12,6 +12,7 @@ import { CategorySelectionComponent } from './seller-panel/seller-product/catego
 import { ProductFilesComponent } from './seller-panel/seller-product/product-files/product-files.component';
 import { ProductOverviewComponent } from './seller-panel/product-overview/product-overview.component';
 import { ProductVariantsComponent } from './seller-panel/seller-product/product-variants/product-variants.component';
+import { ProductVariantFilesComponent } from './seller-panel/seller-product/product-variant-files/product-variant-files.component';
 
 const routes: Routes = [
 { path: 'register', component: RegisterComponent },
@@ -30,6 +31,8 @@ const routes: Routes = [
                     { path: 'productFiles', component: ProductFilesComponent },
                     { path: 'product-Overview', component: ProductOverviewComponent },
                     { path: 'product-Variant', component: ProductVariantsComponent },
+                    { path: 'productVariantFiles', component: ProductVariantFilesComponent },
+
       ],
 }
 ];

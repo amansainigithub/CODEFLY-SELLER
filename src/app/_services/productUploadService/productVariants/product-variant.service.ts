@@ -18,4 +18,19 @@ export class ProductVariantService {
    loadProductDetails(productId:any): Observable<any> {
         return this.http.get(API_AUTHORIZA_URL + "productVariantController/"+ 'loadProductDetails/' + productId, httpOptions);
       }
+
+
+    saveProductVariantDetails(productData: any, variantId: any,productId:any): Observable<any> {
+    return this.http.post(
+      API_AUTHORIZA_URL + 'productVariantController/saveProductVariantDetails/' + variantId +"/" + productId,
+      productData
+    );
+  }
+
+    VariantfileUploadService(files: any,productId:any , existingProductId:any): Observable<any> {
+    return this.http.post(
+      API_AUTHORIZA_URL + 'productVariantController/' + 'saveProductVariantFiles/' +productId + "/" + existingProductId,
+      files
+    );
+  }
 }

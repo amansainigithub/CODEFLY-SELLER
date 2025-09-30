@@ -44,6 +44,7 @@ import { ModelStructureComponent } from './seller-panel/seller-product/model-str
 import { ProductFilesComponent } from './seller-panel/seller-product/product-files/product-files.component';
 import { ProductOverviewComponent } from './seller-panel/product-overview/product-overview.component';
 import { ProductVariantsComponent } from './seller-panel/seller-product/product-variants/product-variants.component';
+import { ProductVariantFilesComponent } from './seller-panel/seller-product/product-variant-files/product-variant-files.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { ProductVariantsComponent } from './seller-panel/seller-product/product-
     ProductFilesComponent,
     ProductOverviewComponent,
     ProductVariantsComponent,
+    ProductVariantFilesComponent,
     
   ],
   imports: [

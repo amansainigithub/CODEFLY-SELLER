@@ -3,17 +3,20 @@ import { Router } from '@angular/router';
 import { ProductDetailsService } from '../../../_services/productUploadService/productDetails/product-details.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgToastService } from 'ng-angular-popup';
+import { ProductVariantService } from '../../../_services/productUploadService/productVariants/product-variant.service';
+import { formatDate } from '@angular/common';
 
 declare var bootstrap: any; // Declare bootstrap for accessing modal methods
 
 @Component({
-  selector: 'app-product-files',
-  templateUrl: './product-files.component.html',
-  styleUrl: './product-files.component.css',
+  selector: 'app-product-variant-files',
+  templateUrl: './product-variant-files.component.html',
+  styleUrl: './product-variant-files.component.css'
 })
-export class ProductFilesComponent {
-  productData: any;
-  finalCategory: any;
+export class ProductVariantFilesComponent {
+ productData: any;
+ finalCategory: any;
+ productId:any;
 
   //Progress Bar
   progressBar: any = false;
@@ -21,6 +24,7 @@ export class ProductFilesComponent {
   constructor(
     private router: Router,
     private productDetails: ProductDetailsService,
+    private variantService: ProductVariantService,
     private spinner: NgxSpinnerService,
     private toast: NgToastService
   ) {
@@ -28,19 +32,23 @@ export class ProductFilesComponent {
     const state = navigation?.extras?.state as {
       formData: any;
       finalCategory: any;
+      productId: any;
     };
-
+    
     if (state && state.formData !== undefined && state.formData !== null) {
       this.productData = state.formData;
-      console.log(this.productData);
-      console.log("PRODUCT DATA..............");
-      
     } else {
       this.router.navigateByUrl('/seller/dashboard/home');
     }
 
     if (state && state.finalCategory !== undefined && state.finalCategory !== null) {
       this.finalCategory = state.finalCategory;
+    } else {
+      this.router.navigateByUrl('/seller/dashboard/home');
+    }
+
+    if (state && state.productId !== undefined && state.productId !== null) {
+      this.productId = state.productId;
     } else {
       this.router.navigateByUrl('/seller/dashboard/home');
     }
@@ -195,9 +203,7 @@ export class ProductFilesComponent {
   productSubmit() {
     //SPINNER SHOWING
     this.spinner.show();
-    
-
-    this.productDetails.saveProductDetails(this.productData, this.finalCategory.vData.id)
+    this.variantService.saveProductVariantDetails(this.productData, this.finalCategory.vData.id , this.productId)
       .subscribe({
         next: async (res: any) => {
           if (res.data.id) {
@@ -269,7 +275,7 @@ export class ProductFilesComponent {
       if (this.videoFile) {
         formData.append('video', this.videoFile);
       }
-      this.productDetails.fileUploadService(formData, productId).subscribe({
+      this.variantService.VariantfileUploadService(formData, productId , this.productId).subscribe({
         next: (res: any) => resolve(res),
         error: (err: any) => reject(err),
       });

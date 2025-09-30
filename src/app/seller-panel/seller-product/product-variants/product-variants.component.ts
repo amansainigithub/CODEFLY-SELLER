@@ -47,7 +47,7 @@ export class ProductVariantsComponent {
     const state = navigation?.extras.state as { productData: any };
 
     this.productData = navigation?.extras.state as {
-      productId: number;
+      productId: any;
       productKey: string;
       variantId: number;
     };
@@ -434,6 +434,8 @@ export class ProductVariantsComponent {
 
   // PLRODUCT PROCCEED
   proceedWithProduct() {
+    console.log(this.productData);
+    
     this.spinner.show();
     setTimeout(() => {
       if (
@@ -441,10 +443,11 @@ export class ProductVariantsComponent {
         Object.keys(this.productForm.value).length > 0 &&
         this.categorySelection !== null
       ) {
-        this.router.navigate(['/seller/dashboard/home/productFiles'], {
+        this.router.navigate(['/seller/dashboard/home/productVariantFiles'], {
           state: {
             formData: this.productForm.value,
             finalCategory: this.categorySelection,
+            productId:this.productData.productId
           },
         });
 
@@ -497,8 +500,6 @@ export class ProductVariantsComponent {
       .loadProductDetails(this.productData.productId)
       .subscribe({
         next: (res: any) => {
-          console.log('Variant Data Load Starting.....');
-          console.log(res);
           this.loadData = res.data;
 
           // 1. Patch simple fields
