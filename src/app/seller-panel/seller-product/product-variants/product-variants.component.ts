@@ -1,14 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { EngineXService } from '../../../_services/productUploadService/engineXService/engine-x.service';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { SharedDataService } from '../../../_services/sharedService/shared-data.service';
+import { FormArray,FormBuilder,FormControl,FormGroup, Validators,} from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map, Observable, startWith } from 'rxjs';
@@ -35,6 +28,7 @@ export class ProductVariantsComponent {
   //Progress Bar
   progressBar: any = false;
   productData: any;
+
   constructor(
     private engineXService: EngineXService,
     private formBuilder: FormBuilder,
@@ -79,7 +73,7 @@ export class ProductVariantsComponent {
     console.log('Load Engine X Data....');
 
     this.spinner.show();
-    this.engineXService.getEngineX(this.categorySelection.vData.id).subscribe(
+    this.engineXService.getEngineX(this.productData.variantId).subscribe(
       (data: any) => {
         this.formfields = data.inventoryData;
         this.productDetails = data.productDetails;
@@ -441,12 +435,12 @@ export class ProductVariantsComponent {
       if (
         this.productForm.value &&
         Object.keys(this.productForm.value).length > 0 &&
-        this.categorySelection !== null
+        this.productData.variantId !== null
       ) {
         this.router.navigate(['/seller/dashboard/home/productVariantFiles'], {
           state: {
             formData: this.productForm.value,
-            finalCategory: this.categorySelection,
+            finalCategory: this.productData.variantId,
             productId:this.productData.productId
           },
         });
@@ -550,43 +544,6 @@ export class ProductVariantsComponent {
       });
   }
   // PRODUCT DETAILS LOAD DATA ENDING.....
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -23,7 +23,6 @@ export class ProductVariantFilesComponent {
 
   constructor(
     private router: Router,
-    private productDetails: ProductDetailsService,
     private variantService: ProductVariantService,
     private spinner: NgxSpinnerService,
     private toast: NgToastService
@@ -54,7 +53,7 @@ export class ProductVariantFilesComponent {
     }
 
     if (this.validateFormAndCategory()) {
-      console.log('✅ Valid data hai');
+      console.log('Data is Valid....');
     } else {
       console.log('Invalid data (null/blank/empty)');
       this.router.navigateByUrl('/seller/dashboard/home');
@@ -76,10 +75,10 @@ export class ProductVariantFilesComponent {
       Object.keys(this.productData).length > 0 &&
       this.finalCategory &&
       Object.keys(this.finalCategory).length > 0 &&
-      this.finalCategory.vData &&
-      this.finalCategory.vData.id !== null &&
-      this.finalCategory.vData.id !== undefined &&
-      this.finalCategory.vData.id !== ''
+      this.finalCategory &&
+      this.finalCategory !== null &&
+      this.finalCategory !== undefined &&
+      this.finalCategory !== ''
     ) {
       return true;
     } else {
@@ -203,7 +202,7 @@ export class ProductVariantFilesComponent {
   productSubmit() {
     //SPINNER SHOWING
     this.spinner.show();
-    this.variantService.saveProductVariantDetails(this.productData, this.finalCategory.vData.id , this.productId)
+    this.variantService.saveProductVariantDetails(this.productData, this.finalCategory , this.productId)
       .subscribe({
         next: async (res: any) => {
           if (res.data.id) {
@@ -211,6 +210,7 @@ export class ProductVariantFilesComponent {
             try {
               // Wait until the response is received
               const fileRes = await this.saveProductFiles(res.data.id);
+
               console.log('Files response:', fileRes);
 
               //CHANGE PRODUCT UPLOAD STATUS VALUE
@@ -258,7 +258,7 @@ export class ProductVariantFilesComponent {
       });
   }
 
-  saveProductFiles(productId: any): Promise<any> {
+  saveProductFiles(newProductId: any): Promise<any> {
     return new Promise((resolve, reject) => {
       if (!this.files[0]) {
         alert('Please upload Main image before submitting!');
@@ -275,7 +275,9 @@ export class ProductVariantFilesComponent {
       if (this.videoFile) {
         formData.append('video', this.videoFile);
       }
-      this.variantService.VariantfileUploadService(formData, productId , this.productId).subscribe({
+      //[newProductId ==> this is generate by save Product Details only] [New Product Id]
+      //[this.productId ==> this product id fetching by table row] [Existing Product Id]
+      this.variantService.VariantfileUploadService(formData, newProductId , this.productId).subscribe({
         next: (res: any) => resolve(res),
         error: (err: any) => reject(err),
       });

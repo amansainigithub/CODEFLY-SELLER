@@ -23,6 +23,15 @@
 
 
 
+
+/* VARIANT AND MAIN SERIES CSS */
+.variantSeries{
+  background-color: #e9edf5;
+  border-radius: 4px;
+  padding: 2px 2px;
+}
+
+
 /* APPROVED STARTING...*/
 /* BLINK DOT APPROVED */
 .blink-dot-approved {
@@ -37,9 +46,5 @@
   50%  { opacity: 1;   text-shadow: 0 0 12px rgb(46, 147, 9); }
   100% { opacity: 0.2; text-shadow: 0 0 2px rgba(10, 134, 39, 0.5); }
 }
-
-
-
-
 /* BLINK DOT APPROVED */
 /* APPROVED STARTING...*/

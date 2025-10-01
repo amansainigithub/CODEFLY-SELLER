@@ -27,9 +27,9 @@ export class ProductVariantService {
     );
   }
 
-    VariantfileUploadService(files: any,productId:any , existingProductId:any): Observable<any> {
+    VariantfileUploadService(files: any,newProductId:any , existingProductId:any): Observable<any> {
     return this.http.post(
-      API_AUTHORIZA_URL + 'productVariantController/' + 'saveProductVariantFiles/' +productId + "/" + existingProductId,
+      API_AUTHORIZA_URL + 'productVariantController/' + 'saveProductVariantFiles/' +newProductId + "/" + existingProductId,
       files
     );
   }

@@ -45,6 +45,8 @@ export class ProductOverviewComponent {
       .getUnderReviewProductService(request, user.username)
       .subscribe({
         next: (res: any) => {
+          console.log(res);
+          
           this.underReviewData = res.data.content;
           this.underReview_totalElements = res.data.totalElements;
           this.underReview_currentPage = res.data.pageable.pageNumber;
@@ -156,38 +158,9 @@ export class ProductOverviewComponent {
     console.log(this.productData);
     // mode Hide
     this.modelClose();
-    this.router.navigateByUrl('/seller/dashboard/home/product-Variant', {state: this.productData,});
+    this.router.navigateByUrl('/seller/dashboard/home/product-Variant', {state: this.productData});
   }
-
   //ADD VARINAT ENDING..
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

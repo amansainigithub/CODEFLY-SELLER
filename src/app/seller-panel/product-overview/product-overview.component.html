@@ -81,13 +81,18 @@
                     <i class="bi bi-dot blink-dot-underReview "></i>
                   </div>
                 </td>
+                
                 <td>
-              <button mat-raised-button color="primary" class="small-btn"  (click)="addVariant(data)">
-                <span class="fs11" >Add Variant</span>
-              </button>
+                <button class="small-btn" *ngIf="data.productSeries === 'MAIN'" mat-raised-button color="primary"   (click)="addVariant(data)">
+                  <span class="fs11" >Add Variant</span>
+                </button>
 
-
+                <div class="text-center variantSeries"
+                     *ngIf="data.productSeries === 'VARIANT'"  >
+                    {{ data.productSeries }}
+                </div>
                 </td>
+                
               </tr>
             </tbody>
           </table>
