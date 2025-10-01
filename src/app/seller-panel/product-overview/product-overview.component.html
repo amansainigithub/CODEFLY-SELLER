@@ -76,21 +76,20 @@
                 <td>{{ data.productKey }}</td>
                 <td>{{ data.productDate }} | {{ data.productTime }}</td>
                 <td>
-                  <div  style="background-color: #e9edf5;border-radius: 4px;padding: 2px 2px;" >
-                    {{ data.productStatus }}
+                  <div *ngIf="data.productStatus === 'UNDER_REVIEW'" class="underReview" >
+                    UNDER REVIEW
                     <i class="bi bi-dot blink-dot-underReview "></i>
                   </div>
                 </td>
                 
                 <td>
-                <button class="small-btn" *ngIf="data.productSeries === 'MAIN'" mat-raised-button color="primary"   (click)="addVariant(data)">
-                  <span class="fs11" >Add Variant</span>
-                </button>
-
-                <div class="text-center variantSeries"
-                     *ngIf="data.productSeries === 'VARIANT'"  >
-                    {{ data.productSeries }}
-                </div>
+                  <button class="small-btn" *ngIf="data.productSeries === 'MAIN'" mat-raised-button color="primary"   (click)="addVariant(data)">
+                    <span class="fs11" >Add Variant</span>
+                  </button>
+                  <div class="text-center variantSeries"
+                      *ngIf="data.productSeries === 'VARIANT'"  >
+                      {{ data.productSeries }}
+                  </div>
                 </td>
                 
               </tr>

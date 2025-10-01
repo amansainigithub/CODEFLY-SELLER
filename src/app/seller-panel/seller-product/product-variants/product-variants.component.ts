@@ -392,13 +392,8 @@ export class ProductVariantsComponent {
   }
 
   // Final Settlement
-  finalSettlement(
-    bankSettlementAmount: string,
-    shippingCharges: string
-  ): string {
-    return this.roundToTwo(
-      parseFloat(bankSettlementAmount) + parseFloat(shippingCharges)
-    );
+  finalSettlement(bankSettlementAmount: string,shippingCharges: string): string {
+    return this.roundToTwo(parseFloat(bankSettlementAmount) + parseFloat(shippingCharges));
   }
 
   // Utility method to round numbers to two decimal places
@@ -461,8 +456,13 @@ export class ProductVariantsComponent {
     }, 2000);
   }
 
-  // ============================================================================================
 
+
+
+
+
+
+  // ============================================================================================
   // MODEL PROPERTIES STARTING
   @ViewChild('proceedModel') proceedModel!: ElementRef;
   productProceedModelShow() {
@@ -494,6 +494,15 @@ export class ProductVariantsComponent {
       .loadProductDetails(this.productData.productId)
       .subscribe({
         next: (res: any) => {
+
+          this.actualPrice = res.data.productPrice;
+          this.gstAmount = res.data.productGst;
+          this.tcsAmount = res.data.productTcs;
+          this.tdsAmount = res.data.productTds;
+          this.bankSettlementAmount = res.data.bankSettlementAmount;
+          this.finalSettlementAmount = this.roundToTwo(parseFloat(this.bankSettlementAmount) + parseFloat(this.shippingCharges));
+
+          //Load Data
           this.loadData = res.data;
 
           // 1. Patch simple fields

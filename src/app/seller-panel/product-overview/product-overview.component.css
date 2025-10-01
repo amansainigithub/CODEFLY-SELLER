@@ -1,5 +1,13 @@
 /* UNDER REVIEW STARTING...*/
 
+.underReview{
+  background-color: #eded3c;
+  border-radius: 4px;
+  padding: 3px 3px;
+  text-align: center;
+}
+
+
 .small-btn {
   padding: 1px 7px; /* smaller size */
   font-size: 11px;   /* agar text chhota chahiye */
