@@ -59,9 +59,9 @@ export class ProductUploadComponent {
     //Get Engine-X Data--- Form Builder By Engine X Data Dynamically----
     this.getEngineX();
 
-    setTimeout(() => {
-      this.prefillForm();
-    }, 2000);
+    // setTimeout(() => {
+    //   this.prefillForm();
+    // }, 2000);
   }
 
   getEngineX() {
