@@ -68,7 +68,7 @@
             </thead>
             <tbody>
               <tr scope="row" *ngFor="let data of underReviewData; let i = index">
-                <td class="p-3">{{ data.id }}</td>
+                <td class="p-3">{{ i + 1 }}</td>
                 <td>
                   <img [src]="data.productMainFile" height="65" width="65" class="p-1" style="border-radius: 8px;object-fit: cover;" alt="">
                 </td>

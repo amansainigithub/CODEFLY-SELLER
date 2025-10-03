@@ -18,4 +18,10 @@ export class EngineXService {
       API_AUTHORIZA_URL + 'engineXBuilderController/getEngineX/' + engineXId
     );
   }
+
+  getChargeConfigService(id: any): Observable<any> {
+    return this.http.get(
+      API_AUTHORIZA_URL + 'engineXBuilderController/getChargesBySeller/' + id
+    );
+  }  
 }

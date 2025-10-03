@@ -29,6 +29,8 @@ export class ProductUploadComponent {
   //Progress Bar
   progressBar: any = false;
 
+
+
   constructor(
     private engineXService: EngineXService,
     private formBuilder: FormBuilder,
@@ -56,8 +58,11 @@ export class ProductUploadComponent {
       productSizeRows: this.formBuilder.array([]),
     });
 
-    //Get Engine-X Data--- Form Builder By Engine X Data Dynamically----
+    //GET ENGINE-X DATA EX-FORM BUILDER DYNAMICALLY
     this.getEngineX();
+
+    //GET CHARGES
+    this.getChargeData();
 
     // setTimeout(() => {
     //   this.prefillForm();
@@ -65,7 +70,6 @@ export class ProductUploadComponent {
   }
 
   getEngineX() {
-    
     this.spinner.show();
     this.engineXService.getEngineX(this.categorySelection.vData.id).subscribe(
       (data: any) => {
@@ -78,6 +82,28 @@ export class ProductUploadComponent {
         this.generateDynamicControls(this.productDetails);
         this.generateDynamicControls(this.additionalDetails);
         // console.log(this.productForm);
+        this.spinner.hide();
+      },
+      (err: any) => {
+        console.error(err);
+        this.spinner.hide();
+      }
+    );
+  }
+
+
+ //CHARGES
+  tcsCharge:any;
+  tdsCharge:any;
+  shippingCharge:any;
+  getChargeData() {
+    this.spinner.show();
+    this.engineXService.getChargeConfigService(this.categorySelection.vData.id).subscribe(
+      (res: any) => {
+        console.log(res.data);
+        this.tcsCharge = res.data.tcsCharge;
+        this.tdsCharge = res.data.tdsCharge;
+        this.shippingCharge = res.data.shippingCharge;
         this.spinner.hide();
       },
       (err: any) => {
@@ -299,7 +325,6 @@ export class ProductUploadComponent {
   tcsAmount: any;
   tdsAmount: any;
   bankSettlementAmount: any;
-  shippingCharges: any = 70.00;
   finalSettlementAmount: any;
 
   onPriceChange(rowIndex: number): void {
@@ -331,17 +356,12 @@ export class ProductUploadComponent {
       
 
       // Bank Settlement
-this.bankSettlementAmount = Number(this.actualPrice || 0) 
-                          - (Number(this.gstAmount || 0) 
-                             + Number(this.tcsAmount || 0) 
-                             + Number(this.tdsAmount || 0));
-      console.log("bankSettlementAmount :: " +this.bankSettlementAmount);
+      this.bankSettlementAmount = Number(this.actualPrice || 0) - (Number(this.gstAmount || 0)  
+                                + Number(this.tcsAmount || 0)  + Number(this.tdsAmount || 0));
+      // console.log("bankSettlementAmount :: " +this.bankSettlementAmount);
 
       // Final Settlement
-      this.finalSettlementAmount = this.finalSettlement(
-        this.bankSettlementAmount,
-        this.shippingCharges
-      );
+      this.finalSettlementAmount = this.finalSettlement(this.bankSettlementAmount,this.shippingCharge);
     } else {
       return;
     }
@@ -364,13 +384,13 @@ this.bankSettlementAmount = Number(this.actualPrice || 0)
   calculateTCS(price: number, gstPercentage: string | number): string {
     const gstAmount = parseFloat(this.calculateGST(price, gstPercentage));
     const totalPrice = price + gstAmount;
-    const tcsRate = 1; // TCS rate in percentage
+    const tcsRate = this.tcsCharge; // TCS rate getting dynamically
     return this.roundToTwo((totalPrice * tcsRate) / 100);
   }
 
   // TDS CALCULATION
   calculateTDS(price: number): string {
-    const tdsRate = 1;
+    const tdsRate = this.tdsCharge; // TDS rate getting dynamically
     return this.roundToTwo((price * tdsRate) / 100);
   }
 
