@@ -64,9 +64,9 @@ export class ProductUploadComponent {
     //GET CHARGES
     this.getChargeData();
 
-    // setTimeout(() => {
-    //   this.prefillForm();
-    // }, 2000);
+    setTimeout(() => {
+      this.prefillForm();
+    }, 2000);
   }
 
   getEngineX() {

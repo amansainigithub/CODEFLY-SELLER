@@ -160,7 +160,7 @@ export class ProductOverviewComponent {
     this.modelClose();
     this.router.navigateByUrl('/seller/dashboard/home/product-Variant', {state: this.productData});
   }
-  //ADD VARINAT ENDING..
+  //ADD VARINAT ENDING...
 
 
 
