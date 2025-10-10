@@ -12,6 +12,21 @@ const httpOptions = {
 export class ProductOverviewService {
   constructor(private http: HttpClient) {}
 
+
+  getUserAllProductService(request: any, username: any): Observable<any> {
+    return this.http.post(
+      API_AUTHORIZA_URL +
+        'productOverviewController/' +
+        'fetchAllUserProduct?page=' +
+        request.page +
+        '&size=' +
+        request.size +
+        '&username=' +
+        username,
+      httpOptions
+    );
+  }
+
   getUnderReviewProductService(request: any, username: any): Observable<any> {
     return this.http.post(
       API_AUTHORIZA_URL +
@@ -41,10 +56,37 @@ export class ProductOverviewService {
   }
 
 
-  getOldProductDetails(request: any, username: any): Observable<any> {
+    getDisApprovedProductService(request: any, username: any): Observable<any> {
     return this.http.post(
       API_AUTHORIZA_URL +
         'productOverviewController/' +
-        'getOldProductDetails?productId=' +request +'&username=' + username,httpOptions);
+        'getDisApprovedProduct?page=' +
+        request.page +
+        '&size=' +
+        request.size +
+        '&username=' +
+        username,
+      httpOptions
+    );
   }
+
+
+
+    getDraftProductService(request: any, username: any): Observable<any> {
+    return this.http.post(
+      API_AUTHORIZA_URL +
+        'productOverviewController/' +
+        'getDraftProduct?page=' +
+        request.page +
+        '&size=' +
+        request.size +
+        '&username=' +
+        username,
+      httpOptions
+    );
+  }
+
+
+
+
 }

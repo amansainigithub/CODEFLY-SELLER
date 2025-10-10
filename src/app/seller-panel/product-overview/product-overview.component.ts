@@ -21,7 +21,74 @@ export class ProductOverviewComponent {
     private router: Router
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getUserAllProductData()
+  }
+
+
+
+
+  // =============================================================================
+
+  // USER ALL PRODUCT STARTING
+
+  userAllProductData: any;
+  userAllProduct_totalElements: number = 0;
+  userAllProduct_currentPage: number = 1;
+  userAllProduct_itemsPerPage: number = 10;
+  // is Skeleton Loader Valid
+  userAllProduct_skeleton: any = false;
+
+  getUserAllProductData() {
+    this.fetchUserAllProduct({ page: '0', size: '10' });
+  }
+
+  fetchUserAllProduct(request: any) {
+    this.userAllProduct_skeleton = true;
+
+    const user = this.tokenStorageService.getUser();
+
+    this.productOverviewService
+      .getUserAllProductService(request, user.username)
+      .subscribe({
+        next: (res: any) => {
+          this.userAllProductData = res.data.content;
+          this.userAllProduct_totalElements = res.data.totalElements;
+          this.userAllProduct_currentPage = res.data.pageable.pageNumber;
+          this.userAllProduct_itemsPerPage = res.data.pageable.pageSize;
+          this.userAllProduct_skeleton = false;
+        },
+        error: (err: any) => {
+          this.userAllProduct_skeleton = false;
+          this.toast.error({
+            detail: 'Error',
+            summary: err.error.data?.message || 'Something went wrong',
+            position: 'bottomRight',
+            duration: 3000,
+          });
+        },
+      });
+  }
+
+  nextPageUserAllProduct(event: PageEvent) {
+    this.userAllProduct_currentPage = event.pageIndex;
+    this.userAllProduct_itemsPerPage = event.pageSize;
+
+    const request = {
+      page: this.userAllProduct_currentPage.toString(),
+      size: this.userAllProduct_itemsPerPage.toString(),
+    };
+    this.fetchUserAllProduct(request);
+  }
+  // USER ALL PRODUCT ENDING
+
+  // =============================================================================
+  // =============================================================================
+
+
+
+
+
 
   // UNDER REVIEW PRODUCT STARTING
 
@@ -135,6 +202,121 @@ export class ProductOverviewComponent {
 
 
 
+
+
+  
+  // =============================================================================
+  // =============================================================================
+
+  // PRODUCT DIS-APPROVED STARTING
+  disApprovedData: any;
+  disApproved_totalElements: number = 0;
+  disApproved_currentPage: number = 1;
+  disApproved_itemsPerPage: number = 10;
+  // is Skeleton Loader Valid
+  disApproved_skeleton: any = false;
+
+  getDisProductApproved() {
+    this.getDisApprovedProduct({ page: '0', size: '10' });
+  }
+
+  getDisApprovedProduct(request: any) {    
+    this.disApproved_skeleton = true;
+
+    const user = this.tokenStorageService.getUser();
+
+    this.productOverviewService.getDisApprovedProductService(request, user.username)
+      .subscribe({
+        next: (res: any) => {
+          this.disApprovedData = res.data.content;
+          this.disApproved_totalElements = res.data.totalElements;
+          this.disApproved_currentPage = res.data.pageable.pageNumber;
+          this.disApproved_itemsPerPage = res.data.pageable.pageSize;
+          this.disApproved_skeleton = false;
+        },
+        error: (err: any) => {
+          this.disApproved_skeleton = false;
+          this.toast.error({
+            detail: 'Error',
+            summary: err.error.data?.message || 'Something went wrong',
+            position: 'bottomRight',
+            duration: 3000,
+          });
+        },
+      });
+  }
+
+  nextPageDisApproved(event: PageEvent) {
+    this.disApproved_currentPage = event.pageIndex;
+    this.disApproved_itemsPerPage = event.pageSize;
+
+    const request = {
+      page: this.disApproved_currentPage.toString(),
+      size: this.disApproved_itemsPerPage.toString(),
+    };
+    this.getDisApprovedProduct(request);
+  }
+  //PRODUCT DIS-APPROVED ENDING...
+
+  // =============================================================================
+  // =============================================================================
+
+
+
+
+
+  // PRODUCT DRAFT STARTING
+  draftData: any;
+  draft_totalElements: number = 0;
+  draft_currentPage: number = 1;
+  draft_itemsPerPage: number = 10;
+  // is Skeleton Loader Valid
+  draft_skeleton: any = false;
+
+  getDraftProductData() {
+    this.getDraftProduct({ page: '0', size: '10' });
+  }
+
+  getDraftProduct(request: any) {    
+    this.draft_skeleton = true;
+
+    const user = this.tokenStorageService.getUser();
+
+    this.productOverviewService.getDraftProductService(request, user.username)
+      .subscribe({
+        next: (res: any) => {
+          this.draftData = res.data.content;
+          this.draft_totalElements = res.data.totalElements;
+          this.draft_currentPage = res.data.pageable.pageNumber;
+          this.draft_itemsPerPage = res.data.pageable.pageSize;
+          this.draft_skeleton = false;
+        },
+        error: (err: any) => {
+          this.draft_skeleton = false;
+          this.toast.error({
+            detail: 'Error',
+            summary: err.error.data?.message || 'Something went wrong',
+            position: 'bottomRight',
+            duration: 3000,
+          });
+        },
+      });
+  }
+
+  nextPageProductDraft(event: PageEvent) {
+    this.draft_currentPage = event.pageIndex;
+    this.draft_itemsPerPage= event.pageSize;
+
+    const request = {
+      page: this.draft_currentPage.toString(),
+      size: this.draft_itemsPerPage.toString(),
+    };
+    this.getDisApprovedProduct(request);
+  }
+  //PRODUCT DRAFT ENDING...
+
+  // =============================================================================
+  // =============================================================================
 
 
 
