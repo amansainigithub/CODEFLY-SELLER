@@ -10,6 +10,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+     // Password regex: at least 6 chars, 1 letter, 1 number, 1 special char
+  passwordPattern: string = '^(?=.*[A-Za-z])(?=.*\\d)(?=.*[\\u0040$!%*?&])[A-Za-z\\d\\u0040$!%*?&]{6,}$';
+
   form: any = {
     username: null,
     password: null,
@@ -54,7 +57,7 @@ export class LoginComponent implements OnInit {
        this.spinner.hide();
       },
       err => {
-        this.errorMessage = err.error.message;
+        this.errorMessage = "invalid username or password";
         this.isLoginFailed = true;
         this.spinner.hide();
       }

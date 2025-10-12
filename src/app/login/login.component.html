@@ -1,76 +1,75 @@
-<div class="col-md-12"  >
-    <div class="card card-container" >
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <form
-        *ngIf="!isLoggedIn"
-        name="form"
-        (ngSubmit)="f.form.valid && onSubmit()"
-        #f="ngForm"
-        novalidate
-      >
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input
-            type="text"
-            class="form-control"
-            name="username"
-            [(ngModel)]="form.username"
-            required
-            #username="ngModel"
-          />
-          <div
-            class="alert alert-danger"
-            role="alert"
-            *ngIf="username.errors && f.submitted"
-          >
-            Username is required!
+<div class="login-bg">
+  <div class="col-md-12 d-flex justify-content-center mt-5">
+
+    <div class="card shadow-sm border-0 login-card">
+
+      <p class="text-center mb-4 fw-semibold fs14" style="font-weight: 500;">
+        Login to Your Account
+        <span class="lock-anim">
+          <i class="bi bi-lock-fill"></i>
+          <span class="lock-handle"></span>
+        </span>
+      </p>
+
+      <form *ngIf="!isLoggedIn" name="form" (ngSubmit)="onSubmit()" #f="ngForm" novalidate>
+
+        <!-- Username / Mobile Number -->
+        <div class="form-group mb-3">
+          <label class="fs11">Mobile Number</label>
+          <input type="text" class="form-control form-control-sm" name="username" [(ngModel)]="form.username" required
+            pattern="^[6-9]\d{9}$" #username="ngModel" [ngClass]="{
+              'is-invalid': username.invalid && (username.touched || username.dirty || f.submitted)
+            }" />
+          <div *ngIf="username.invalid && (username.touched || username.dirty || f.submitted)"
+            class="invalid-feedback fs11">
+            <div *ngIf="username.errors?.['required']">Mobile number is required.</div>
+            <div *ngIf="username.errors?.['pattern']">Enter a valid 10-digit mobile number.</div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            name="password"
-            [(ngModel)]="form.password"
-            required
-            minlength="6"
-            #password="ngModel"
-          />
-          <div
-            class="alert alert-danger"
-            role="alert"
-            *ngIf="password.errors && f.submitted"
-          >
-            <div>Password is required</div>
-            <div >
-              Password must be at least 6 characters
-            </div>
+
+
+        <!-- Password -->
+        <div class="form-group mb-3">
+          <label class="fs11">Password</label>
+          <input type="password" class="form-control form-control-sm" name="password" [(ngModel)]="form.password"
+            required minlength="6" #password="ngModel" [ngClass]="{
+            'is-invalid': password.invalid && (password.touched || password.dirty || f.submitted)
+          }" />
+          <div *ngIf="password.invalid && (password.touched || password.dirty || f.submitted)"
+            class="invalid-feedback fs11">
+            <div *ngIf="password.errors?.['required']">Password is required.</div>
+            <div *ngIf="password.errors?.['minlength']">Minimum 6 characters required.</div>
           </div>
         </div>
-        <div class="form-group mt-3 text-center" >
-          <button mat-raised-button color="primary" style="width: 100%;">
+
+        <!-- Submit Button -->
+        <div class="form-group mt-4">
+
+          <!-- Login Button -->
+          <button mat-raised-button color="primary" class="w-100" [disabled]="f.invalid"
+            style="font-size: 12px; height: 32px;">
             Login
           </button>
+
+          <!-- Signup Button -->
+          <a href="#" routerLink="/register" mat-raised-button color="primary" class="w-100 mt-2"
+            style="font-size: 12px; height: 32px;background-color: #E2E72E;color: black;">
+            Sign up
+          </a>
+
         </div>
-        <div class="form-group">
-          <div
-            class="alert alert-danger"
-            role="alert"
-            *ngIf="f.submitted && isLoginFailed"
-          >
-            Login failed: {{ errorMessage }}
-          </div>
+
+        <!-- Login Error -->
+        <!-- *ngIf="f.submitted && isLoginFailed -->
+        <div class="text-danger text-center mt-2 fs11 p-2" *ngIf="f.submitted && isLoginFailed"
+          style="background-color: #ffffff;border-radius: 5px;color: rgba(244, 21, 13, 0.778);border: 1px solid rgb(163, 4, 4);">
+          <span style="color: #d20000;">Failed: {{ errorMessage }}</span>
         </div>
+
       </form>
-  
-      <div class="alert alert-success" *ngIf="isLoggedIn">
-        Logged in as {{ roles }}.
-      </div>
+
+
     </div>
   </div>
-  
+
+</div>

@@ -11,15 +11,16 @@
 
 <!-- USER IS LOGGED IN  NAVBAR START -->
 <div id="app" *ngIf="isLoggedIn">
-  <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5  py-lg-2" 
-       style="background-color: white; position: fixed; top: 0; width: 100%; z-index: 1030; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-    <a href="index.html" class="navbar-brand p-0">
-        <h2 class="display-6 m-0" style="color: #8B6BF6;">
+  <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-lg-2 navExpand">
+    
+       <a href="index.html" class="navbar-brand p-0 brandName">
+        <p class="m-0" style="color: #8B6BF6;">
           <i class="bi bi-send-check-fill"></i>
-          Faster
-        </h2>
+          Codefly
+        </p>
         <!-- <img src="img/logo.png" alt="Logo"> -->
-    </a>
+       </a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
         <span class="fa fa-bars"></span>
     </button>
@@ -59,7 +60,7 @@
     <a href="index.html" class="navbar-brand p-0">
       <h1 class="display-6 text-primary m-0">
         <i class="bi bi-send-check-fill"></i>
-        Faster
+        Codefly
       </h1>
       <!-- <img src="img/logo.png" alt="Logo"> -->
     </a>
@@ -69,13 +70,12 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <div class="navbar-nav ms-auto py-0">
       </div>
-      <a href="#" routerLink="/login"
-        class="btn btn-light border border-primary rounded-pill text-primary py-2 px-4 me-4">Log In</a>
-      <a href="#" routerLink="/register" class="btn btn-primary rounded-pill text-white py-2 px-4">Sign Up</a>
+      <a href="#" routerLink="/login"    mat-stroked-button color="primary" class="mx-3">Log In</a>
+      <a href="#" routerLink="/register" mat-raised-button color="primary">Sign Up</a>
     </div>
   </nav>
 
-  <div class="container-fluid"> 
+  <div> <!-- class="container-fluid"-->
     <router-outlet></router-outlet>
   </div>
 </div>
@@ -92,16 +92,16 @@
 
 <!-- SIDEBAR STARTING-->
 <div *ngIf="isLoggedIn" >
-              <div style="top: 9%;" class="sidebar scrollable-content" [ngClass]="{'sidebar-extend-min': !isSidebarVisible}">
+              <div style="top: 7%;" class="sidebar scrollable-content" [ngClass]="{'sidebar-extend-min': !isSidebarVisible}">
                 <!-- <a href="" class="item">Home</a>
                           <a href="" class="item">Product</a> -->
               
                 <ul class="nav flex-column">
                   <li>
-                    <h4 class="text-center text-light">
+                    <p class="text-center text-light">
                       <i class="bi bi-send-check-fill"></i>
-                      Faster
-                    </h4>
+                     Codefly
+                    </p>
                   </li>
               
                   <li class="nav-item mt-3">
@@ -156,16 +156,11 @@
                       <button mat-stroked-button #menuBtn   type="button" (click)="toggleSidebar()">
                         <i class="bi bi-list"></i>
                       </button>
-                    
-                   
 
-                      <span class="clock">
-                        {{ currentTime }}
-                      </span>
+                      <span class="clock"> {{ currentTime }}</span>
                       
                     <!-- DYNAMIC ROOT CONTENT -->
                   </router-outlet>
-                    
                   </div>
             </div>
             <!-- CONTENT -->
