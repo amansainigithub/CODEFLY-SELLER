@@ -610,6 +610,7 @@ export class ProductUploadComponent {
       stretchType: 'Low Stretch',
       careInstruction: 'Do Not Bleach',
       description: 'coding company',
+      cottonType: 'Soft Cotton',
     };
 
     // 1. Patch simple fields
