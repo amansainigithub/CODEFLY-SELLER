@@ -13,6 +13,23 @@ declare var bootstrap: any; // Declare bootstrap for accessing modal methods
   styleUrl: './product-overview.component.css',
 })
 export class ProductOverviewComponent {
+
+
+  // USER ALL PRODUCT STARTING
+  userAllProductData: any;
+  userAllProduct_totalElements: number = 0;
+  userAllProduct_currentPage: number = 1;
+  userAllProduct_itemsPerPage: number = 10;
+  // is Skeleton Loader Valid
+  userAllProduct_skeleton: any = false;
+
+  //Product Counts
+  totalProducts:any
+  underReviewCount:any;
+  approvedCount:any;
+  disApprovedCount:any;
+  draftCount:any;
+
   constructor(
     private productOverviewService: ProductOverviewService,
     private spinner: NgxSpinnerService,
@@ -30,14 +47,6 @@ export class ProductOverviewComponent {
 
   // =============================================================================
 
-  // USER ALL PRODUCT STARTING
-
-  userAllProductData: any;
-  userAllProduct_totalElements: number = 0;
-  userAllProduct_currentPage: number = 1;
-  userAllProduct_itemsPerPage: number = 10;
-  // is Skeleton Loader Valid
-  userAllProduct_skeleton: any = false;
 
   getUserAllProductData() {
     this.fetchUserAllProduct({ page: '0', size: '10' });
@@ -52,11 +61,20 @@ export class ProductOverviewComponent {
       .getUserAllProductService(request, user.username)
       .subscribe({
         next: (res: any) => {
-          this.userAllProductData = res.data.content;
-          this.userAllProduct_totalElements = res.data.totalElements;
-          this.userAllProduct_currentPage = res.data.pageable.pageNumber;
-          this.userAllProduct_itemsPerPage = res.data.pageable.pageSize;
+          console.log(res);
+          
+          this.userAllProductData = res.data.overviewPageData.content;
+          this.userAllProduct_totalElements = res.data.overviewPageData.totalElements;
+          this.userAllProduct_currentPage = res.data.overviewPageData.pageable.pageNumber;
+          this.userAllProduct_itemsPerPage = res.data.overviewPageData.pageable.pageSize;
           this.userAllProduct_skeleton = false;
+
+          //Manage Product Counts
+          this.totalProducts = res.data.totalProducts;
+          this.underReviewCount = res.data.underReviewCount;
+          this.approvedCount = res.data.approvedCount;
+          this.disApprovedCount = res.data.disApprovedCount;
+          this.draftCount = res.data.draftCount;        
         },
         error: (err: any) => {
           this.userAllProduct_skeleton = false;
@@ -69,6 +87,10 @@ export class ProductOverviewComponent {
         },
       });
   }
+
+
+
+
 
   nextPageUserAllProduct(event: PageEvent) {
     this.userAllProduct_currentPage = event.pageIndex;

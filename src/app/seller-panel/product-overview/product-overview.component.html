@@ -1,5 +1,53 @@
 <div class="container bg-white p-4 mt-4" style="border-radius: 12px;">
 
+  <div class="row mb-4 fs12">
+  
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body p-1 px-2">
+          <span>Total Upload Products</span>
+          <p class="fs18">{{totalProducts}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body p-1 px-2">
+          <span>Products UnderReview</span>
+          <p class="fs18">{{underReviewCount}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body p-1 px-2">
+          <span>Products Approved</span>
+          <p class="fs18">{{approvedCount}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body p-1 px-2">
+          <span>Products Error</span>
+          <p class="fs18">{{disApprovedCount}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2">
+      <div class="card text-center">
+        <div class="card-body p-1 px-2">
+          <span>Products Drafts</span>
+          <p class="fs18">{{draftCount}}</p>
+        </div>
+      </div>
+    </div>
+  
+  </div>
 
 <!-- TABS STARTING -->
   <div>
@@ -68,21 +116,38 @@
                 <td>{{ data.productName }}</td>
                 <td>{{ data.productKey }}</td>
                 <td>{{ data.productDate }} | {{ data.productTime }}</td>
+
                 <td>
                   <div *ngIf="data.productStatus === 'UNDER_REVIEW'" class="underReview" >
                     UNDER REVIEW
                     <i class="bi bi-dot blink-dot-underReview "></i>
                   </div>
+
+                   <div *ngIf="data.productStatus === 'APPROVED'" class="approved" >
+                    APPROVED
+                    <i class="bi bi-dot blink-dot-approved"></i>
+                  </div>
+
+                  <div *ngIf="data.productStatus === 'DIS_APPROVED'" class="dis-approved" >
+                    DIS APPROVED
+                    <i class="bi bi-dot blink-dot-dis-approved "></i>
+                  </div>
+
+                   <div *ngIf="data.productStatus === 'DRAFT'" class="draft" >
+                    DIS APPROVED
+                    <i class="bi bi-dot blink-dot-draft "></i>
+                  </div>
+
                 </td>
                 
                 <td>
-                  <button class="small-btn" *ngIf="data.productSeries === 'MAIN'" mat-raised-button color="primary"   (click)="addVariant(data)">
+                  <button class="small-btn" *ngIf="data.productSeries === 'MAIN'" mat-raised-button color="primary" (click)="addVariant(data)">
                     <span class="fs11" >Add Variant</span>
                   </button>
-                  <div class="text-center variantSeries"
-                      *ngIf="data.productSeries === 'VARIANT'"  >
-                      {{ data.productSeries }}
+                  <div class="text-center variantSeries"  *ngIf="data.productSeries === 'VARIANT'"  >
+                      VARIANT
                   </div>
+
                 </td>
                 
               </tr>
@@ -195,7 +260,7 @@
               <tr class="text-center" style="background-color: #e7e8e8;">
                 <th scope="col">id</th>
                 <th scope="col">Product</th>
-                <th scope="col">Product Name</th>
+                <th scope="col" style="width: 340px;">Product Name</th>
                 <th scope="col">Product Key</th>
                 <th scope="col">Date Time</th>
                 <th scope="col">Product Status</th>
@@ -213,9 +278,9 @@
                 <td>{{ data.productKey }}</td>
                 <td>{{ data.productDate }} | {{ data.productTime }}</td>
                 <td>
-                  <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 2px;" >
-                    {{ data.productStatus }}
-                    <i class="bi bi-dot blink-dot-approved"></i>
+                  <div class="approved" >
+                        APPROVED
+                    <i class="bi bi-dot blink-dot-approved "></i>
                   </div>
                 </td>
                 <td>
@@ -266,7 +331,7 @@
                 <tr class="text-center" style="background-color: #e7e8e8;">
                   <th scope="col">id</th>
                   <th scope="col">Product</th>
-                  <th scope="col">Product Name</th>
+                  <th scope="col" style="width: 340px;">Product Name</th>
                   <th scope="col">Product Key</th>
                   <th scope="col">Date Time</th>
                   <th scope="col">Product Status</th>
@@ -284,10 +349,10 @@
                   <td>{{ data.productKey }}</td>
                   <td>{{ data.productDate }} | {{ data.productTime }}</td>
                   <td>
-                    <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 2px;" >
-                      {{ data.productStatus }}
-                      <i class="bi bi-dot blink-dot-approved"></i>
-                    </div>
+                    <div class="dis-approved" >
+                        DIS APPROVED
+                    <i class="bi bi-dot blink-dot-dis-approved "></i>
+                  </div>
                   </td>
                   <td>
                 <button mat-raised-button color="primary" class="small-btn" >
@@ -355,10 +420,11 @@
                   <td>{{ data.productKey }}</td>
                   <td>{{ data.productDate }} | {{ data.productTime }}</td>
                   <td>
-                    <div  style="background-color: #F7FAFF;border-radius: 4px;padding: 2px;" >
-                      {{ data.productStatus }}
-                      <i class="bi bi-dot blink-dot-approved"></i>
-                    </div>
+                    <div class="draft" >
+                        DRAFT
+                    <i class="bi bi-dot blink-dot-draft"></i>
+                  </div>
+
                   </td>
                   <td>
                 <button mat-raised-button color="primary" class="small-btn" >

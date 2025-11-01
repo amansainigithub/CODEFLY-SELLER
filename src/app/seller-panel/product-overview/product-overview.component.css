@@ -1,12 +1,32 @@
 /* UNDER REVIEW STARTING...*/
 
 .underReview{
-  background-color: #eded3c;
+  background-color: #ffffbb;
   border-radius: 4px;
   padding: 3px 3px;
   text-align: center;
 }
 
+.approved{
+  background-color: #d5ffca;
+  border-radius: 4px;
+  padding: 3px 3px;
+  text-align: center;
+}
+
+.dis-approved{
+  background-color: #ffe6dc;
+  border-radius: 4px;
+  padding: 3px 3px;
+  text-align: center;
+}
+
+.draft{
+  background-color: #deebff;
+  border-radius: 4px;
+  padding: 3px 3px;
+  text-align: center;
+}
 
 .small-btn {
   padding: 1px 7px; /* smaller size */
@@ -18,6 +38,36 @@
   font-size: 1rem; /* size increase, adjust as needed */
   color: #ffc107; /* Bootstrap warning yellow */
   text-shadow: 0 0 8px rgba(255, 193, 7, 0.8); /* soft glow */
+  animation: blinkUnderreview 1.5s infinite ease-in-out;
+}
+
+/* APPROVED STARTING...*/
+/* BLINK DOT APPROVED */
+.blink-dot-approved {
+  font-size:1rem; /* size increase, adjust as needed */
+  color: #09fb19; /* Bootstrap warning yellow */
+  text-shadow: 0 0 8px rgba(7, 248, 15, 0.8); /* soft glow */
+  animation: blinkApproved 1.5s infinite ease-in-out;
+}
+
+.blink-dot-approved {
+  font-size: 1rem; /* size increase, adjust as needed */
+  color: #2df113; /* Bootstrap warning yellow */
+  text-shadow: 0 0 8px rgba(24, 231, 35, 0.8); /* soft glow */
+  animation: blinkUnderreview 1.5s infinite ease-in-out;
+}
+
+.blink-dot-dis-approved {
+  font-size: 1rem; /* size increase, adjust as needed */
+  color: #dd5602; /* Bootstrap warning yellow */
+  text-shadow: 0 0 8px rgba(212, 89, 6, 0.8); /* soft glow */
+  animation: blinkUnderreview 1.5s infinite ease-in-out;
+}
+
+.blink-dot-draft{
+  font-size: 1rem; /* size increase, adjust as needed */
+  color: #4f0ec8; /* Bootstrap warning yellow */
+  text-shadow: 0 0 8px rgba(14, 43, 188, 0.8); /* soft glow */
   animation: blinkUnderreview 1.5s infinite ease-in-out;
 }
 
@@ -36,18 +86,9 @@
 .variantSeries{
   background-color: #e9edf5;
   border-radius: 4px;
-  padding: 2px 2px;
+  padding: 7px 9px;
 }
 
-
-/* APPROVED STARTING...*/
-/* BLINK DOT APPROVED */
-.blink-dot-approved {
-  font-size:1rem; /* size increase, adjust as needed */
-  color: #09fb19; /* Bootstrap warning yellow */
-  text-shadow: 0 0 8px rgba(7, 248, 15, 0.8); /* soft glow */
-  animation: blinkApproved 1.5s infinite ease-in-out;
-}
 
 @keyframes blinkApproved {
   0%   { opacity: 0.2; text-shadow: 0 0 2px rgba(66, 213, 7, 0.5); }
