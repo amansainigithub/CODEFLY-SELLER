@@ -1,4 +1,16 @@
-
+.heading {
+    background-color: #ffffff;
+    border-left: 5px solid #7e76ff;
+    padding: 10px;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    width: 220px;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+}
 
 /* Tooltip STARTING */
 .tooltip-text-uniq {
@@ -24,6 +36,11 @@
   transition: opacity 0.3s ease-in-out;
   /* 👈 Smooth fade */
 
+}
+
+
+.nav-btn-color{
+  color: #3738A6;
 }
 
 /* Arrow */
@@ -94,3 +111,4 @@
   background-color: rgb(189, 255, 189);
   color: rgb(17, 17, 17);
 }
+

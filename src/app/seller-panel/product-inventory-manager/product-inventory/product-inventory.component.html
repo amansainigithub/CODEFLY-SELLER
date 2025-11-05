@@ -1,25 +1,33 @@
-<p>product-stock works!</p>
+<div class="container bg-white p-4 fs14 mt-3" style="border-radius: 12px;">
 
-
-<div class="container bg-white p-4 fs14">
+     <div class="heading mb-4">
+        <i class="bi bi-justify-left mx-2"></i>
+        Product Inventory
+    </div>
 
 
     <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+        <div class="nav nav-tabs " id="nav-tab" role="tablist">
 
-            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
+            <button class="nav-link active nav-btn-color" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home"
                 type="button" role="tab" aria-controls="nav-home" aria-selected="true" (click)="getAllStocks()">
                 All Stock ({{totalElements}})
             </button>
 
-            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
+            <button class="nav-link nav-btn-color" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
                 type="button" role="tab" aria-controls="nav-profile" aria-selected="false" (click)="getOutOfStocks()">
-                Out Of Stock ({{outOfStock_totalElements}})
+                Out Of Stock 
+                <span *ngIf="outOfStock_totalElements > 0">
+                    ({{outOfStock_totalElements}})
+                </span>
             </button>
 
-            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
+            <button class="nav-link nav-btn-color" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
                 type="button" role="tab" aria-controls="nav-contact" aria-selected="false" (click)="getLowStocks()">
-                Low Stock ({{lowStock_totalElements}})
+                Low Stock
+                <span *ngIf="lowStock_totalElements > 0">
+                    ({{lowStock_totalElements}})
+                </span>
             </button>
         </div>
     </nav>
