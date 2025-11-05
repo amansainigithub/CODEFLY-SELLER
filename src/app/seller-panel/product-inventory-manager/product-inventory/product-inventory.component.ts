@@ -14,7 +14,7 @@ import { PageEvent } from '@angular/material/paginator';
 export class ProductInventoryComponent {
 
   
-    // USER ALL PRODUCT STARTING
+ //  ALL STOCKS PRODUCT STARTING
   AllStockData: any;
   totalElements: number = 0;
   currentPage: number = 1;
@@ -24,10 +24,8 @@ export class ProductInventoryComponent {
 
      constructor(
        private productStockService: ProductInventoryService,
-       private spinner: NgxSpinnerService,
        private toast: NgToastService,
        private tokenStorageService: TokenStorageService,
-       private router: Router
      ) {}
 
   ngOnInit(): void {
@@ -61,8 +59,8 @@ export class ProductInventoryComponent {
           this.toast.error({
             detail: 'Error',
             summary: err.error.data?.message || 'Something went wrong',
-            position: 'bottomRight',
-            duration: 3000,
+            position: 'topRight',
+            duration: 2000,
           });
         },
       });
@@ -70,7 +68,7 @@ export class ProductInventoryComponent {
 
   
 
-    nextPageUserAllProduct(event: PageEvent) {
+    nextPageStockProducts(event: PageEvent) {
       this.currentPage = event.pageIndex;
       this.itemsPerPage = event.pageSize;
       const request = {
@@ -107,9 +105,7 @@ onInventoryInput(inventories: any) {
 //VALIDATE INVENTORY 
 
 
-
-
-
+//Update Product Inventory Starting
 updateProductInventory={
   id:'',
   inventory:'',
@@ -140,8 +136,119 @@ updateInventory(productSize:any, invId: number, newQty: number) {
           this.toast.error({ detail: 'Error',summary: 'Error | Inventory Not Update',position: 'topRight',duration: 2000,});
         },
   });
+}
+//Update Product Inventory Ending
 
+// =============================================================================================================
+// =============================================================================================================
+// OUT OF STOCKS PRODUCTS STARTING
+
+    // USER ALL PRODUCT STARTING
+  outOfStock_stockData: any;
+  outOfStock_totalElements: number = 0;
+  outOfStock_currentPage: number = 1;
+  outOfStock_itemsPerPage: number = 10;
+  // is Skeleton Loader Valid
+  outOfStock_skeleton: any = false;
+
+getOutOfStocks(){
+  this.getAoutOfStocksProducts({ page: '0', size: '10' });
 }
 
+
+getAoutOfStocksProducts(request: any) {
+    this.userAllProduct_skeleton = true;
+
+    const user = this.tokenStorageService.getUser();
+
+    this.productStockService.getOutOfStocksProducts(request, user.username)
+      .subscribe({
+        next: (res: any) => {
+          this.outOfStock_stockData = res.data.content;   
+          this.outOfStock_totalElements = res.data.totalElements;
+          this.outOfStock_currentPage = res.data.pageable.pageNumber;
+          this.outOfStock_itemsPerPage = res.data.pageable.pageSize;
+          this.outOfStock_skeleton = false;      
+        },
+        error: (err: any) => {
+          this.outOfStock_skeleton = false;
+          this.toast.error({
+            detail: 'Error',
+            summary: err.error.data?.message || 'Something went wrong',
+            position: 'topRight',
+            duration: 2000,
+          });
+        },
+      });
+  }
+
+  
+    nextPageOutOfStockProducts(event: PageEvent) {
+      this.outOfStock_currentPage = event.pageIndex;
+      this.outOfStock_itemsPerPage = event.pageSize;
+      const request = {
+        page: this.outOfStock_currentPage.toString(),
+        size: this.outOfStock_itemsPerPage.toString(),
+      };
+      this.getAoutOfStocksProducts(request);
+    }
+
+// OUT OF STOCKS PRODUCTS ENDING
+// =============================================================================================================
+// =============================================================================================================
+
+// LOW STOCKS PRODUCTS STARTING
+
+    // USER ALL PRODUCT STARTING
+  lowStock_stockData: any;
+  lowStock_totalElements: number = 0;
+  lowStock_currentPage: number = 1;
+  lowStock_itemsPerPage: number = 10;
+  // is Skeleton Loader Valid
+  lowStock_skeleton: any = false;
+
+getLowStocks(){
+  this.getLowStocksProducts({ page: '0', size: '10' });
+}
+
+
+getLowStocksProducts(request: any) {
+    this.lowStock_skeleton = true;
+
+    const user = this.tokenStorageService.getUser();
+
+    this.productStockService.getLowStocksProducts(request, user.username)
+      .subscribe({
+        next: (res: any) => {
+          this.lowStock_stockData = res.data.content;
+          this.lowStock_totalElements = res.data.totalElements;
+          this.lowStock_currentPage = res.data.pageable.pageNumber;
+          this.lowStock_itemsPerPage = res.data.pageable.pageSize;
+          this.lowStock_skeleton = false;      
+        },
+        error: (err: any) => {
+          this.lowStock_skeleton = false;
+          this.toast.error({
+            detail: 'Error',
+            summary: err.error.data?.message || 'Something went wrong',
+            position: 'topRight',
+            duration: 2000,
+          });
+        },
+      });
+  }
+  
+    nextPageLowStockProducts(event: PageEvent) {
+      this.lowStock_currentPage = event.pageIndex;
+      this.lowStock_itemsPerPage = event.pageSize;
+      const request = {
+        page: this.lowStock_currentPage.toString(),
+        size: this.lowStock_itemsPerPage.toString(),
+      };
+      this.getLowStocksProducts(request);
+    }
+
+// =============================================================================================================
+// ==================
 
 }

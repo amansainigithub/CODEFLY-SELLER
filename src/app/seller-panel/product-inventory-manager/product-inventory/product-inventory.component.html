@@ -13,18 +13,13 @@
             </button>
 
             <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile"
-                type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
-                Out Of Stock (10)
+                type="button" role="tab" aria-controls="nav-profile" aria-selected="false" (click)="getOutOfStocks()">
+                Out Of Stock ({{outOfStock_totalElements}})
             </button>
 
             <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact"
-                type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
-                Low Stock (10)
-            </button>
-
-            <button class="nav-link" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled"
-                type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" disabled>
-                Disabled
+                type="button" role="tab" aria-controls="nav-contact" aria-selected="false" (click)="getLowStocks()">
+                Low Stock ({{lowStock_totalElements}})
             </button>
         </div>
     </nav>
@@ -34,8 +29,11 @@
 
     <div class="tab-content" id="nav-tabContent">
 
+        <!-- ========================================================================================================= -->
+        <!-- ========================================================================================================= -->
+
         <!-- ALL STOCK STARTING -->
-        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+        <div class="tab-pane fade show active mt-3" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
             tabindex="0">
 
             <div *ngIf="userAllProduct_skeleton">
@@ -46,7 +44,7 @@
                 <table class=" table table-sm table-hover table-bordered fs11">
                     <thead>
                         <tr class="text-center" style="background-color: #e7e8e8;">
-                            <th scope="col">id</th>
+                            <th scope="col">S.No</th>
                             <th scope="col">Product</th>
                             <th scope="col" style="width: 340px;">Product Name</th>
                             <th scope="col">Date Time</th>
@@ -112,27 +110,28 @@
                                             <i class="bi bi-check2-circle mx-1"></i>
                                         </span> -->
 
-                                         <div *ngIf="inventories.inventory === '0'"
-                                             class="mx-2 d-flex justify-content-center align-items-center"
-                                            style="background-color: #ffe5d5; border-radius: 5px; height: 28px; min-width: 90px;">
+                                        <div *ngIf="inventories.inventory === '0'"
+                                            class="mx-2 d-flex justify-content-center align-items-center"
+                                            style="background-color: #ffe5d5; border-radius: 4px; height: 28px; min-width: 90px;">
                                             <span style="font-size: 12px;">
-                                                Low Stock
-                                                 <i class="bi bi-bag-x mx-1"></i>
+                                                Out of Stock
+                                                <i class="bi bi-bag-x"></i>
                                             </span>
                                         </div>
 
 
                                         <div *ngIf="inventories.inventory > 0 && inventories.inventory < 10"
-                                             class="mx-2 d-flex justify-content-center align-items-center"
-                                            style="background-color: #f3ffac; border-radius: 5px; height: 28px; min-width: 90px;">
+                                            class="mx-2 d-flex justify-content-center align-items-center"
+                                            style="background-color: #f3ffac; border-radius: 4px; height: 28px; min-width: 90px;">
                                             <span style="font-size: 12px;">
                                                 Low Stock
                                                 <i class="bi bi-graph-down-arrow mx-1"></i>
                                             </span>
                                         </div>
 
-                                        <div *ngIf="inventories.inventory >= 10" class="mx-2 d-flex justify-content-center align-items-center"
-                                            style="background-color: #dcffc4; border-radius: 5px; height: 28px; min-width: 90px;">
+                                        <div *ngIf="inventories.inventory >= 10"
+                                            class="mx-2 d-flex justify-content-center align-items-center"
+                                            style="background-color: #dcffc4; border-radius: 4px; height: 28px; min-width: 90px;">
                                             <span style="font-size: 12px;">
                                                 Available
                                                 <i class="bi bi-check2-circle"></i>
@@ -153,25 +152,293 @@
                     </tbody>
                 </table>
                 <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="itemsPerPage" [length]="totalElements"
-                    [pageIndex]="currentPage" (page)="nextPageUserAllProduct($event)" showFirstLastButtons>
+                    [pageIndex]="currentPage" (page)="nextPageStockProducts($event)" showFirstLastButtons>
                 </mat-paginator>
 
             </div>
         </div>
         <!-- ALL STOCK ENDING -->
         <!-- ========================================================================================================= -->
+        <!-- ========================================================================================================= -->
 
+
+
+
+
+
+
+
+
+
+
+        <!-- PRODUCT OUT OF STOCK STARTING -->
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-            ...2
-        </div>
 
+            <div class="tab-pane fade show active mt-3" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+                tabindex="0">
+
+                <div *ngIf="outOfStock_skeleton">
+                    <ngx-skeleton-loader count="10" appearance="line" />
+                </div>
+
+                <div *ngIf="!outOfStock_skeleton">
+                    <table class=" table table-sm table-hover table-bordered fs11">
+                        <thead>
+                            <tr class="text-center" style="background-color: #e7e8e8;">
+                                <th scope="col">S.No</th>
+                                <th scope="col">Product</th>
+                                <th scope="col" style="width: 340px;">Product Name</th>
+                                <th scope="col">Date Time</th>
+                                <th scope="col" style="width: 340px;">
+                                    Stock
+                                    <span class="tooltip-icon-uniq ms-1">
+                                        <i class="bi bi-exclamation-circle"></i>
+                                        <span class="tooltip-text-uniq">
+                                            Inventory value must not exceed 10000.
+                                        </span>
+                                    </span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr scope="row" *ngFor="let data of outOfStock_stockData; let i = index">
+                                <td class="p-3">{{ i + 1 }}</td>
+                                <td>
+                                    <img [src]="data.productMainFile" height="65" width="65" class="p-1"
+                                        style="border-radius: 8px;object-fit: cover;" alt="">
+                                </td>
+                                <td>
+                                    {{ data.productName }}
+                                    <br>
+                                    {{ data.productKey }}
+                                </td>
+                                <td>{{ data.productDate }} | {{ data.productTime }}</td>
+
+                                <!-- Action Column -->
+                                <td class="align-middle">
+
+                                    <!-- Row 1 -->
+                                    <div *ngFor="let inventories of data.productInventories"
+                                        class="d-flex align-items-center gap-1 mb-1">
+
+                                        <div class="input-group input-group-sm">
+                                            <span class="input-group-text" style="width: 70px; font-size: 11px;">
+                                                {{inventories.size}}
+                                            </span>
+
+                                            <input type="text" [(ngModel)]="inventories.inventory"
+                                                name="inventory_{{ i }}"
+                                                class="form-control form-control-sm inventory-input"
+                                                placeholder="Enter inventory" maxlength="5"
+                                                (input)="onInventoryInput(inventories)"
+                                                (keypress)="allowOnlyNumber($event)" />
+
+                                            <!-- <span *ngIf="inventories.inventory === '0'"
+                                            class="input-group-text text-danger out-of-stock">
+                                            Out of Stock
+                                            <i class="bi bi-bag-x mx-1"></i>
+                                        </span> -->
+
+                                            <!-- <span *ngIf="inventories.inventory > 0 && inventories.inventory < 10"
+                                            class="input-group-text text-dark low-stock" style="font-size: 11px;">
+                                            Low Stock
+                                            <i class="bi bi-graph-down-arrow mx-1"></i>
+                                        </span> -->
+
+                                            <!-- <span *ngIf="inventories.inventory >= 10"
+                                            class="input-group-text stock-available"
+                                            style="font-size: 11px;">
+                                            Available
+                                            <i class="bi bi-check2-circle mx-1"></i>
+                                        </span> -->
+
+                                            <div *ngIf="inventories.inventory === '0'"
+                                                class="mx-2 d-flex justify-content-center align-items-center"
+                                                style="background-color: #ffe5d5; border-radius: 4px; height: 28px; min-width: 90px;">
+                                                <span style="font-size: 12px;">
+                                                    Out of Stock
+                                                    <i class="bi bi-bag-x"></i>
+                                                </span>
+                                            </div>
+
+
+                                            <div *ngIf="inventories.inventory > 0 && inventories.inventory < 10"
+                                                class="mx-2 d-flex justify-content-center align-items-center"
+                                                style="background-color: #f3ffac; border-radius: 4px; height: 28px; min-width: 90px;">
+                                                <span style="font-size: 12px;">
+                                                    Low Stock
+                                                    <i class="bi bi-graph-down-arrow mx-1"></i>
+                                                </span>
+                                            </div>
+
+                                            <div *ngIf="inventories.inventory >= 10"
+                                                class="mx-2 d-flex justify-content-center align-items-center"
+                                                style="background-color: #dcffc4; border-radius: 4px; height: 28px; min-width: 90px;">
+                                                <span style="font-size: 12px;">
+                                                    Available
+                                                    <i class="bi bi-check2-circle"></i>
+                                                </span>
+                                            </div>
+
+
+                                        </div>
+
+                                        <button mat-raised-button color="primary" class="inventory-update-btn"
+                                            (click)="updateInventory(inventories.size, inventories.id, inventories.inventory)">
+                                            Update
+                                        </button>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="outOfStock_itemsPerPage" [length]="outOfStock_totalElements"
+                        [pageIndex]="outOfStock_currentPage" (page)="nextPageOutOfStockProducts($event)" showFirstLastButtons>
+                    </mat-paginator>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- ALL OUT OF STOCK ENDING -->
+
+        <!-- ========================================================================================================= -->
+        <!-- ========================================================================================================= -->
+
+        <!-- LOW STOCK STARTING -->
         <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">
-            ...3
-        </div>
 
-        <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">
-            ...4
-        </div>
+                <div class="tab-pane fade show active mt-3" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab"
+                    tabindex="0">
+
+                    <div *ngIf="lowStock_skeleton">
+                        <ngx-skeleton-loader count="10" appearance="line" />
+                    </div>
+
+                    <div *ngIf="!lowStock_skeleton">
+                        <table class=" table table-sm table-hover table-bordered fs11">
+                            <thead>
+                                <tr class="text-center" style="background-color: #e7e8e8;">
+                                    <th scope="col">S.No</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col" style="width: 340px;">Product Name</th>
+                                    <th scope="col">Date Time</th>
+                                    <th scope="col" style="width: 340px;">
+                                        Stock
+                                        <span class="tooltip-icon-uniq ms-1">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            <span class="tooltip-text-uniq">
+                                                Inventory value must not exceed 10000.
+                                            </span>
+                                        </span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr scope="row" *ngFor="let data of lowStock_stockData; let i = index">
+                                    <td class="p-3">{{ i + 1 }}</td>
+                                    <td>
+                                        <img [src]="data.productMainFile" height="65" width="65" class="p-1"
+                                            style="border-radius: 8px;object-fit: cover;" alt="">
+                                    </td>
+                                    <td>
+                                        {{ data.productName }}
+                                        <br>
+                                        {{ data.productKey }}
+                                    </td>
+                                    <td>{{ data.productDate }} | {{ data.productTime }}</td>
+
+                                    <!-- Action Column -->
+                                    <td class="align-middle">
+
+                                        <!-- Row 1 -->
+                                        <div *ngFor="let inventories of data.productInventories"
+                                            class="d-flex align-items-center gap-1 mb-1">
+
+                                            <div class="input-group input-group-sm">
+                                                <span class="input-group-text" style="width: 70px; font-size: 11px;">
+                                                    {{inventories.size}}
+                                                </span>
+
+                                                <input type="text" [(ngModel)]="inventories.inventory"
+                                                    name="inventory_{{ i }}"
+                                                    class="form-control form-control-sm inventory-input"
+                                                    placeholder="Enter inventory" maxlength="5"
+                                                    (input)="onInventoryInput(inventories)"
+                                                    (keypress)="allowOnlyNumber($event)" />
+
+                                                <!-- <span *ngIf="inventories.inventory === '0'"
+                                            class="input-group-text text-danger out-of-stock">
+                                            Out of Stock
+                                            <i class="bi bi-bag-x mx-1"></i>
+                                        </span> -->
+
+                                                <!-- <span *ngIf="inventories.inventory > 0 && inventories.inventory < 10"
+                                            class="input-group-text text-dark low-stock" style="font-size: 11px;">
+                                            Low Stock
+                                            <i class="bi bi-graph-down-arrow mx-1"></i>
+                                        </span> -->
+
+                                                <!-- <span *ngIf="inventories.inventory >= 10"
+                                            class="input-group-text stock-available"
+                                            style="font-size: 11px;">
+                                            Available
+                                            <i class="bi bi-check2-circle mx-1"></i>
+                                        </span> -->
+
+                                                <div *ngIf="inventories.inventory === '0'"
+                                                    class="mx-2 d-flex justify-content-center align-items-center"
+                                                    style="background-color: #ffe5d5; border-radius: 4px; height: 28px; min-width: 90px;">
+                                                    <span style="font-size: 12px;">
+                                                        Out of Stock
+                                                        <i class="bi bi-bag-x"></i>
+                                                    </span>
+                                                </div>
+
+
+                                                <div *ngIf="inventories.inventory > 0 && inventories.inventory < 10"
+                                                    class="mx-2 d-flex justify-content-center align-items-center"
+                                                    style="background-color: #f3ffac; border-radius: 4px; height: 28px; min-width: 90px;">
+                                                    <span style="font-size: 12px;">
+                                                        Low Stock
+                                                        <i class="bi bi-graph-down-arrow mx-1"></i>
+                                                    </span>
+                                                </div>
+
+                                                <div *ngIf="inventories.inventory >= 10"
+                                                    class="mx-2 d-flex justify-content-center align-items-center"
+                                                    style="background-color: #dcffc4; border-radius: 4px; height: 28px; min-width: 90px;">
+                                                    <span style="font-size: 12px;">
+                                                        Available
+                                                        <i class="bi bi-check2-circle"></i>
+                                                    </span>
+                                                </div>
+
+
+                                            </div>
+
+                                            <button mat-raised-button color="primary" class="inventory-update-btn"
+                                                (click)="updateInventory(inventories.size, inventories.id, inventories.inventory)">
+                                                Update
+                                            </button>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="lowStock_itemsPerPage"
+                            [length]="lowStock_totalElements" [pageIndex]="lowStock_currentPage"
+                            (page)="nextPageLowStockProducts($event)" showFirstLastButtons>
+                        </mat-paginator>
+
+                    </div>
+                </div>
+            </div>
+        <!--  LOW STOCK ENDING -->
+        <!-- ========================================================================================================= -->
+        <!-- ========================================================================================================= -->
     </div>
 
 </div>

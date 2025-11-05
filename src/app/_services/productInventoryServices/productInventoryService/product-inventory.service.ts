@@ -27,6 +27,34 @@ export class ProductInventoryService {
     );
   }
 
+    getOutOfStocksProducts(request: any, username: any): Observable<any> {
+    return this.http.post(
+      API_AUTHORIZA_URL +
+        'inventoryController/' +
+        'getOutOfStockProduct?page=' +
+        request.page +
+        '&size=' +
+        request.size +
+        '&username=' +
+        username,
+      httpOptions
+    );
+  }
+
+  getLowStocksProducts(request: any, username: any): Observable<any> {
+    return this.http.post(
+      API_AUTHORIZA_URL +
+        'inventoryController/' +
+        'getLowStockProduct?page=' +
+        request.page +
+        '&size=' +
+        request.size +
+        '&username=' +
+        username,
+      httpOptions
+    );
+  }
+
 
    updateProductInventory(updateProductInventory: any): Observable<any> {
     return this.http.post(API_AUTHORIZA_URL + 'inventoryController/updateProductInventory',updateProductInventory);
