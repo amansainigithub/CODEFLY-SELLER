@@ -13,6 +13,7 @@ import { ProductFilesComponent } from './seller-panel/seller-product/product-fil
 import { ProductOverviewComponent } from './seller-panel/product-overview/product-overview.component';
 import { ProductVariantsComponent } from './seller-panel/seller-product/product-variants/product-variants.component';
 import { ProductVariantFilesComponent } from './seller-panel/seller-product/product-variant-files/product-variant-files.component';
+import { ProductInventoryComponent } from './seller-panel/product-inventory-manager/product-inventory/product-inventory.component';
 
 const routes: Routes = [
 { path: 'register', component: RegisterComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
                     { path: 'product-Overview', component: ProductOverviewComponent },
                     { path: 'product-Variant', component: ProductVariantsComponent },
                     { path: 'productVariantFiles', component: ProductVariantFilesComponent },
+                    { path: 'product-inventory', component: ProductInventoryComponent },
 
       ],
 }
