@@ -59,24 +59,24 @@
   <div>
     <ul class="nav nav-tabs fs11" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="All-tab" data-bs-toggle="tab" data-bs-target="#All" type="button" role="tab"
-          aria-controls="All" aria-selected="true" (click)="getUserAllProductData()">All</button>
+        <button class="nav-link active nav-btn-color" id="All-tab" data-bs-toggle="tab" data-bs-target="#All" type="button" role="tab"
+          aria-controls="All" aria-selected="true" (click)="getUserAllProductData()">All Products</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="underReview-tab" data-bs-toggle="tab" data-bs-target="#underReview" type="button"
+        <button class="nav-link nav-btn-color" id="underReview-tab" data-bs-toggle="tab" data-bs-target="#underReview" type="button"
           role="tab" aria-controls="underReview" aria-selected="false" (click)="getProductUnderReview()">Under
           Review</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button"
+        <button class="nav-link nav-btn-color" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved" type="button"
           role="tab" aria-controls="approved" aria-selected="false" (click)="getProductApproved()">Product Approved</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="error-tab" data-bs-toggle="tab" data-bs-target="#error" type="button" role="tab"
+        <button class="nav-link nav-btn-color" id="error-tab" data-bs-toggle="tab" data-bs-target="#error" type="button" role="tab"
           aria-controls="error" aria-selected="false" (click)="getDisProductApproved()" >Product Error</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft" type="button" role="tab"
+        <button class="nav-link nav-btn-color" id="draft-tab" data-bs-toggle="tab" data-bs-target="#draft" type="button" role="tab"
           aria-controls="draft" aria-selected="false" (click)="getDraftProductData()">Product Draft</button>
       </li>
     </ul>
@@ -125,22 +125,25 @@
 
                 <td>
                   <div *ngIf="data.productStatus === 'UNDER_REVIEW'" class="underReview" >
+                    <i class="bi bi-arrow-clockwise"></i>
                     UNDER REVIEW
                     <i class="bi bi-dot blink-dot-underReview "></i>
                   </div>
 
                    <div *ngIf="data.productStatus === 'APPROVED'" class="approved" >
+                    <i class="bi bi-check-circle"></i>
                     APPROVED
                     <i class="bi bi-dot blink-dot-approved"></i>
                   </div>
 
                   <div *ngIf="data.productStatus === 'DIS_APPROVED'" class="dis-approved" >
+                    <i class="bi bi-exclamation-triangle"></i>
                     DIS APPROVED
                     <i class="bi bi-dot blink-dot-dis-approved "></i>
                   </div>
 
                    <div *ngIf="data.productStatus === 'DRAFT'" class="draft" >
-                    DIS APPROVED
+                    DRAFT
                     <i class="bi bi-dot blink-dot-draft "></i>
                   </div>
 
@@ -211,6 +214,7 @@
                 <td>{{ data.productDate }} | {{ data.productTime }}</td>
                 <td>
                   <div *ngIf="data.productStatus === 'UNDER_REVIEW'" class="underReview" >
+                    <i class="bi bi-arrow-clockwise"></i>
                     UNDER REVIEW
                     <i class="bi bi-dot blink-dot-underReview "></i>
                   </div>
@@ -285,6 +289,7 @@
                 <td>{{ data.productDate }} | {{ data.productTime }}</td>
                 <td>
                   <div class="approved" >
+                    <i class="bi bi-check-circle"></i>
                         APPROVED
                     <i class="bi bi-dot blink-dot-approved "></i>
                   </div>
@@ -356,6 +361,7 @@
                   <td>{{ data.productDate }} | {{ data.productTime }}</td>
                   <td>
                     <div class="dis-approved" >
+                      <i class="bi bi-exclamation-triangle"></i>
                         DIS APPROVED
                     <i class="bi bi-dot blink-dot-dis-approved "></i>
                   </div>
@@ -394,7 +400,7 @@
 
 
 
-
+<!-- PRODUCT DRAFT STARTING -->
     <div class="tab-pane fade" id="draft" role="tabpanel" aria-labelledby="draft-tab">
        <div class="container p-4 bg-white mt-2 border-radius20">
           <div *ngIf="draft_skeleton">
@@ -427,6 +433,7 @@
                   <td>{{ data.productDate }} | {{ data.productTime }}</td>
                   <td>
                     <div class="draft" >
+                      <i class="bi bi-box-arrow-down"></i>
                         DRAFT
                     <i class="bi bi-dot blink-dot-draft"></i>
                   </div>
@@ -454,6 +461,8 @@
           </div>
       </div>
     </div>
+    <!-- PRODUCT DRAFT ENDING -->
+
 
 
 
