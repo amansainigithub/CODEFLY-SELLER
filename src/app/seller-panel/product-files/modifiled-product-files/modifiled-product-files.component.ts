@@ -102,11 +102,15 @@ export class ModifiledProductFilesComponent {
 
         //get Product Files
         this.getProductFilesById(this.productId);
+
+        window.location.reload();
       },
       error: (err: any) => {
         console.error('Upload error:', err);
         this.toast.error({detail:"Error",summary:"File Update Failed", position:"topRight",duration:2000});
         this.spinner.hide();
+
+        window.location.reload();
       },
     });
     
