@@ -76,6 +76,11 @@
   50%  { opacity: 1;   text-shadow: 0 0 12px rgba(255,193,7,1); }
   100% { opacity: 0.2; text-shadow: 0 0 2px rgba(255,193,7,0.5); }
 }
+
+.product-files{
+  background-color: #f3ff4a;
+  color: rgb(21, 20, 20);
+}
 /* UNDER REVIEW ENDING*/
 
 

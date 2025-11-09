@@ -164,6 +164,13 @@ export class ProductOverviewComponent {
     };
     this.getUnderReviewProduct(request);
   }
+
+  modifiedProductFiles(productId:any)
+  {
+    this.router.navigateByUrl('/seller/dashboard/home/modified-product-files', {
+        state: { productId: productId },  
+      });
+  }
   // UNDER REVIEW PRODUCT ENDING
 
   // =============================================================================

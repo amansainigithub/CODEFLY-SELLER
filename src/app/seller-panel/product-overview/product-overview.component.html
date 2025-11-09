@@ -200,6 +200,7 @@
                 <th scope="col">Date Time</th>
                 <th scope="col">Product Status</th>
                 <th scope="col">Variant</th>
+                <th scope="col">Action</th>
               </tr>
 
             </thead>
@@ -228,6 +229,12 @@
                       *ngIf="data.productSeries === 'VARIANT'"  >
                       {{ data.productSeries }}
                   </div>
+                </td>
+
+                <td>
+                  <button class="small-btn product-files" mat-raised-button color="primary" (click)="modifiedProductFiles(data.id)">
+                    <span class="fs11" >Modified Files</span>
+                  </button>
                 </td>
                 
               </tr>

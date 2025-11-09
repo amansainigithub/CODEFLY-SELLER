@@ -1,0 +1,72 @@
+.heading {
+    background-color: #ffffff;
+    border-left: 5px solid #7e76ff;
+    padding: 10px;
+    position: relative;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    width: 220px;
+    font-family: 'Arial', sans-serif;
+    font-size: 12px;
+}
+
+.modified-files{
+    background-color: rgb(234, 255, 40);
+    color: black;
+}
+
+.modified-video{
+    background-color: rgb(234, 255, 40);
+    color: black;
+}
+
+
+
+
+/* MODEL CSS STARTING */
+
+/* 🟢 Fixed modal size */
+.image-modal-dialog {
+  max-width: 800px;
+  width: 800px;
+}
+
+/* 🟢 Fixed modal body area */
+.image-modal-body {
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  position: relative;
+}
+
+/* 🟢 Image styling */
+.image-preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+/* 🟢 Navigation buttons (Prev/Next) */
+.nav-btn {
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 🟢 Responsive for mobile view */
+@media (max-width: 768px) {
+  .image-modal-dialog {
+    width: 95%;
+    max-width: 95%;
+  }
+
+  .image-modal-body {
+    height: 350px;
+  }
+}
+
+/* MODEL CSS ENDING */

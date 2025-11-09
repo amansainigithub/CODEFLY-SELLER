@@ -14,6 +14,7 @@ import { ProductOverviewComponent } from './seller-panel/product-overview/produc
 import { ProductVariantsComponent } from './seller-panel/seller-product/product-variants/product-variants.component';
 import { ProductVariantFilesComponent } from './seller-panel/seller-product/product-variant-files/product-variant-files.component';
 import { ProductInventoryComponent } from './seller-panel/product-inventory-manager/product-inventory/product-inventory.component';
+import { ModifiledProductFilesComponent } from './seller-panel/product-files/modifiled-product-files/modifiled-product-files.component';
 
 const routes: Routes = [
 { path: 'register', component: RegisterComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
                     { path: 'product-Variant', component: ProductVariantsComponent },
                     { path: 'productVariantFiles', component: ProductVariantFilesComponent },
                     { path: 'product-inventory', component: ProductInventoryComponent },
+                    { path: 'modified-product-files', component: ModifiledProductFilesComponent },
 
       ],
 }

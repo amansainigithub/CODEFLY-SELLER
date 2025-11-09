@@ -46,6 +46,7 @@ import { ProductOverviewComponent } from './seller-panel/product-overview/produc
 import { ProductVariantsComponent } from './seller-panel/seller-product/product-variants/product-variants.component';
 import { ProductVariantFilesComponent } from './seller-panel/seller-product/product-variant-files/product-variant-files.component';
 import { ProductInventoryComponent } from './seller-panel/product-inventory-manager/product-inventory/product-inventory.component';
+import { ModifiledProductFilesComponent } from './seller-panel/product-files/modifiled-product-files/modifiled-product-files.component';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { ProductInventoryComponent } from './seller-panel/product-inventory-mana
     ProductOverviewComponent,
     ProductVariantsComponent,
     ProductVariantFilesComponent,
-    ProductInventoryComponent
+    ProductInventoryComponent,
+    ModifiledProductFilesComponent
   ],
   imports: [
     BrowserModule,
