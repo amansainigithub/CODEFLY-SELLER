@@ -2,8 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgToastService } from 'ng-angular-popup';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ModifiedProductFilesService } from '../../../_services/productFilesService/modifiedFiles/modified-product-files.service';
 import { TokenStorageService } from '../../../_services/token-storage.service';
+import { ModifiedProductFilesService } from '../../../_services/productFilesService/product-files-service/modified-product-files.service';
 declare var bootstrap: any;
 @Component({
   selector: 'app-modifiled-product-files',
@@ -52,6 +52,9 @@ export class ModifiledProductFilesComponent {
   }
 
 
+
+// ###########################################################################################################################
+// ###########################################################################################################################
 
 
   // MODIFIED IMAGE FILES
@@ -117,26 +120,8 @@ export class ModifiledProductFilesComponent {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
   // MODEL PROPERTIES STARTING
-    // =============================================================================
-    // =============================================================================
-  
-    //Progress Bar
-    progressBar: any = false;
-  
-    // MODEL PROPERTIES STARTING
+  // =============================================================================
     @ViewChild('modifiedImageModel') modifiedImageModel!: ElementRef;
     modelShow() {
       const modal = new bootstrap.Modal(this.modifiedImageModel.nativeElement);
@@ -146,9 +131,116 @@ export class ModifiledProductFilesComponent {
       const modal = bootstrap.Modal.getInstance(this.modifiedImageModel.nativeElement);
       modal?.hide();
     }
-    // MODEL PROPERTIES ENDING
-    // ============================================================================================
-    // =============================================================================
+  // =============================================================================
+  // MODEL PROPERTIES ENDING
+  
+
+
+
+
+// ###########################################################################################################################
+// ###########################################################################################################################
+
+
+
+
+
+
+// ===================== VIDEO FILES ===================== //
+
+selectedVideoUrl: string | null = null;
+currentVideoFileId: any;
+selectedVideoFile: File | null = null;
+previewVideoUrl: any = null;
+selectedVideoIndex: number | null = null;
+
+videoFormData: any = new FormData();
+
+modifiedVideoFile(index: number) {
+  this.selectedVideoIndex = index;
+  this.selectedVideoUrl = this.productData[index].fileUrl;
+  this.currentVideoFileId = this.productData[index].id;
+
+  this.modelShowVideo();
+}
+
+onVideoSelected(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.selectedVideoFile = file;
+
+    const reader = new FileReader();
+    reader.onload = (e) => (this.previewVideoUrl = e.target?.result);
+    reader.readAsDataURL(file);
+
+    // Append Video to FormData
+    this.videoFormData = new FormData(); // reset before appending
+    this.videoFormData.append('files', file);
+
+    if (this.currentVideoFileId) {
+      this.videoFormData.append('fileId', this.currentVideoFileId);
+    }
+  }
+}
+
+updateVideoFile() {
+  if (!this.selectedVideoFile || this.selectedVideoIndex === null) return;
+
+  const user = this.tokenStorageService.getUser();
+
+  this.spinner.show();
+  this.modifiedProductFiles
+    .modifiedVideoFilesService(this.videoFormData, this.currentVideoFileId, this.productId, user.username)
+    .subscribe({
+      next: (res: any) => {
+        console.log('Video update success:', res);
+        this.toast.success({
+          detail: 'Success',
+          summary: 'Video Update Successful',
+          position: 'topRight',
+          duration: 2000,
+        });
+        this.spinner.hide();
+
+        this.getProductFilesById(this.productId);
+        window.location.reload();
+      },
+      error: (err: any) => {
+        console.error('Video update failed:', err);
+        this.toast.error({
+          detail: 'Error',
+          summary: 'Video Update Failed',
+          position: 'topRight',
+          duration: 2000,
+        });
+        this.spinner.hide();
+
+        window.location.reload();
+      },
+    });
+}
+
+// ===================== VIDEO MODAL PROPERTIES =====================
+// ==================================================================  
+@ViewChild('modifiedVideoModel') modifiedVideoModel!: ElementRef;
+
+modelShowVideo() {
+  const modal = new bootstrap.Modal(this.modifiedVideoModel.nativeElement);
+  modal.show();
+}
+
+modelCloseVideo() {
+  const modal = bootstrap.Modal.getInstance(this.modifiedVideoModel.nativeElement);
+  modal?.hide();
+}
+// ==================================================================  
+// ===================== VIDEO MODAL PROPERTIES =====================
+
+
+
+
+// ###########################################################################################################################
+// ###########################################################################################################################
 
 
 
@@ -177,6 +269,11 @@ export class ModifiledProductFilesComponent {
 
 
 
+
+
+
+// ==================================================================================================================
+// ==================================================================================================================
   // IMAGE PREVIEW STARTING
   imageList: string[] = [];
   selectedImage: string = '';
@@ -215,5 +312,6 @@ export class ModifiledProductFilesComponent {
     }
   }
   // IMAGE PREVIEW ENDING
-
+// ==================================================================================================================
+// ==================================================================================================================
 }

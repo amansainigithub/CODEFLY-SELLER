@@ -26,4 +26,9 @@ export class ModifiedProductFilesService {
       +fileId + "/" + productId+"/"+username , formData);
   }
 
+     modifiedVideoFilesService(formData:any ,fileId:any,productId:any,username:any): Observable<any> {
+    return this.http.post(API_AUTHORIZA_URL + "productFilesHandlerController/" + 'modifiedProductVideoFilesBySeller/'
+      +fileId + "/" + productId+"/"+username , formData);
+  }
+
 }

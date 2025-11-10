@@ -60,6 +60,7 @@
             *ngIf="data.fileType === 'VIDEO'"
             class="small-btn product-files modified-files"
             mat-raised-button
+            (click)="modifiedVideoFile(i)"
           >
             <span class="fs11">Modified Video</span>
           </button>
@@ -69,7 +70,17 @@
   </table>
 </div>
 
-<!-- =====================MODAL========================= -->
+
+
+
+
+
+
+
+
+
+
+<!-- =====================IMAGE MODIFIED MODAL========================= -->
 <div
   class="modal fade"
   data-bs-backdrop="static"
@@ -140,7 +151,7 @@
     </div>
   </div>
 </div>
-<!-- =====================MODAL END========================= -->
+<!-- =====================IMAGE MODIFIED MODAL END========================= -->
 
 
 
@@ -149,6 +160,79 @@
 
 
 
+
+
+
+
+<!-- =====================VIDEO MODIFIED MODAL========================= -->
+<div
+  class="modal fade"
+  data-bs-backdrop="static"
+  id="videoModal"
+  tabindex="-1"
+  aria-labelledby="videoModalLabel"
+  aria-hidden="true"
+  #modifiedVideoModel
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content p-3">
+      <div class="modal-body text-center">
+        <div>
+          <i class="bi bi-camera-reels" style="color: #007bff;"></i>
+          <span class="mx-2 fw-bold">Modified Video</span>
+        </div>
+
+        <!-- Current Video Preview -->
+        <div class="mt-3" *ngIf="selectedVideoUrl">
+          <video
+            [src]="selectedVideoUrl"
+            height="120"
+            width="200"
+            class="border rounded"
+            controls
+          ></video>
+        </div>
+
+        <!-- Upload New Video -->
+        <div class="mt-3">
+          <input
+            type="file"
+            accept="video/*"
+            (change)="onVideoSelected($event)"
+            class="form-control w-50 mx-auto"
+          />
+        </div>
+
+        <!-- Preview of Selected New Video -->
+        <div class="mt-3" *ngIf="previewVideoUrl">
+          <p class="fs12 text-muted mb-1">New Video Preview:</p>
+          <video
+            [src]="previewVideoUrl"
+            height="120"
+            width="200"
+            class="border rounded"
+            controls
+          ></video>
+        </div>
+      </div>
+
+      <div class="mb-3 text-center">
+        <button mat-raised-button class="me-2" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="updateVideoFile()"
+          [disabled]="!selectedVideoFile"
+        >
+          Update Video
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- =====================VIDEO MODIFIED MODAL END========================= -->
 
 
 
