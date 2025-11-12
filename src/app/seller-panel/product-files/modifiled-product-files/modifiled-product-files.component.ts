@@ -15,6 +15,9 @@ export class ModifiledProductFilesComponent {
   productId:any;
   productData:any;
 
+  imageCount:any;
+  videoCount:any;
+
   constructor(
     private router: Router,
     private spinner: NgxSpinnerService,
@@ -44,6 +47,9 @@ export class ModifiledProductFilesComponent {
       next: (res: any) => {
         console.log('Product Files Response:', res);
         this.productData = res.data;
+
+        this.imageCount = this.productData.filter((item: any) => item.fileType === 'IMAGE').length;
+        this.videoCount = this.productData.filter((item: any) => item.fileType === 'VIDEO').length;
       },
       error: (err: any) => {
         console.error(err);
@@ -255,6 +261,25 @@ newFormData: any = new FormData();
 
 // ===================== NEW FILE UPLOAD METHOD =====================
 onNewFileSelected(event: any) {
+  
+   const productFile = event.target.files[0];
+   const fileType = productFile.type.startsWith('video') ? 'VIDEO' : 'IMAGE';
+
+
+    if(fileType === 'IMAGE' && this.imageCount >= 5)
+    {
+      this.toast.error({detail:"Error",summary:"You can upload a maximum of 5 images per product.",
+      position:"topRight",duration:2000});
+      return;
+    }
+
+    if(fileType === 'VIDEO' && this.videoCount >= 1)
+    {
+      this.toast.error({detail:"Error",summary:"You can upload only 1 video per product.",
+      position:"topRight",duration:2000});
+      return;
+    }
+
   const file = event.target.files[0];
   if (file) {
     this.newSelectedFile = file;
