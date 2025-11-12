@@ -31,4 +31,10 @@ export class ModifiedProductFilesService {
       +fileId + "/" + productId+"/"+username , formData);
   }
 
+  
+     uploadNewFileService(formData:any ,productId:any,username:any): Observable<any> {
+    return this.http.post(API_AUTHORIZA_URL + "productFilesHandlerController/" + 'uploadNewFileBySeller/'
+      + productId+"/"+username , formData);
+  }
+
 }

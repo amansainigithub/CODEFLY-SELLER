@@ -247,6 +247,118 @@ modelCloseVideo() {
 
 
 
+// ===================== NEW FILE UPLOAD VARIABLES =====================
+newSelectedFile: File | null = null;
+newPreviewUrl: any = null;
+newSelectedFileType: string | null = null;
+newFormData: any = new FormData();
+
+// ===================== NEW FILE UPLOAD METHOD =====================
+onNewFileSelected(event: any) {
+  const file = event.target.files[0];
+  if (file) {
+    this.newSelectedFile = file;
+    this.newSelectedFileType = file.type.startsWith('video') ? 'video' : 'image';
+
+    const reader = new FileReader();
+    reader.onload = (e) => (this.newPreviewUrl = e.target?.result);
+    reader.readAsDataURL(file);
+
+    // RESET FORM DATA & APPEND
+    this.newFormData = new FormData();
+    this.newFormData.append('files', file);
+    if (this.productId) {
+      this.newFormData.append('productId', this.productId);
+    }
+  }
+}
+
+// ===================== UPLOAD NEW FILE METHOD =====================
+uploadNewFile() {
+  if (!this.newSelectedFile) return;
+
+  const user = this.tokenStorageService.getUser();
+  this.spinner.show();
+
+  this.modifiedProductFiles.uploadNewFileService(this.newFormData, this.productId, user.username)
+    .subscribe({
+      next: (res: any) => {
+        console.log('Upload success:', res);
+        this.toast.success({
+          detail: 'Success',
+          summary: 'New File Uploaded Successfully',
+          position: 'topRight',
+          duration: 2000,
+        });
+        this.spinner.hide();
+        this.getProductFilesById(this.productId);
+        this.modelNewClose();
+
+        window.location.reload();
+      },
+      error: (err: any) => {
+        console.error('Upload error:', err);
+        this.toast.error({
+          detail: 'Error',
+          summary: 'File Upload Failed',
+          position: 'topRight',
+          duration: 2000,
+        });
+        this.spinner.hide();
+      },
+    });
+}
+
+// ===================== MODAL METHODS FOR NEW FILE =====================
+@ViewChild('newFileModel') newFileModel!: ElementRef;
+
+modelNewShow() {
+  const modal = new bootstrap.Modal(this.newFileModel.nativeElement);
+  modal.show();
+}
+
+modelNewClose() {
+  const modal = bootstrap.Modal.getInstance(this.newFileModel.nativeElement);
+  modal?.hide();
+}
+
+
+
+
+// ###########################################################################################################################
+// ###########################################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
