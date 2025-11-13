@@ -1,10 +1,21 @@
 <div class="container">
-  <div class="heading mt-3 mb-3">
-    <i class="bi bi-images"></i>
-    Product Files
+
+<div class="d-flex justify-content-between align-items-center mt-3 mb-3">
+  <div class="heading d-flex align-items-center" style="cursor: pointer;color: #7a43f0;font-weight: 600;">
+    <i class="bi bi-images me-2"></i>
+    <span class="fw-medium">Product Files</span>
+    <span class="mx-1 ms-4 "> | </span>
+    <div class="d-flex align-items-center ms-4 refresh-btn" (click)="refreshData()" >
+      <i class="bi bi-arrow-clockwise me-1"></i>
+      <span>Refresh</span>
+    </div>
   </div>
 
-  <button mat-raised-button color="primary" (click)="modelNewShow()" >Add New File</button>
+  <button  *ngIf="imageCount < 5 || videoCount === 0"  mat-raised-button color="primary" (click)="modelNewShow()">
+    Add New File
+  </button>
+</div>
+
 
   <table class="table table-sm table-hover table-bordered fs11 text-center">
     <thead>
@@ -46,7 +57,7 @@
           ></video>
         </td>
 
-        <td>{{ data.fileType }}</td>
+        <td style="font-weight: 600;color: #2a2c2e;" >{{ data.fileType }}</td>
 
         <td>
           <button
@@ -154,6 +165,15 @@
           Update File
         </button>
       </div>
+
+      <hr>
+      <div class="text-center">
+        <a href="javascript:void(0)" data-bs-toggle="modal" class="guidelines" data-bs-target="#imageGuildlines">
+          <i class="bi bi-exclamation-circle"></i>
+          Image Guidelines – Follow these rules to avoid rejection
+        </a>
+      </div>
+
     </div>
   </div>
 </div>
@@ -238,6 +258,16 @@
           Update Video
         </button>
       </div>
+
+
+      <hr>
+      <div class="text-center">
+        <a href="javascript:void(0)" data-bs-toggle="modal" class="guidelines" data-bs-target="#videoGuildlines">
+          <i class="bi bi-exclamation-circle"></i>
+          Video Guidelines – Follow these rules to avoid rejection
+        </a>
+      </div>
+
     </div>
   </div>
 </div>
@@ -320,6 +350,22 @@
           Upload File
         </button>
       </div>
+
+
+      <hr>
+      <div class="text-center">
+        <a href="javascript:void(0)" data-bs-toggle="modal" class="guidelines mx-2" data-bs-target="#videoGuildlines">
+          <i class="bi bi-exclamation-circle"></i>
+          Video Guidelines – Follow these rules to avoid rejection
+        </a>
+      
+        <a href="javascript:void(0)" data-bs-toggle="modal" class="guidelines" data-bs-target="#videoGuildlines">
+          <i class="bi bi-exclamation-circle"></i>
+          Video Guidelines – Follow these rules to avoid rejection
+        </a>
+      </div>
+      
+
     </div>
   </div>
 </div>
@@ -332,6 +378,145 @@
 
 
 
+<!-- Video Guidlines Starting -->
+<div class="modal fade" id="videoGuildlines" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="fs11">
+
+                    <div class="mt-2">
+                        <p><b>Video Guidelines</b></p>
+                    </div>
+                    <hr>
+
+                    <p><b>Video format</b></p>
+                    <ul>
+                        <li>We only accept .MP4 videos. Any other format is not accepted.</li>
+                        <li>We accept videos only in standard aspect ratios (16:9 preferred).</li>
+                    </ul>
+
+                    <p><b>Following Videos will be rejected</b></p>
+                    <ul>
+                        <li>Graphic/ Inverted/ Pixelated videos are not accepted.</li>
+                        <li>Videos with watermark, logos, or text overlays are not acceptable.</li>
+                        <li>Blurred, shaky, or cluttered videos are not accepted.</li>
+                        <li>Videos should not contain price, promotional text, or branding for the product.</li>
+                        <li>Stretched, distorted, or compressed videos are not allowed.</li>
+                        <li>Partial product visibility in the video is not acceptable.</li>
+                        <li>Offensive/Objectionable videos/products are not acceptable.</li>
+                    </ul>
+
+                    <p><b>Video standards</b></p>
+                    <ul>
+                        <li>Solo product should be clearly visible without background distractions.</li>
+                        <li>Product should be shown in proper lighting with 360° or multiple angles if possible.</li>
+                        <li>Video should not contain background music, voiceovers, or text unless approved.</li>
+                        <li>Duration should not exceed the recommended length (generally 30–60 seconds).</li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Video Guidlines Ending -->
+<!-- =====================================MODELS============================================= -->
+
+
+ <!-- ###########################################################################################################################
+ ########################################################################################################################### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- ###########################################################################################################################
+ ########################################################################################################################### -->
+
+
+
+
+<!-- ========================================================MODELS============================================= -->
+<!-- Image Guidlines Starting -->
+<div class="modal fade" id="imageGuildlines" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="fs11">
+                    <div class="mt-3">
+                        <p style="line-height: 0.6px;"><b> Image Guidelines</b></p>
+                        <hr style="width: 100px; margin: 2px 0;">
+                    </div>
+
+
+                    <p class="mt-2"><b>Image format</b></p>
+                    <ul>
+                        <li>We only accept .JPEG images. Any other format is not accepted.</li>
+                        <li>We accept Images only in RGB color space. We don’t accept images in CMYK color space.</li>
+                    </ul>
+
+                    <p><b>Following Images will be rejected</b></p>
+                    <ul>
+                        <li>Graphic/ Inverted/ Pixelated image are not accepted.</li>
+                        <li>Images with text/Watermark are not acceptable in primary images.</li>
+                        <li>Blur images and clutter images are not accepted.</li>
+                        <li>Images should not contain price/brand logo for the product.</li>
+                        <li>Product images must not be shrunk, elongated or stretched.</li>
+                        <li>Partial product image is not allowed.</li>
+                        <li>Offensive/Objectionable images/products are not acceptable.</li>
+                    </ul>
+
+                    <p><b>Image standards</b></p>
+                    <ul>
+                        <li>Solo product image without any props.</li>
+                        <li>Product image should not have any text.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Image Guidlines Ending -->
+
+
+
+ <!-- ###########################################################################################################################
+ ########################################################################################################################### -->
 
 
 
@@ -408,3 +593,18 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
