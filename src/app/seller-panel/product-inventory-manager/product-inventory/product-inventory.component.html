@@ -241,24 +241,6 @@
                                                 (input)="onInventoryInput(inventories)"
                                                 (keypress)="allowOnlyNumber($event)" />
 
-                                            <!-- <span *ngIf="inventories.inventory === '0'"
-                                            class="input-group-text text-danger out-of-stock">
-                                            Out of Stock
-                                            <i class="bi bi-bag-x mx-1"></i>
-                                        </span> -->
-
-                                            <!-- <span *ngIf="inventories.inventory > 0 && inventories.inventory < 10"
-                                            class="input-group-text text-dark low-stock" style="font-size: 11px;">
-                                            Low Stock
-                                            <i class="bi bi-graph-down-arrow mx-1"></i>
-                                        </span> -->
-
-                                            <!-- <span *ngIf="inventories.inventory >= 10"
-                                            class="input-group-text stock-available"
-                                            style="font-size: 11px;">
-                                            Available
-                                            <i class="bi bi-check2-circle mx-1"></i>
-                                        </span> -->
 
                                             <div *ngIf="inventories.inventory === '0'"
                                                 class="mx-2 d-flex justify-content-center align-items-center"
