@@ -1,3 +1,17 @@
-<p>seller-home works!</p>
+<button (click)="payNow()" class="btn btn-primary">Pay Now</button>
+<div id="cashfree-dropin-container"></div>
 
 
+
+<!-- // CHART JS -->
+<div class="container p-5 bg-white mt-5" style="border-radius: 15px;width: 400px;">
+
+<canvas
+  baseChart
+  [data]="chartData"
+  [type]="chartType"
+  [options]="chartOptions">
+</canvas>
+
+</div>
+<!-- // CHART JS -->

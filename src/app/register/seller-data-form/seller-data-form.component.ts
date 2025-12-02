@@ -52,8 +52,8 @@ export class SellerDataFormComponent {
     //Check if any condition user directly access to this Page
     if(this.receivedData == null || this.receivedData == undefined || this.receivedData == "")
       {
-       this.router.navigateByUrl("/login");
-       return;
+       //this.router.navigateByUrl("/login");
+       //return;
       }else if(this.receivedData !== null){
         //Set satate Data to sellerTaxData Object
         this.sellerTaxData.username = this.receivedData.mobile;
