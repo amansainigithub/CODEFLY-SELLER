@@ -51,7 +51,7 @@ export class ProductUploadComponent {
       this.categorySelection === null ||
       this.categorySelection === ''
     ) {
-      this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard');
     }
 
     this.productForm = this.formBuilder.group({
@@ -461,7 +461,7 @@ export class ProductUploadComponent {
         Object.keys(this.productForm.value).length > 0 &&
         this.categorySelection !== null
       ) {
-        this.router.navigate(['/seller/dashboard/home/productFiles'], {
+        this.router.navigate(['/seller/dashboard/productFiles'], {
           state: {
             formData: this.productForm.value,
             finalCategory: this.categorySelection,

@@ -35,7 +35,7 @@ export class ModifiledProductFilesComponent {
       this.getProductFilesById(this.productId);
     } else {
       alert('No Product ID provided. Redirecting to Dashboard.');
-      //this.router.navigateByUrl('/seller/dashboard/home');
+      //this.router.navigateByUrl('/seller/dashboard');
     }
   }
 

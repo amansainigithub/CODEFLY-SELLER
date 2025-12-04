@@ -432,7 +432,7 @@ export class ProductVariantsComponent {
         Object.keys(this.productForm.value).length > 0 &&
         this.productData.variantId !== null
       ) {
-        this.router.navigate(['/seller/dashboard/home/productVariantFiles'], {
+        this.router.navigate(['/seller/dashboard/productVariantFiles'], {
           state: {
             formData: this.productForm.value,
             finalCategory: this.productData.variantId,

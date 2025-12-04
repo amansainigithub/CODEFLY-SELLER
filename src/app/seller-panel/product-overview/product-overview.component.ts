@@ -167,7 +167,7 @@ export class ProductOverviewComponent {
 
   modifiedProductFiles(productId:any)
   {
-    this.router.navigateByUrl('/seller/dashboard/home/modified-product-files', {
+    this.router.navigateByUrl('/seller/dashboard/modified-product-files', {
         state: { productId: productId },  
       });
   }
@@ -369,7 +369,7 @@ export class ProductOverviewComponent {
     console.log(this.productData);
     // mode Hide
     this.modelClose();
-    this.router.navigateByUrl('/seller/dashboard/home/product-Variant', {state: this.productData});
+    this.router.navigateByUrl('/seller/dashboard/product-Variant', {state: this.productData});
   }
   //ADD VARINAT ENDING...
 

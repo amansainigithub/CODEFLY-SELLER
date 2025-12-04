@@ -166,7 +166,7 @@ export class CategorySelectionComponent {
 
        //Set Catalog Id to shared Service 
          this.sharedService.setData({vData:this.variantCategory});
-         this.router.navigate(['/seller/dashboard/home/productUpload']);
+         this.router.navigate(['/seller/dashboard/productUpload']);
          this.spinner.hide();
 
     } else {

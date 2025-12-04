@@ -37,26 +37,26 @@ export class ProductVariantFilesComponent {
     if (state && state.formData !== undefined && state.formData !== null) {
       this.productData = state.formData;
     } else {
-      this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard');
     }
 
     if (state && state.finalCategory !== undefined && state.finalCategory !== null) {
       this.finalCategory = state.finalCategory;
     } else {
-      this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard');
     }
 
     if (state && state.productId !== undefined && state.productId !== null) {
       this.productId = state.productId;
     } else {
-      this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard');
     }
 
     if (this.validateFormAndCategory()) {
       console.log('Data is Valid....');
     } else {
       console.log('Invalid data (null/blank/empty)');
-      this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard');
     }
   }
 
@@ -221,7 +221,7 @@ export class ProductVariantFilesComponent {
 
               //CLOSING MODEL AFER SOME TIME
               setTimeout(() => {
-                this.router.navigate(['/seller/dashboard/home']);
+                this.router.navigate(['/seller/dashboard']);
                 //CLOSING MODEL
                 this.proceedModelClose();
               }, 2000);
@@ -236,7 +236,7 @@ export class ProductVariantFilesComponent {
               this.spinner.hide();
               //CLOSING MODEL
               this.proceedModelClose();
-              //this.router.navigate(['/seller/dashboard/home']);
+              //this.router.navigate(['/seller/dashboard']);
             }
           } else {
             console.log('Product ID Not Found....');

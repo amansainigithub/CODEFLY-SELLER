@@ -36,20 +36,20 @@ export class ProductFilesComponent {
       console.log("PRODUCT DATA..............");
       
     } else {
-      this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard');
     }
 
     if (state && state.finalCategory !== undefined && state.finalCategory !== null) {
       this.finalCategory = state.finalCategory;
     } else {
-      this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard');
     }
 
     if (this.validateFormAndCategory()) {
       console.log('✅ Valid data hai');
     } else {
       console.log('Invalid data (null/blank/empty)');
-      this.router.navigateByUrl('/seller/dashboard/home');
+      this.router.navigateByUrl('/seller/dashboard');
     }
   }
 
@@ -215,7 +215,7 @@ export class ProductFilesComponent {
 
               //CLOSING MODEL AFER SOME TIME
               setTimeout(() => {
-                this.router.navigate(['/seller/dashboard/home']);
+                this.router.navigate(['/seller/dashboard']);
                 //CLOSING MODEL
                 this.proceedModelClose();
               }, 2000);
@@ -230,7 +230,7 @@ export class ProductFilesComponent {
               this.spinner.hide();
               //CLOSING MODEL
               this.proceedModelClose();
-              //this.router.navigate(['/seller/dashboard/home']);
+              //this.router.navigate(['/seller/dashboard']);
             }
           } else {
             console.log('Product ID Not Found....');
