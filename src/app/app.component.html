@@ -1,10 +1,5 @@
-<ngx-spinner
- bdColor = "rgba(0, 0, 0, 0.8)" 
- size = "small" 
- color = "#fff" 
- type="ball-clip-rotate"
- [fullScreen] = "true">
- <p style="color: white" > Loading... </p>
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="small" color="#fff" type="ball-clip-rotate" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
 </ngx-spinner>
 
 
@@ -12,31 +7,32 @@
 <!-- USER IS LOGGED IN  NAVBAR START -->
 <div id="app" *ngIf="isLoggedIn">
   <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-lg-2 navExpand">
-    
-       <a href="index.html" class="navbar-brand p-0 brandName">
-        <p class="m-0" style="color: #8B6BF6;">
-          <i class="bi bi-send-check-fill"></i>
-          Codefly
-        </p>
-        <!-- <img src="img/logo.png" alt="Logo"> -->
-       </a>
+
+    <a href="index.html" class="navbar-brand p-0 brandName">
+      <p class="m-0" style="color: #8B6BF6;">
+        <i class="bi bi-send-check-fill"></i>
+        Codefly
+      </p>
+      <!-- <img src="img/logo.png" alt="Logo"> -->
+    </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-        <span class="fa fa-bars"></span>
+      <span class="fa fa-bars"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarCollapse">
-        <div class="navbar-nav ms-auto py-0">
-        </div>
-        <!-- <button mat-raised-button  class="baseColor" (click)="logout()">logout</button> -->
+      <div class="navbar-nav ms-auto py-0">
+      </div>
+      <!-- <button mat-raised-button  class="baseColor" (click)="logout()">logout</button> -->
     </div>
 
- 
 
-    <div  class="dropdown">
-      <a style="color: #8B6BF6;" class="dropdown-toggle px-3" mat-button href="#" data-bs-toggle="dropdown" aria-expanded="false">
+
+    <div class="dropdown">
+      <a style="color: #8B6BF6;" class="dropdown-toggle px-3" mat-button href="#" data-bs-toggle="dropdown"
+        aria-expanded="false">
         <i class="bi bi-person"></i> Profile
       </a>
-    
+
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="#">Action</a></li>
         <li><a class="dropdown-item" href="#">Another action</a></li>
@@ -44,7 +40,7 @@
       </ul>
     </div>
   </nav>
-  <div class="container-fluid" style="margin-top: 80px;"> 
+  <div class="container-fluid" style="margin-top: 80px;">
     <!-- Adjust margin-top to match the height of your fixed navbar -->
     <router-outlet></router-outlet>
   </div>
@@ -70,7 +66,7 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
       <div class="navbar-nav ms-auto py-0">
       </div>
-      <a href="#" routerLink="/login"    mat-stroked-button color="primary" class="mx-3">Log In</a>
+      <a href="#" routerLink="/login" mat-stroked-button color="primary" class="mx-3">Log In</a>
       <a href="#" routerLink="/register" mat-raised-button color="primary">Sign Up</a>
     </div>
   </nav>
@@ -87,113 +83,109 @@
 
 <!-- ========================================================================================= -->
 <!--                                           SIDEBAR                                         -->
- <!-- ======================================================================================== -->
+<!-- ======================================================================================== -->
 
 
 <!-- SIDEBAR STARTING-->
-<div *ngIf="isLoggedIn" >
-              <div style="top: 7%;" class="sidebar scrollable-content" [ngClass]="{'sidebar-extend-min': !isSidebarVisible}">
-                <!-- <a href="" class="item">Home</a>
+<div *ngIf="isLoggedIn">
+  <div style="top: 7%;" class="sidebar scrollable-content" [ngClass]="{'sidebar-extend-min': !isSidebarVisible}">
+    <!-- <a href="" class="item">Home</a>
                           <a href="" class="item">Product</a> -->
-              
-                <ul class="nav flex-column">
-                  <li>
-                    <p class="text-center text-light">
-                      <i class="bi bi-send-check-fill"></i>
-                     Codefly
-                    </p>
-                  </li>
-              
-                  <li class="nav-item mt-3">
-                    <a class="nav-link hv1" routerLink="/seller/dashboard" href="/seller/dashboard"
-                      data-bs-toggle="collapse" data-bs-target="#submenu1" aria-expanded="false">
-                      <i class="bi bi-house-door"></i> Home
-                    </a>
-                  </li>
-              
-                  <li class="nav-item">
-                    <a class="nav-link hv1" href="" data-bs-toggle="collapse" data-bs-target="#submenu4" aria-expanded="false" (click)="toggleArrow()">
-                      <i class="bi bi-calendar4 mr-2"></i>
-                      Products
-                      <i class="bi bi-chevron-right arrow-icon ms-auto floatRit" [ngClass]="{'rotate-arrow': isArrowDown}"></i>
-                    </a>
 
-                    <ul class="collapse submenu4" id="submenu4">
-                      <li class="submenu-item hv1 unOrderList">
-                        <a type="button" style="font-size: 14px;" class="nav-link" 
-                        href="/seller/dashboard/categorySelection/single-category"
-                        routerLink="/seller/dashboard/categorySelection/single-category">
-                        <i class="bi bi-folder-plus"></i>
-                           Product Upload
-                        </a>
-                      </li>
-                    </ul>
+    <ul class="nav flex-column">
+      <li>
+        <p class="text-center text-light">
+          <i class="bi bi-send-check-fill"></i>
+          Codefly
+        </p>
+      </li>
 
-                    <ul class="collapse submenu4" id="submenu4">
-                      <li class="submenu-item hv1 unOrderList">
-                        <a type="button" style="font-size: 14px;" class="nav-link" 
-                        href="/seller/dashboard/product-Overview"
-                        routerLink="/seller/dashboard/product-Overview">
-                        <i class="bi bi-list-check"></i>
-                           Product Overview
-                        </a>
-                      </li>
-                    </ul>
+      <li class="nav-item mt-3">
+        <a class="nav-link hv1" routerLink="/seller/dashboard" href="/seller/dashboard" data-bs-toggle="collapse"
+          data-bs-target="#submenu1" aria-expanded="false" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <i class="bi bi-house-door"></i> Home
+        </a>
+      </li>
 
-                    <ul class="collapse submenu4" id="submenu4">
-                      <li class="submenu-item hv1 unOrderList">
-                        <a type="button" style="font-size: 14px;" class="nav-link" 
-                        href="/seller/dashboard/product-inventory"
-                        routerLink="/seller/dashboard/product-inventory">
-                        <i class="bi bi-justify-left"></i>
-                           Product Inventory
-                        </a>
-                      </li>
-                    </ul>
+      <li class="nav-item">
+        <a class="nav-link hv1" href="" data-bs-toggle="collapse" data-bs-target="#submenu4" aria-expanded="false"
+          (click)="toggleArrow()">
+          <i class="bi bi-calendar4 mr-2"></i>
+          Products
+          <i class="bi bi-chevron-right arrow-icon ms-auto floatRit" [ngClass]="{'rotate-arrow': isArrowDown}"></i>
+        </a>
 
-                  </li>
+        <ul class="collapse submenu4" id="submenu4">
+          <li class="submenu-item hv1 unOrderList">
+            <a type="button" class="nav-link" href="/seller/dashboard/categorySelection/single-category"
+              routerLink="/seller/dashboard/categorySelection/single-category" routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }">
+              <i class="bi bi-folder-plus"></i>
+              Product Upload
+            </a>
+          </li>
+        </ul>
 
+        <ul class="collapse submenu4" id="submenu4">
+          <li class="submenu-item hv1 unOrderList">
+            <a type="button" class="nav-link" href="/seller/dashboard/product-Overview"
+              routerLink="/seller/dashboard/product-Overview" routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }">
+              <i class="bi bi-list-check"></i>
+              Product Overview
+            </a>
+          </li>
+        </ul>
 
-                  <li class="nav-item ">
-                    <a class="nav-link hv1" routerLink="/seller/dashboard/orders" href="/seller/dashboard/orders"
-                      data-bs-toggle="collapse" data-bs-target="#submenu1" aria-expanded="false">
-                      <i class="bi bi-house-door"></i> Orders
-                    </a>
-                  </li>
-              
-                  <div class="divider"></div>
-                </ul>
-              
-              </div>
+        <ul class="collapse submenu4" id="submenu4">
+          <li class="submenu-item hv1 unOrderList">
+            <a type="button" class="nav-link" href="/seller/dashboard/product-inventory"
+              routerLink="/seller/dashboard/product-inventory" routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: true }">
+              <i class="bi bi-justify-left"></i>
+              Product Inventory
+            </a>
+          </li>
+        </ul>
 
-            <!-- CONTENT -->
-            <div *ngIf="isLoggedIn" class="content" [ngClass]="{'content-expanded': !isSidebarVisible}">
-                  
-                  <div class="p-4 loadDynamic">
-                    <router-outlet>
-                    
-                      <button mat-stroked-button #menuBtn   type="button" (click)="toggleSidebar()">
-                        <i class="bi bi-list"></i>
-                      </button>
+      </li>
 
-                      <span class="clock"> {{ currentTime }}</span>
-                      
-                    <!-- DYNAMIC ROOT CONTENT -->
-                  </router-outlet>
-                  </div>
-            </div>
-            <!-- CONTENT -->
+      <!-- ORDERS -->
+      <li class="nav-item ">
+        <a class="nav-link hv1" routerLink="/seller/dashboard/orders" href="/seller/dashboard/orders"
+          data-bs-toggle="collapse" data-bs-target="#submenu1" aria-expanded="false" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <i class="bi bi-house-door"></i> Orders
+        </a>
+      </li>
+      <!-- ORDERS -->
+
+      <div class="divider"></div>
+    </ul>
+
+  </div>
+
+  <!-- CONTENT -->
+  <div *ngIf="isLoggedIn" class="content" [ngClass]="{'content-expanded': !isSidebarVisible}">
+
+    <div class="p-4 loadDynamic">
+      <router-outlet>
+
+        <button mat-stroked-button #menuBtn type="button" (click)="toggleSidebar()">
+          <i class="bi bi-list"></i>
+        </button>
+
+        <span class="clock"> {{ currentTime }}</span>
+
+        <!-- DYNAMIC ROOT CONTENT -->
+      </router-outlet>
+    </div>
+  </div>
+  <!-- CONTENT -->
 </div>
 
 <!-- SIDEBAR ENDING -->
 
 
-<ng-toast />  <!-- takes default width of 350px and top-right position   -->
-
-
-
-
-
-
-
-
+<ng-toast /> <!-- takes default width of 350px and top-right position   -->

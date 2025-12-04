@@ -21,12 +21,33 @@
   font-size: 14px;
 }
 
+.sidebar .nav-link {
+  border-radius: 5px; /* Default same radius */
+  font-size: 12px;
+}
+
+
 .sidebar .nav-link:hover {
   /* background-color: #e9ecef; */
   background-color: white;
   color: black;
   border-radius: 5px;
 }
+.nav-link{
+  margin-top: 3px;
+}
+
+/* NAV LINK ACTIVE STYLE IMPORTANT ACTIVE YAHI SE HO RHA HAIN */
+.nav-link.active {
+  background-color: #ffffff !important;
+  color: #000 !important; 
+  font-weight: 400;
+  border-radius: 5px; 
+}
+/* NAV LINK ACTIVE STYLE IMPORTANT ACTIVE YAHI SE HO RHA HAIN */
+
+
+
 
 .arrow-icon {
   transition: transform 0.3s;
@@ -213,3 +234,7 @@ ul li a.active {
   left: 285px;
   animation: scale 1s linear infinite .5s;
 }
+
+
+
+
