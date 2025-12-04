@@ -1,1 +1,143 @@
-<p>orders works!</p>
+<div class="container mt-3 bg-white p-3" style="border-radius: 12px;">
+
+
+
+
+  <!-- UPPER NAV STARTING   -->
+  <nav>
+    <div class="nav nav-tabs fs12" id="nav-tab" role="tablist">
+      <button class="nav-link active" id="nav-active-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-active"
+        type="button"
+        role="tab"
+        aria-controls="nav-active"
+        aria-selected="true"
+        (click)="getActiveOrders()">
+        Active Orders
+      </button>
+
+      <button class="nav-link" id="nav-pending-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-pending"
+        type="button"
+        role="tab"
+        aria-controls="nav-pending"
+        aria-selected="false"
+        (click)="getPendingOrders()">
+        Pending Orders
+      </button>
+
+      <button class="nav-link" id="nav-cancelled-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#nav-cancelled"
+        type="button"
+        role="tab"
+        aria-controls="nav-cancelled"
+        aria-selected="false"
+        (click)="getCancelledOrders()">
+        Cancelled Orders
+      </button>
+    </div>
+  </nav>
+<!-- UPPER NAV ENDING -->
+<!-- ################################################################################## -->
+<!-- ################################################################################## -->
+
+
+
+
+
+
+
+  <!-- TAB CONTENT STARTING -->
+  <div class="tab-content mt-3" id="nav-tabContent">
+
+
+
+
+
+    <!-- Active Orders -->
+    <div class="tab-pane fade show active" id="nav-active" role="tabpanel">
+
+      <table *ngIf="activeOrders.length > 0" class="table table-sm table-hover custom-table">
+
+            <thead>
+                <tr>
+                <th><input type="checkbox" (change)="selectAll($event)"></th>
+                <th>Order No</th>
+                <th>Product</th>
+                <th>Brand</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+                <th>Payment</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let order of activeOrders">
+                <td>
+                    <input type="checkbox"
+                        [(ngModel)]="order.selected"
+                        (change)="onSingleSelectChange()">
+                </td>
+
+                <td>{{ order.orderNoPerItem }}</td>
+
+                <td class="d-flex align-items-center gap-1">
+                    <img [src]="order.fileUrl"
+                        alt="product"
+                        class="product-image">
+                    {{ order.productName }}
+                </td>
+
+                <td>{{ order.productBrand }}</td>
+                <td>₹{{ order.productPrice }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>₹{{ order.totalPrice }}</td>
+                <td>{{ order.paymentState }}</td>
+
+                </tr>
+            </tbody>
+            </table>
+
+
+
+        <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="activeOrders_itemsPerPage" [length]="activeOrders_totalElements"
+                    [pageIndex]="activeOrders_currentPage" (page)="nextPageActiveProducts($event)" showFirstLastButtons>
+                </mat-paginator>
+
+      <p *ngIf="activeOrders.length == 0" class="text-center text-muted">
+        No active orders found.
+      </p>
+
+    </div>
+    <!-- Active Orders -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Pending Orders -->
+    <div class="tab-pane fade" id="nav-pending" role="tabpanel">
+      <p>Pending Orders Coming Soon...</p>
+    </div>
+
+    <!-- Cancelled Orders -->
+    <div class="tab-pane fade" id="nav-cancelled" role="tabpanel">
+      <p>Cancelled Orders Coming Soon...</p>
+    </div>
+
+  </div>
+</div>
+  <!-- TAB CONTENT ENDING... -->
