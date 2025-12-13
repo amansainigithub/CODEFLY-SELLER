@@ -1,48 +1,6 @@
 <div class="container mt-3 bg-white p-3" style="border-radius: 12px;">
 
-
-
-
-  <!-- UPPER NAV STARTING   -->
-  <nav>
-    <div class="nav nav-tabs fs12" id="nav-tab" role="tablist">
-      <button class="nav-link active" id="nav-active-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#nav-active"
-        type="button"
-        role="tab"
-        aria-controls="nav-active"
-        aria-selected="true"
-        (click)="getActiveOrders()">
-        Active Orders
-      </button>
-
-      <button class="nav-link" id="nav-pending-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#nav-pending"
-        type="button"
-        role="tab"
-        aria-controls="nav-pending"
-        aria-selected="false"
-        (click)="getPendingOrders()">
-        Pending Orders
-      </button>
-
-      <button class="nav-link" id="nav-cancelled-tab"
-        data-bs-toggle="tab"
-        data-bs-target="#nav-cancelled"
-        type="button"
-        role="tab"
-        aria-controls="nav-cancelled"
-        aria-selected="false"
-        (click)="getCancelledOrders()">
-        Cancelled Orders
-      </button>
-    </div>
-  </nav>
-<!-- UPPER NAV ENDING -->
-<!-- ################################################################################## -->
-<!-- ################################################################################## -->
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" (selectedTabChange)="onTabChange($event)" class="fs12">
 
 
 
@@ -50,70 +8,114 @@
 
 
 
-  <!-- TAB CONTENT STARTING -->
-  <div class="tab-content mt-3" id="nav-tabContent">
 
 
+    <!-- PENDING ORDER STARTING
+ #######################################################################################################
+ ####################################################################################################### -->
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <span style="font-size:11px !important; font-weight:500;">
+          Pending
+          <span *ngIf="pendingOrders.length > 0">
+            ({{ pendingOrders.length }})
+          </span>
+        </span>
+</ng-template>
 
 
+      <div class="table-wrapper mt-3">
+        <table class="table table-bordered table-sm fs11 pending-order-table">
+          <thead class="table-light">
+            <tr>
+              <th>
+                <input type="checkbox" (change)="selectAll($event)">
+              </th>
+              <th>Order No</th>
+              <th>Product</th>
+              <th>Product Name</th>
+              <th>Date/Time</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Payment</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of pendingOrders">
+              <td>
+                <input type="checkbox" [(ngModel)]="order.selected" (change)="onSingleSelectChange()">
+              </td>
 
-    <!-- Active Orders -->
-    <div class="tab-pane fade show active" id="nav-active" role="tabpanel">
+              <td>{{ order.orderNoPerItem }}</td>
 
-      <table *ngIf="activeOrders.length > 0" class="table table-sm table-hover custom-table">
-
-            <thead>
-                <tr>
-                <th><input type="checkbox" (change)="selectAll($event)"></th>
-                <th>Order No</th>
-                <th>Product</th>
-                <th>Brand</th>
-                <th>Price</th>
-                <th>Qty</th>
-                <th>Total</th>
-                <th>Payment</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr *ngFor="let order of activeOrders">
-                <td>
-                    <input type="checkbox"
-                        [(ngModel)]="order.selected"
-                        (change)="onSingleSelectChange()">
-                </td>
-
-                <td>{{ order.orderNoPerItem }}</td>
-
-                <td class="d-flex align-items-center gap-1">
-                    <img [src]="order.fileUrl"
-                        alt="product"
-                        class="product-image">
-                    {{ order.productName }}
-                </td>
-
-                <td>{{ order.productBrand }}</td>
-                <td>₹{{ order.productPrice }}</td>
-                <td>{{ order.quantity }}</td>
-                <td>₹{{ order.totalPrice }}</td>
-                <td>{{ order.paymentState }}</td>
-
-                </tr>
-            </tbody>
-            </table>
+              <td class="d-flex align-items-center gap-2">
+                <img [src]="order.fileUrl" height="40" width="40" style="object-fit: cover;"
+                  alt="product">
+              </td>
 
 
+              <td>{{ order.productName }}</td>
 
-        <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="activeOrders_itemsPerPage" [length]="activeOrders_totalElements"
-                    [pageIndex]="activeOrders_currentPage" (page)="nextPageActiveProducts($event)" showFirstLastButtons>
-                </mat-paginator>
+              <td style="width: 120px;">
+                <div>
+                  <span class="order-date">
+                    <i class="bi bi-calendar2-range"></i>
+                    {{ order.orderDate }}
+                  </span>
+                </div>
+                <div class="mt-2">
+                  <span class="order-time mt-2">
+                    <i class="bi bi-clock"></i>
+                    {{order.orderTime}}
+                  </span>
+                </div>
+              </td>
 
-      <p *ngIf="activeOrders.length == 0" class="text-center text-muted">
+              <td>₹{{ order.productPrice }}</td>
+
+              <td>{{ order.quantity }}</td>
+
+              <td>
+                <span class="pending-payment-badge">
+                  {{ order.paymentState }}
+                </span>
+              </td>
+              <td>
+                <span class="pending-order-status">
+                  {{ order.orderStatus }}
+                </span>
+              </td>
+              <td>
+                <div class="action-btns">
+                  <button mat-raised-button color="primary">
+                    Accept
+                  </button>
+
+                  <button mat-raised-button color="warn">
+                    Reject
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="pendingOrders_itemsPerPage"
+        [length]="pendingOrders_totalElements" [pageIndex]="pendingOrders_currentPage"
+        (page)="nextPagePendingProducts($event)" showFirstLastButtons>
+      </mat-paginator>
+
+      <p *ngIf="pendingOrders.length === 0" class="text-center text-muted mt-3">
         No active orders found.
       </p>
 
-    </div>
-    <!-- Active Orders -->
+    </mat-tab>
+    <!-- PENDING ORDER ENDING
+ #######################################################################################################
+ ####################################################################################################### -->
 
 
 
@@ -128,16 +130,531 @@
 
 
 
-    <!-- Pending Orders -->
-    <div class="tab-pane fade" id="nav-pending" role="tabpanel">
-      <p>Pending Orders Coming Soon...</p>
-    </div>
 
-    <!-- Cancelled Orders -->
-    <div class="tab-pane fade" id="nav-cancelled" role="tabpanel">
-      <p>Cancelled Orders Coming Soon...</p>
-    </div>
 
-  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <!-- CONFIRMED ORDER STARTING
+ #######################################################################################################
+ ####################################################################################################### -->
+
+    <mat-tab label="Conformed Orders">
+      <ng-template mat-tab-label class="fs11">
+        <span style="font-size:11px !important; font-weight:500;">
+          Orders
+          <span *ngIf="pendingOrders.length > 0">
+            ({{ pendingOrders.length }})
+          </span>
+        </span>
+      </ng-template>
+
+      <span style="font-size:11px !important; font-weight:500;">
+          Pending
+          <span *ngIf="pendingOrders.length > 0">
+            ({{ pendingOrders.length }})
+          </span>
+        </span>
+
+      <div class="table-wrapper mt-3">
+        <table class="table table-bordered table-sm fs11 confirmed-order-table">
+          <thead class="table-light">
+            <tr>
+              <th>Order No</th>
+              <th>Product</th>
+              <th>Product Name</th>
+              <th>Date/Time</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Payment</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of confirmedOrders">
+
+              <td>{{ order.orderNoPerItem }}</td>
+
+              <td class="d-flex align-items-center gap-2">
+                <img [src]="order.fileUrl" class="order-img" height="40" width="40" style="object-fit: cover;"
+                  alt="product">
+              </td>
+
+
+              <td>{{ order.productName }}</td>
+
+              <td style="width: 120px;">
+                <div>
+                  <span class="order-date">
+                    <i class="bi bi-calendar2-range"></i>
+                    {{ order.orderDate }}
+                  </span>
+                </div>
+                <div class="mt-2">
+                  <span class="order-time mt-2">
+                    <i class="bi bi-clock"></i>
+                    {{order.orderTime}}
+                  </span>
+                </div>
+              </td>
+
+              <td>₹{{ order.productPrice }}</td>
+
+              <td>{{ order.quantity }}</td>
+
+              <td>
+                <span class="confirmed-payment-badge">
+                  {{ order.paymentState }}
+                </span>
+              </td>
+              <td style="width: 130px;">
+                <span class="confirmed-order-status">
+                  <i class="bi bi-check2-circle"></i>
+                  {{ order.orderStatus }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="confirmedOrders_itemsPerPage"
+        [length]="confirmedOrders_totalElements" [pageIndex]="confirmedOrders_currentPage"
+        (page)="nextPageConfirmedProducts($event)" showFirstLastButtons>
+      </mat-paginator>
+
+      <p *ngIf="confirmedOrders.length === 0" class="text-center text-muted mt-3">
+        No active orders found.
+      </p>
+    </mat-tab>
+
+ <!-- CONFIRMED ORDER ENDING
+ #######################################################################################################
+ ####################################################################################################### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   <!-- SHIPPED ORDER STARTING
+ #######################################################################################################
+ ####################################################################################################### -->
+
+    <mat-tab label="Conformed Orders">
+      <ng-template mat-tab-label class="fs11">
+        <span style="font-size:11px !important; font-weight:500;">
+          Shipped
+          <span *ngIf="pendingOrders.length > 0">
+            ({{ pendingOrders.length }})
+          </span>
+        </span>
+      </ng-template>
+
+      <div class="table-wrapper mt-3">
+        <table class="table table-bordered table-sm fs11 shipped-order-table">
+          <thead class="table-light">
+            <tr>
+              <th>Order No</th>
+              <th>Product</th>
+              <th>Product Name</th>
+              <th>Date/Time</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Payment</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of shippedOrders">
+
+              <td>{{ order.orderNoPerItem }}</td>
+
+              <td class="d-flex align-items-center gap-2">
+                <img [src]="order.fileUrl" class="order-img" height="40" width="40" style="object-fit: cover;"
+                  alt="product">
+              </td>
+
+
+              <td>{{ order.productName }}</td>
+
+              <td style="width: 120px;">
+                <div>
+                  <span class="order-date">
+                    <i class="bi bi-calendar2-range"></i>
+                    {{ order.orderDate }}
+                  </span>
+                </div>
+                <div class="mt-2">
+                  <span class="order-time mt-2">
+                    <i class="bi bi-clock"></i>
+                    {{order.orderTime}}
+                  </span>
+                </div>
+              </td>
+
+              <td>₹{{ order.productPrice }}</td>
+
+              <td>{{ order.quantity }}</td>
+
+              <td>
+                <span class="shipped-payment-badge">
+                  {{ order.paymentState }}
+                </span>
+              </td>
+              <td style="width: 130px;">
+                <span class="shipped-order-status">
+                  <i class="bi bi-truck truck-move"></i>
+                  {{ order.orderStatus }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="shippedOrders_itemsPerPage"
+        [length]="shippedOrders_totalElements" [pageIndex]="shippedOrders_currentPage"
+        (page)="nextPageShippedProducts($event)" showFirstLastButtons>
+      </mat-paginator>
+
+      <p *ngIf="shippedOrders.length === 0" class="text-center text-muted mt-3">
+        No active orders found.
+      </p>
+    </mat-tab>
+
+ <!-- SHIPPED ORDER ENDING
+ #######################################################################################################
+ ####################################################################################################### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+   <!-- DELIVERED ORDER STARTING
+ #######################################################################################################
+ ####################################################################################################### -->
+
+    <mat-tab label="Conformed Orders">
+      <ng-template mat-tab-label class="fs11">
+        <span style="font-size:11px !important; font-weight:500;">
+          Delivered
+          <span *ngIf="pendingOrders.length > 0">
+            ({{ pendingOrders.length }})
+          </span>
+        </span>
+      </ng-template>
+
+      <div class="table-wrapper mt-3">
+        <table class="table table-bordered table-sm fs11 delivered-order-table">
+          <thead class="table-light">
+            <tr>
+              <th>Order No</th>
+              <th>Product</th>
+              <th>Product Name</th>
+              <th>Date/Time</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Payment</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of deliveredOrders">
+
+              <td>{{ order.orderNoPerItem }}</td>
+
+              <td class="d-flex align-items-center gap-2">
+                <img [src]="order.fileUrl" class="order-img" height="40" width="40" style="object-fit: cover;"
+                  alt="product">
+              </td>
+
+
+              <td>{{ order.productName }}</td>
+
+              <td style="width: 120px;">
+                <div>
+                  <span class="order-date">
+                    <i class="bi bi-calendar2-range"></i>
+                    {{ order.orderDate }}
+                  </span>
+                </div>
+                <div class="mt-2">
+                  <span class="order-time mt-2">
+                    <i class="bi bi-clock"></i>
+                    {{order.orderTime}}
+                  </span>
+                </div>
+              </td>
+
+              <td>₹{{ order.productPrice }}</td>
+
+              <td>{{ order.quantity }}</td>
+
+              <td>
+                <span class="delivered-payment-badge">
+                  {{ order.paymentState }}
+                </span>
+              </td>
+              <td style="width: 130px;">
+                <span class="delivered-order-status">
+                  <i class="bi bi-check2-circle"></i>
+                  {{ order.orderStatus }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="deliveredOrders_itemsPerPage"
+        [length]="deliveredOrders_totalElements" [pageIndex]="shippedOrders_currentPage"
+        (page)="nextPageDeliveredProducts($event)" showFirstLastButtons>
+      </mat-paginator>
+
+      <p *ngIf="deliveredOrders.length === 0" class="text-center text-muted mt-3">
+        No active orders found.
+      </p>
+    </mat-tab>
+
+ <!-- DELIVERED ORDER ENDING
+ #######################################################################################################
+ ####################################################################################################### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+   <!-- CANCELLED ORDER STARTING
+ #######################################################################################################
+ ####################################################################################################### -->
+
+    <mat-tab label="Conformed Orders">
+      <ng-template mat-tab-label class="fs11">
+        <span style="font-size:11px !important; font-weight:500;">
+           Cancelled
+          <span *ngIf="pendingOrders.length > 0">
+            ({{ pendingOrders.length }})
+          </span>
+        </span>
+      </ng-template>
+
+      <div class="table-wrapper mt-3">
+        <table class="table table-bordered table-sm fs11 cancelled-order-table">
+          <thead class="table-light">
+            <tr>
+              <th>Order No</th>
+              <th>Product</th>
+              <th>Product Name</th>
+              <th>Date/Time</th>
+              <th>Price</th>
+              <th>Qty</th>
+              <th>Payment</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of cancelledOrders">
+
+              <td>{{ order.orderNoPerItem }}</td>
+
+              <td class="d-flex align-items-center gap-2">
+                <img [src]="order.fileUrl" class="order-img" height="40" width="40" style="object-fit: cover;"
+                  alt="product">
+              </td>
+
+
+              <td>{{ order.productName }}</td>
+
+              <td style="width: 120px;">
+                <div>
+                  <span class="order-date">
+                    <i class="bi bi-calendar2-range"></i>
+                    {{ order.orderDate }}
+                  </span>
+                </div>
+                <div class="mt-2">
+                  <span class="order-time mt-2">
+                    <i class="bi bi-clock"></i>
+                    {{order.orderTime}}
+                  </span>
+                </div>
+              </td>
+
+              <td>₹{{ order.productPrice }}</td>
+
+              <td>{{ order.quantity }}</td>
+
+              <td>
+                <span class="cancelled-payment-badge">
+                  {{ order.paymentState }}
+                </span>
+              </td>
+              <td style="width: 130px;">
+                <span class="cancelled-order-status">
+                  <i class="bi bi-x"></i>
+                  {{ order.orderStatus }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <mat-paginator [pageSizeOptions]="[2, 4, 5, 50]" [pageSize]="cancelledOrders_itemsPerPage"
+        [length]="cancelledOrders_totalElements" [pageIndex]="shippedOrders_currentPage"
+        (page)="nextPageCancelledProducts($event)" showFirstLastButtons>
+      </mat-paginator>
+
+      <p *ngIf="cancelledOrders.length === 0" class="text-center text-muted mt-3">
+        No active orders found.
+      </p>
+    </mat-tab>
+
+ <!-- CANCELLED ORDER ENDING
+ #######################################################################################################
+ ####################################################################################################### -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </mat-tab-group>
+
 </div>
-  <!-- TAB CONTENT ENDING... -->

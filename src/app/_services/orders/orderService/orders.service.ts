@@ -14,13 +14,38 @@ export class OrdersService {
 
   constructor(private http: HttpClient) {}
   
-    getOrders(request: any, username: any): Observable<any> {
+    getPendingOrders(request: any, username: any): Observable<any> {
       return this.http.post(
         API_AUTHORIZA_URL +
-          'ordersController/' +'getActiveOrders?page=' + request.page +'&size='+request.size +'&username=' +username,httpOptions);
+          'ordersController/' +'getPendingOrders?page=' + request.page +'&size='+request.size +'&username=' +username,httpOptions);
     }
 
+    getConfirmedOrders(request: any, username: any): Observable<any> {
+      return this.http.post(
+        API_AUTHORIZA_URL +
+          'ordersController/' +'getConfirmedOrders?page=' + request.page +'&size='+request.size +'&username=' +username,httpOptions);
+    }
+
+    getShippedOrders(request: any, username: any): Observable<any> {
+      return this.http.post(
+        API_AUTHORIZA_URL +
+          'ordersController/' +'getShippedOrders?page=' + request.page +'&size='+request.size +'&username=' +username,httpOptions);
+    }    
+
+
+    getdeliveredOrders(request: any, username: any): Observable<any> {
+      return this.http.post(
+        API_AUTHORIZA_URL +
+          'ordersController/' +'getDeliveredOrders?page=' + request.page +'&size='+request.size +'&username=' +username,httpOptions);
+    }   
+ 
     
+    
+    getCancelledOrders(request: any, username: any): Observable<any> {
+      return this.http.post(
+        API_AUTHORIZA_URL +
+          'ordersController/' +'getCancelledOrders?page=' + request.page +'&size='+request.size +'&username=' +username,httpOptions);
+    }   
 
     
   

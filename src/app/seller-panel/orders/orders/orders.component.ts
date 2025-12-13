@@ -10,38 +10,57 @@ import { PageEvent } from '@angular/material/paginator';
   styleUrl: './orders.component.css',
 })
 export class OrdersComponent {
-  // ACTIVE ORDERS
-  activeOrders: any[] = [];
-  activeOrders_totalElements: number = 0;
-  activeOrders_currentPage: number = 1;
-  activeOrders_itemsPerPage: number = 10;
 
-  constructor(
+    constructor(
     private orderService: OrdersService,
     private toast: NgToastService,
     private tokenStorageService: TokenStorageService
   ) {}
 
+  
+ onTabChange(event: any) {
+  if (event.index === 0) {
+    this.getPendingOrders();
+  } else if (event.index === 1) {
+    this.getConfirmedOrders();
+  }else if (event.index === 2) {
+    this.getShippedOrders();
+  }else if (event.index === 3) {
+    this.getdeliverdOrders();
+  }else if (event.index === 4) {
+    this.cancelOrders();
+  }
+}
+
+
+// ###############################################################################
+// ##############################################################################
+// PENDING ORDER STARTING
+  pendingOrders: any[] = [];
+  pendingOrders_totalElements: number = 0;
+  pendingOrders_currentPage: number = 1;
+  pendingOrders_itemsPerPage: number = 10;
+
   ngOnInit(): void {
-    this.getActiveOrders();
+    this.getPendingOrders();
   }
 
-  getActiveOrders() {
-    this.getActiveOrdersByService({ page: '0', size: '10' });
+  getPendingOrders() {
+    this.getPendingOrdersData({ page: '0', size: '10' });
   }
 
-  getActiveOrdersByService(request: any) {
+  getPendingOrdersData(request: any) {
     const user = this.tokenStorageService.getUser();
 
-    this.orderService.getOrders(request, user.username).subscribe({
+    this.orderService.getPendingOrders(request, user.username).subscribe({
       next: (res: any) => {
         console.log(res);
-        this.activeOrders = res.data.content;
+        this.pendingOrders = res.data.content;
 
         //  PAGENATION DATA
-        this.activeOrders_totalElements = res.data.totalElements;
-        this.activeOrders_currentPage = res.data.pageable.pageNumber;
-        this.activeOrders_itemsPerPage = res.data.pageable.pageSize;
+        this.pendingOrders_totalElements = res.data.totalElements;
+        this.pendingOrders_currentPage = res.data.pageable.pageNumber;
+        this.pendingOrders_itemsPerPage = res.data.pageable.pageSize;
       },
       error: (err: any) => {
         this.toast.error({
@@ -56,29 +75,29 @@ export class OrdersComponent {
   }
 
 
-nextPageActiveProducts(event: PageEvent) {
-      this.activeOrders_currentPage = event.pageIndex;
-      this.activeOrders_itemsPerPage = event.pageSize;
+nextPagePendingProducts(event: PageEvent) {
+      this.pendingOrders_currentPage = event.pageIndex;
+      this.pendingOrders_itemsPerPage = event.pageSize;
       const request = {
-        page: this.activeOrders_currentPage.toString(),
-        size: this.activeOrders_itemsPerPage.toString(),
+        page: this.pendingOrders_currentPage.toString(),
+        size: this.pendingOrders_itemsPerPage.toString(),
       };
-      this.getActiveOrdersByService(request);
+      this.getPendingOrdersData(request);
 }
 
 selectAll(event: any) {
   const checked = event.target.checked;
-  this.activeOrders.forEach((order: any) => order.selected = checked);
+  this.pendingOrders.forEach((order: any) => order.selected = checked);
   console.log(this.getSelectedOrders());
 }
 
 getSelectedOrders() {
-  return this.activeOrders.filter((o: any) => o.selected);
+  return this.pendingOrders.filter((o: any) => o.selected);
 }
 
 selectAllChecked: boolean = false;
 onSingleSelectChange() {
-  this.selectAllChecked = this.activeOrders.every((order: any) => order.selected);
+  this.selectAllChecked = this.pendingOrders.every((order: any) => order.selected);
   console.log("Selected Orders:", this.getSelectedOrders());
 }
 
@@ -92,6 +111,9 @@ rejectOrder(order: any) {
   // Add API call or status update logic here
 }
 
+// PENDING ORDER ENDING
+// #######################################################################################################
+// #######################################################################################################
 
 
 
@@ -122,16 +144,340 @@ rejectOrder(order: any) {
 
 
 
+// CONFIRMED ORDER STARTING
+// #######################################################################################################
+// #######################################################################################################
 
-
-
-  getPendingOrders() {
-    console.log('Pending Orders Fetching...');
-    // TODO: API call karo and pendingOrders me push karo
+  getConfirmedOrders() {
+    this.getConfirmedOrdersData({ page: '0', size: '10' });
   }
 
-  getCancelledOrders() {
-    console.log('Cancelled Orders Fetching...');
-    // TODO: API call karo and cancelledOrders me push karo
+  confirmedOrders: any[] = [];
+  confirmedOrders_totalElements: number = 0;
+  confirmedOrders_currentPage: number = 1;
+  confirmedOrders_itemsPerPage: number = 10;
+  
+
+  getConfirmedOrdersData(request: any) {
+    const user = this.tokenStorageService.getUser();
+
+    this.orderService.getConfirmedOrders(request, user.username).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.confirmedOrders = res.data.content;
+
+        //  PAGENATION DATA
+        this.confirmedOrders_totalElements = res.data.totalElements;
+        this.confirmedOrders_currentPage = res.data.pageable.pageNumber;
+        this.confirmedOrders_itemsPerPage = res.data.pageable.pageSize;
+      },
+      error: (err: any) => {
+        this.toast.error({
+          detail: 'Error',
+          summary: err.error.data?.message || 'Something went wrong',
+          position: 'topRight',
+          duration: 2000,
+        });
+      },
+    });
+
   }
+
+
+nextPageConfirmedProducts(event: PageEvent) {
+      this.confirmedOrders_currentPage = event.pageIndex;
+      this.confirmedOrders_itemsPerPage = event.pageSize;
+      const request = {
+        page: this.confirmedOrders_currentPage.toString(),
+        size: this.confirmedOrders_itemsPerPage.toString(),
+      };
+      this.getConfirmedOrdersData(request);
+}
+
+
+
+// #######################################################################################################
+// #######################################################################################################
+// CONFIRMED ORDER ENDING
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SHIPPED ORDER STARTING
+// #######################################################################################################
+// #######################################################################################################
+
+  getShippedOrders() {
+    this.getShippedOrdersData({ page: '0', size: '10' });
+  }
+
+  shippedOrders: any[] = [];
+  shippedOrders_totalElements: number = 0;
+  shippedOrders_currentPage: number = 1;
+  shippedOrders_itemsPerPage: number = 10;
+  
+
+  getShippedOrdersData(request: any) {
+    const user = this.tokenStorageService.getUser();
+
+    this.orderService.getShippedOrders(request, user.username).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.shippedOrders = res.data.content;
+
+        //  PAGENATION DATA
+        this.shippedOrders_totalElements = res.data.totalElements;
+        this.shippedOrders_currentPage = res.data.pageable.pageNumber;
+        this.shippedOrders_itemsPerPage = res.data.pageable.pageSize;
+      },
+      error: (err: any) => {
+        this.toast.error({
+          detail: 'Error',
+          summary: err.error.data?.message || 'Something went wrong',
+          position: 'topRight',
+          duration: 2000,
+        });
+      },
+    });
+
+  }
+
+
+nextPageShippedProducts(event: PageEvent) {
+      this.shippedOrders_currentPage = event.pageIndex;
+      this.shippedOrders_itemsPerPage = event.pageSize;
+      const request = {
+        page: this.shippedOrders_currentPage.toString(),
+        size: this.shippedOrders_itemsPerPage.toString(),
+      };
+      this.getShippedOrdersData(request);
+}
+
+
+
+// #######################################################################################################
+// #######################################################################################################
+// SHIPPED ORDER ENDING
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SHIPPED ORDER STARTING
+// #######################################################################################################
+// #######################################################################################################
+
+  getdeliverdOrders() {
+    this.getdeliverdOrdersData({ page: '0', size: '10' });
+  }
+
+  deliveredOrders: any[] = [];
+  deliveredOrders_totalElements: number = 0;
+  deliveredOrders_currentPage: number = 1;
+  deliveredOrders_itemsPerPage: number = 10;
+  
+
+  getdeliverdOrdersData(request: any) {
+    const user = this.tokenStorageService.getUser();
+
+    this.orderService.getdeliveredOrders(request, user.username).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.deliveredOrders = res.data.content;
+
+        //  PAGENATION DATA
+        this.deliveredOrders_totalElements = res.data.totalElements;
+        this.deliveredOrders_currentPage = res.data.pageable.pageNumber;
+        this.deliveredOrders_itemsPerPage = res.data.pageable.pageSize;
+      },
+      error: (err: any) => {
+        this.toast.error({
+          detail: 'Error',
+          summary: err.error.data?.message || 'Something went wrong',
+          position: 'topRight',
+          duration: 2000,
+        });
+      },
+    });
+
+  }
+
+
+nextPageDeliveredProducts(event: PageEvent) {
+      this.deliveredOrders_currentPage = event.pageIndex;
+      this.deliveredOrders_itemsPerPage = event.pageSize;
+      const request = {
+        page: this.deliveredOrders_currentPage.toString(),
+        size: this.deliveredOrders_itemsPerPage.toString(),
+      };
+      this.getdeliverdOrdersData(request);
+}
+
+
+
+// #######################################################################################################
+// #######################################################################################################
+// SHIPPED ORDER ENDING
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// SHIPPED ORDER STARTING
+// #######################################################################################################
+// #######################################################################################################
+
+  cancelOrders() {
+    this.getCancelledOrdersData({ page: '0', size: '10' });
+  }
+
+  cancelledOrders: any[] = [];
+  cancelledOrders_totalElements: number = 0;
+  cancelledOrders_currentPage: number = 1;
+  cancelledOrders_itemsPerPage: number = 10;
+  
+
+  getCancelledOrdersData(request: any) {
+    const user = this.tokenStorageService.getUser();
+
+    this.orderService.getCancelledOrders(request, user.username).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        this.cancelledOrders = res.data.content;
+
+        //  PAGENATION DATA
+        this.cancelledOrders_totalElements = res.data.totalElements;
+        this.cancelledOrders_currentPage = res.data.pageable.pageNumber;
+        this.cancelledOrders_itemsPerPage = res.data.pageable.pageSize;
+      },
+      error: (err: any) => {
+        this.toast.error({
+          detail: 'Error',
+          summary: err.error.data?.message || 'Something went wrong',
+          position: 'topRight',
+          duration: 2000,
+        });
+      },
+    });
+
+  }
+
+
+nextPageCancelledProducts(event: PageEvent) {
+      this.cancelledOrders_currentPage = event.pageIndex;
+      this.cancelledOrders_itemsPerPage = event.pageSize;
+      const request = {
+        page: this.cancelledOrders_currentPage.toString(),
+        size: this.cancelledOrders_itemsPerPage.toString(),
+      };
+      this.getCancelledOrdersData(request);
+}
+
+
+
+// #######################################################################################################
+// #######################################################################################################
+// SHIPPED ORDER ENDING
+
+
 }

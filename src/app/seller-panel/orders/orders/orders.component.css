@@ -1,44 +1,347 @@
-.custom-table {
-  font-size: 11px;
-  border-radius: 6px !important;
+/* ========================= */
+/* COMMON CSS STARTING */
+/* ==========================*/
+.table-wrapper {
+  border-radius: 15px;
   overflow: hidden;
 }
 
-.custom-table thead th {
-  font-weight: normal !important;
-  background-color: #e5e9ec;
-  color: rgb(38, 34, 34);
-  padding: 8px;
+
+.order-date {
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  background: #bfff9b;
+  color: #353d4a;
+  font-weight: 500;
 }
 
-/* Padding 10px */
-.custom-table th,
-.custom-table td {
-  padding: 10px !important;
-  vertical-align: middle;
+.order-time {
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  background: #e9f5ff;
+   color: #0d6efd;
+  font-weight: 500;
 }
 
-
-.product-image{
-  width: 20px;
-  height: 20px;
-  object-fit: cover;
-  border-radius: 3px;
-  transition: all 0.25s ease-in-out;
-}
-
-/* Hover Zoom */
-.product-image:hover {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-  z-index: 999;
-  position: absolute;
-  transform: translate(-40px, -40px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+.mat-mdc-tab .mdc-tab__text-label {
+  font-size: 11px !important;
+  font-weight: 500;
 }
 
 
-.custom-table td, .custom-table th {
-  vertical-align: middle;
+.mat-tab-group {
+  margin-bottom: 48px;
 }
+
+
+
+/* ========================= */
+/* COMMON CSS STARTING */
+/* ==========================*/
+
+
+
+
+
+
+
+
+
+
+
+
+/* #################################################3 */
+/* PENDING CSS STARTING */
+
+
+/* Header */
+.pending-order-table thead th {
+  background: #e5e9ec;
+  font-weight: 500;
+  color: #262222;
+  padding: 10px;
+}
+
+/* Body cells */
+.pending-order-table tbody td {
+  padding: 10px;
+}
+
+.pending-payment-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  background: #e9f5ff;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.pending-order-status {
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  background: #fbff84;
+  color: #353d4a;
+  font-weight: 500;
+}
+
+.action-btns {
+  display: flex;
+  flex-direction: column;   /* upar–neeche */
+  gap: 6px;
+  align-items: center;
+}
+
+
+.action-btns button {
+  min-width: 80px;          /* medium size */
+  height: 30px;
+  font-size: 12px;
+  line-height: 32px;
+}
+/* #################################################3 */
+/* PENDING CSS ENDING */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* #################################################3 */
+/* CONFIRMED CSS STARTING */
+/* Header */
+.confirmed-order-table thead th {
+  background: #e5e9ec;
+  font-weight: 500;
+  color: #262222;
+  padding: 10px;
+}
+
+/* Body cells */
+.confirmed-order-table tbody td {
+  padding: 10px;
+}
+
+.confirmed-payment-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  background: #e9f5ff;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.confirmed-order-status {
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  background: #0b8f23;
+  color: #fefefe;
+  font-weight: 500;
+}
+
+/* #################################################3 */
+/* CONFIRMED CSS ENDING */
+
+
+
+
+
+
+
+
+
+
+
+/* #################################################3 */
+/* SHIPPED CSS STARTING */
+/* Header */
+.shipped-order-table thead th {
+  background: #e5e9ec;
+  font-weight: 500;
+  color: #262222;
+  padding: 10px;
+}
+
+/* Body cells */
+.shipped-order-table tbody td {
+  padding: 10px;
+}
+
+.shipped-payment-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  background: #e9f5ff;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.shipped-order-status {
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  background: #edeeff;
+  color: #322e2e;
+  font-weight: 500;
+}
+
+.truck-move {
+  display: inline-block;
+  animation: truckMove 2s ease-in-out infinite alternate;
+}
+
+@keyframes truckMove {
+  0% {
+    transform: translateX(-4px);
+  }
+  100% {
+    transform: translateX(8px); /* aage move */
+  }
+}
+
+
+/* #################################################3 */
+/* SHIPPED CSS ENDING */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* #################################################3 */
+/* DELIVERED CSS STARTING */
+/* Header */
+.delivered-order-table thead th {
+  background: #e5e9ec;
+  font-weight: 500;
+  color: #262222;
+  padding: 10px;
+}
+
+/* Body cells */
+.delivered-order-table tbody td {
+  padding: 10px;
+}
+
+.delivered-payment-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  background: #e9f5ff;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.delivered-order-status {
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  background: #abff72;
+  color: #322e2e;
+  font-weight: 500;
+}
+
+/* #################################################3 */
+/* DELIVERED CSS ENDING */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* #################################################3 */
+/* CANCELLED CSS STARTING */
+/* Header */
+.cancelled-order-table thead th {
+  background: #e5e9ec;
+  font-weight: 500;
+  color: #262222;
+  padding: 10px;
+}
+
+/* Body cells */
+.cancelled-order-table tbody td {
+  padding: 10px;
+}
+
+.cancelled-payment-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  background: #e9f5ff;
+  color: #0d6efd;
+  font-weight: 500;
+}
+
+.cancelled-order-status {
+  padding: 4px 9px;
+  border-radius: 4px;
+  font-size: 10px;
+  background: #ffeded;
+  color: #393232;
+  font-weight: 500;
+}
+
+/* #################################################3 */
+/* CANCELLED CSS ENDING */
+
+
+
+
+
+
+
+
+
+
+
+
+
