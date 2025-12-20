@@ -89,7 +89,7 @@
               </td>
               <td>
                 <div class="action-btns">
-                  <button mat-raised-button color="primary">
+                  <button mat-raised-button color="primary" (click)="acceptOrder(order)">
                     Accept
                   </button>
 
@@ -113,7 +113,40 @@
       </p>
 
     </mat-tab>
-    <!-- PENDING ORDER ENDING
+
+
+
+    <!-- =====================MODEL OPEN========================= -->
+    <!-- PENDING ORDER MODEL -->
+    <div class="modal fade" data-bs-backdrop="static" id="exampleModal" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true" #pendingOrderModel>
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-body text-center ">
+                    <div>
+                        <i class="bi bi-rocket-takeoff" style="color: rgb(93, 236, 45);"></i>
+                    </div>
+                    <span class="fs14">
+                        <p style="line-height: 1.5;">
+                            Are you sure you want to Accept this order ?
+                        </p>
+                    </span>
+
+                </div>
+                <div class="mb-3 text-center">
+                    <button mat-raised-button color="primary me-2">Accept</button>
+                    <button mat-raised-button data-bs-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- PENDING ORDER MODEL -->
+    <!-- =====================MODEL CLOSING======================== -->
+
+
+
+<!-- PENDING ORDER ENDING
  #######################################################################################################
  ####################################################################################################### -->
 

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { OrdersService } from '../../../_services/orders/orderService/orders.service';
 import { NgToastService } from 'ng-angular-popup';
 import { TokenStorageService } from '../../../_services/token-storage.service';
 import { PageEvent } from '@angular/material/paginator';
+declare var bootstrap: any; // Declare bootstrap for accessing modal methods
 
 @Component({
   selector: 'app-orders',
@@ -103,13 +104,35 @@ onSingleSelectChange() {
 
 acceptOrder(order: any) {
   console.log("Accepted order:", order);
-  // Add API call or status update logic here
+
+  this.modelShow();
 }
 
 rejectOrder(order: any) {
   console.log("Rejected order:", order);
   // Add API call or status update logic here
 }
+
+
+
+// MODEL PROPERTIES STARTING
+// =============================================================================
+// =============================================================================
+    // MODEL PROPERTIES STARTING
+    @ViewChild('pendingOrderModel') variantModel!: ElementRef;
+    modelShow() {
+      const modal = new bootstrap.Modal(this.variantModel.nativeElement);
+      modal.show();
+    }
+    modelClose() {
+      const modal = bootstrap.Modal.getInstance(this.variantModel.nativeElement);
+      modal?.hide();
+    }
+   // MODEL PROPERTIES ENDING
+// =============================================================================
+// =============================================================================
+
+
 
 // PENDING ORDER ENDING
 // #######################################################################################################
