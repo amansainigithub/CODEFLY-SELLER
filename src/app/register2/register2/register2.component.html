@@ -1,0 +1,174 @@
+<div class="container mt-5">
+  <h3>Seller Registration</h3>
+<!-- Stepper -->
+<div class="mb-4 mt-5">
+  <span [class.fw-bold]="step===1">1. Mobile</span> →
+  <span [class.fw-bold]="step===2">2. OTP</span> →
+  <span [class.fw-bold]="step===3">3. Business Details</span> →
+  <span  [class.fw-bold]="step===4" >4. Pickup Address</span>
+  <span [class.fw-bold]="step===5">5. Bank Details</span> →
+  <span [class.fw-bold]="step===6">6. Seller Store</span>
+</div>
+
+<!-- STEP 1 -->
+<form *ngIf="step===1" [formGroup]="mobileForm">
+  <input class="form-control"
+         placeholder="Enter Mobile Number"
+         formControlName="mobile">
+
+  <div class="text-danger"
+       *ngIf="mobileForm.touched && mobileForm.invalid">
+    Enter valid 10 digit mobile
+  </div>
+
+  <button class="btn btn-primary mt-3"
+          (click)="sendOtp()">
+    Send OTP
+  </button>
+</form>
+
+<!-- STEP 2 -->
+<form *ngIf="step===2" [formGroup]="otpForm">
+  <input class="form-control"
+         placeholder="Enter OTP"
+         formControlName="otp">
+
+  <div class="text-danger">{{error}}</div>
+
+  <button class="btn btn-success mt-3"
+          (click)="verifyOtp()">
+    Verify OTP
+  </button>
+</form>
+
+<!-- STEP 3: Business Details -->
+<form *ngIf="step===3" [formGroup]="businessForm">
+  <h4>Business Details</h4>
+
+  <input class="form-control mt-2"
+         placeholder="Seller Name"
+         formControlName="sellerName">
+
+  <select class="form-control mt-2"
+          formControlName="businessType">
+    <option value="">Select Business Type</option>
+    <option>Individual</option>
+    <option>Proprietor</option>
+    <option>Pvt Ltd</option>
+  </select>
+
+  <div class="form-check mt-2">
+    <input type="checkbox" class="form-check-input"
+           formControlName="hasGst" id="hasGst">
+    <label class="form-check-label" for="hasGst">
+      I have GST
+    </label>
+  </div>
+
+  <input *ngIf="businessForm.value.hasGst"
+         class="form-control mt-2"
+         placeholder="GST Number"
+         formControlName="gstNumber">
+
+  <div class="text-danger mt-2">{{error}}</div>
+
+  <button class="btn btn-primary mt-3"
+          (click)="nextBusinessStep()">
+    Next
+  </button>
+</form>
+
+
+
+<!-- STEP 4: Pickup Address -->
+<form *ngIf="step===4" [formGroup]="pickupForm">
+  <h4>Pickup Address</h4>
+
+  <input class="form-control mt-2"
+         placeholder="Address Line 1"
+         formControlName="addressLine1">
+
+  <input class="form-control mt-2"
+         placeholder="Address Line 2"
+         formControlName="addressLine2">
+
+  <input class="form-control mt-2"
+         placeholder="City"
+         formControlName="city">
+
+  <input class="form-control mt-2"
+         placeholder="State"
+         formControlName="state">
+
+  <input class="form-control mt-2"
+         placeholder="Pincode"
+         formControlName="pincode">
+
+  <input class="form-control mt-2"
+         placeholder="Phone"
+         formControlName="phone">
+
+  <button class="btn btn-primary mt-3"
+          (click)="savePickupAddress()">
+    Next
+  </button>
+</form>
+
+
+
+
+
+<!-- STEP 5: Bank Details -->
+<form *ngIf="step===5" [formGroup]="bankForm">
+  <h4>Bank Details</h4>
+
+  <input class="form-control mt-2"
+         placeholder="Bank Name"
+         formControlName="bankName">
+
+  <input class="form-control mt-2"
+         placeholder="Account Number"
+         formControlName="accountNumber">
+
+  <input class="form-control mt-2"
+         placeholder="IFSC Code"
+         formControlName="ifsc">
+
+  <select class="form-control mt-2"
+          formControlName="accountType">
+    <option value="">Select Account Type</option>
+    <option>Savings</option>
+    <option>Current</option>
+  </select>
+
+  <button class="btn btn-primary mt-3"
+          (click)="saveBankDetails()">
+    Next
+  </button>
+</form>
+
+
+
+
+<!-- STEP 6: Store Name -->
+<form *ngIf="step===6" [formGroup]="storeForm">
+  <h4>Enter Your Store Name</h4>
+
+  <input class="form-control mt-2"
+         placeholder="Store Name"
+         formControlName="storeName">
+
+  <div class="text-danger mt-2" *ngIf="storeForm.invalid && storeForm.touched">
+    Please enter store name
+  </div>
+
+  <button class="btn btn-success mt-3" (click)="saveStoreNameStep()">
+    Submit for Review ✅
+  </button>
+</form>
+
+<!-- STEP 7: Completed -->
+<div *ngIf="step===7">
+  <h4>🎉 Seller Registration Completed</h4>
+  <p>Your profile is under review. You will be notified once approved.</p>
+</div>
