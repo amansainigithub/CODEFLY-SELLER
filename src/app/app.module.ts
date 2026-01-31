@@ -48,6 +48,7 @@ import { ProductVariantFilesComponent } from './seller-panel/seller-product/prod
 import { ProductInventoryComponent } from './seller-panel/product-inventory-manager/product-inventory/product-inventory.component';
 import { ModifiledProductFilesComponent } from './seller-panel/product-files/modifiled-product-files/modifiled-product-files.component';
 import { OrdersComponent } from './seller-panel/orders/orders/orders.component';
+import { Register2Component } from './register2/register2/register2.component';
 
 
 @NgModule({
@@ -68,7 +69,8 @@ import { OrdersComponent } from './seller-panel/orders/orders/orders.component';
     ProductVariantFilesComponent,
     ProductInventoryComponent,
     ModifiledProductFilesComponent,
-    OrdersComponent
+    OrdersComponent,
+    Register2Component
   ],
   imports: [
     BrowserModule,

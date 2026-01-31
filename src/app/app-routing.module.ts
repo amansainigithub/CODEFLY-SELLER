@@ -16,6 +16,7 @@ import { ProductVariantFilesComponent } from './seller-panel/seller-product/prod
 import { ProductInventoryComponent } from './seller-panel/product-inventory-manager/product-inventory/product-inventory.component';
 import { ModifiledProductFilesComponent } from './seller-panel/product-files/modifiled-product-files/modifiled-product-files.component';
 import { OrdersComponent } from './seller-panel/orders/orders/orders.component';
+import { Register2Component } from './register2/register2/register2.component';
 
 const routes: Routes = [
 { path: 'register', component: RegisterComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
 { path: 'login', component: LoginComponent },
 { path: 'register/seller-information', component: SellerDataFormComponent },
 { path: 'register/register-completed', component: RegisterCompletedComponent },
+ { path: 'register2', component: Register2Component },
 
 {
   path: 'seller/dashboard',canActivate:[SellerGuardService] ,
@@ -38,6 +40,7 @@ const routes: Routes = [
                     { path: 'product-inventory', component: ProductInventoryComponent },
                     { path: 'modified-product-files', component: ModifiledProductFilesComponent },
                     { path: 'orders', component: OrdersComponent },
+                   
 
       ],
 }
