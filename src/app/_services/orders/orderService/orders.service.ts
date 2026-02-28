@@ -47,6 +47,14 @@ export class OrdersService {
           'ordersController/' +'getCancelledOrders?page=' + request.page +'&size='+request.size +'&username=' +username,httpOptions);
     }   
 
+
+
+
+    //ORDER ACCEPT SERVICE
+     orderAcceptService(orderAcceptData:any): Observable<any> {
+            return this.http.post(API_AUTHORIZA_URL + 'ordersActionController/'+ 'orderAccept',orderAcceptData, httpOptions);
+     }
+
     
   
 }

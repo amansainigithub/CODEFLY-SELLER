@@ -102,9 +102,11 @@ onSingleSelectChange() {
   console.log("Selected Orders:", this.getSelectedOrders());
 }
 
+
+acceptOrderData:any;
 acceptOrder(order: any) {
   console.log("Accepted order:", order);
-
+  this.acceptOrderData = order;
   this.modelShow();
 }
 
@@ -112,6 +114,63 @@ rejectOrder(order: any) {
   console.log("Rejected order:", order);
   // Add API call or status update logic here
 }
+
+orderDetails:any ={
+  productName: '',
+  orderNoPerItem: '',
+  userId: '',
+  username: '',
+  id: ''
+}
+
+isLoading: boolean = false;
+progressValue: number = 0;
+
+
+acceptOrderFinal() {
+
+  const user = this.tokenStorageService.getUser();
+
+  this.orderDetails.id = this.acceptOrderData.id;
+  this.orderDetails.userId = this.acceptOrderData.userId;
+  this.orderDetails.orderNoPerItem = this.acceptOrderData.orderNoPerItem;
+  this.orderDetails.productName = this.acceptOrderData.productName;
+  this.orderDetails.username = user.username;
+
+  this.isLoading = true;
+  this.progressValue = 0;
+
+  // 3 seconds progress animation
+  const interval = setInterval(() => {
+    if (this.progressValue < 100) {
+      this.progressValue += 10;
+    }
+  }, 300);
+
+  this.orderService.orderAcceptService(this.orderDetails).subscribe({
+    next: (res: any) => {
+
+      setTimeout(() => {
+        clearInterval(interval);
+        this.modelClose();
+        this.isLoading = false;
+        //get pending Order Again
+        this.getPendingOrders();
+      }, 3000); 
+    },
+    error: (err: any) => {
+      clearInterval(interval);
+      this.isLoading = false;
+      console.error(err);
+      alert("Order Failed ❌");
+
+      this.modelClose();
+      this.isLoading = false;
+    },
+  });
+
+}
+
 
 
 

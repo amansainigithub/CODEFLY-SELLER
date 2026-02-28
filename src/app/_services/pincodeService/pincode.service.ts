@@ -19,12 +19,5 @@ export class PincodeService {
     return this.http.get(SELLER_PUBLIC_URL + 'stateCityPincodeController/'+ 'stateCityPincode/' + pincode );
   }
 
-
-    createCashfreeOrder(amount: number, email: string, phone: string) {
-    return this.http.post(API_AUTHORIZA_URL + "cashFreeController/"+ "createCashFreeOrder", {
-      amount,
-      email,
-      phone
-    });
-  }
+  
 }

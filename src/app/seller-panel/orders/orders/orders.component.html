@@ -37,6 +37,7 @@
               <th>Date/Time</th>
               <th>Price</th>
               <th>Qty</th>
+              <th>Product_Size</th>
               <th>Payment</th>
               <th>Status</th>
               <th>Action</th>
@@ -76,6 +77,12 @@
               <td>₹{{ order.productPrice }}</td>
 
               <td>{{ order.quantity }}</td>
+
+              <td>
+                 <span class="pending-payment-badge" >
+                  {{ order.productSize }}
+                </span>
+              </td>
 
               <td>
                 <span class="pending-payment-badge">
@@ -121,12 +128,13 @@
     <div class="modal fade" data-bs-backdrop="static" id="exampleModal" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true" #pendingOrderModel>
         <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
+
+            <div *ngIf="!isLoading" class="modal-content">
                 <div class="modal-body text-center ">
                     <div>
                         <i class="bi bi-rocket-takeoff" style="color: rgb(93, 236, 45);"></i>
                     </div>
-                    <span class="fs14">
+                    <span class="fs12">
                         <p style="line-height: 1.5;">
                             Are you sure you want to Accept this order ?
                         </p>
@@ -134,11 +142,29 @@
 
                 </div>
                 <div class="mb-3 text-center">
-                    <button mat-raised-button color="primary me-2">Accept</button>
+                    <button mat-raised-button color="primary me-2" (click)="acceptOrderFinal()">Accept</button>
                     <button mat-raised-button data-bs-dismiss="modal">Close</button>
                 </div>
-
             </div>
+
+            <div *ngIf="isLoading" class="modal-content">
+                <div class="modal-body text-center ">
+                    <span class="fs12">
+                        <p style="line-height: 1.5;">please wait... </p>
+                    </span>
+
+                    <div class="progress"  style="height: 3px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                            role="progressbar"
+                            [style.width.%]="progressValue">
+                            <!-- {{progressValue}}% -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
         </div>
     </div>
     <!-- PENDING ORDER MODEL -->

@@ -9,25 +9,10 @@ declare var Cashfree: any;
   styleUrl: './seller-home.component.css',
 })
 export class SellerHomeComponent {
-  constructor(private pincodeService: PincodeService) {}
-  payNow() {
-    this.pincodeService
-      .createCashfreeOrder(100, 'test@gmail.com', '9999999999')
-      .subscribe((res: any) => {
-        const cashfree = Cashfree({ mode: 'sandbox' }); // or "production"
+  
+  constructor() {}
 
-        cashfree.checkout({
-          paymentSessionId: res.payment_session_id,
-          redirectTarget: '_self',
-        });
-      });
-  }
-
-
-
-
-// CHART JS
- // Your combined array
+   //CHART-JS
   combined = [
     { productDate: "23-Nov-2025", productName: "Neeman's Tread Basics Shoes for Men" },
     { productDate: "23-Nov-2025", productName: "Centrino Mens 6581 Running Shoes" },
@@ -106,20 +91,7 @@ public chartOptions: ChartConfiguration['options'] = {
     }
   }
 };
-
-
-
 // CHART JS
-
-
-
-
-
-
-
-
-
-
 
 
 }
