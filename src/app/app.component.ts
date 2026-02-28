@@ -64,4 +64,12 @@ export class AppComponent {
     this.isArrowDown = !this.isArrowDown;
   }
 
+
+
+
+
+
+
+  
+
 }

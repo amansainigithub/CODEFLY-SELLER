@@ -26,19 +26,42 @@
     </div>
 
 
+<div class="dropdown ms-auto">
 
-    <div class="dropdown">
-      <a style="color: #8B6BF6;" class="dropdown-toggle px-3" mat-button href="#" data-bs-toggle="dropdown"
-        aria-expanded="false">
-        <i class="bi bi-person"></i> Profile
+  <button class="btn btn-sm dropdown-toggle custom-btn"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false">
+    <i class="bi bi-person-circle"></i> Profile
+  </button>
+
+  <ul class="dropdown-menu dropdown-menu-end custom-menu">
+    <li>
+      <a class="dropdown-item custom-item" routerLink="/profile">
+       <i class="bi bi-person-circle mx-1"></i> My Profile
       </a>
+    </li>
+    <li>
+      <a class="dropdown-item custom-item" routerLink="/settings">
+       <i class="bi bi-gear-wide-connected mx-1"></i> Settings
+      </a>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+    <li>
+      <a class="dropdown-item custom-item text-danger" href="#"
+         (click)="logout()">
+        <i class="bi bi-power mx-1"></i>Logout
+      </a>
+    </li>
+  </ul>
 
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-        <li><a class="dropdown-item" href="#">Another action</a></li>
-        <li><a class="dropdown-item" href="#" (click)="logout()">logout</a></li>
-      </ul>
-    </div>
+</div>
+
+
+
+
+
+
   </nav>
   <div class="container-fluid" style="margin-top: 80px;">
     <!-- Adjust margin-top to match the height of your fixed navbar -->
@@ -100,7 +123,7 @@
         </p>
       </li>
 
-      <li class="nav-item mt-3">
+      <li class="nav-item mt-1">
         <a class="nav-link hv1" routerLink="/seller/dashboard" href="/seller/dashboard" data-bs-toggle="collapse"
           data-bs-target="#submenu1" aria-expanded="false" routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }">
@@ -169,10 +192,10 @@
   <!-- CONTENT -->
   <div *ngIf="isLoggedIn" class="content" [ngClass]="{'content-expanded': !isSidebarVisible}">
 
-    <div class="p-4 loadDynamic">
+    <div class="loadDynamic mx-3">
       <router-outlet>
 
-        <button mat-stroked-button #menuBtn type="button" (click)="toggleSidebar()">
+        <button mat-stroked-button class="strokedbtn" #menuBtn type="button" (click)="toggleSidebar()">
           <i class="bi bi-list"></i>
         </button>
 
