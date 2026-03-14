@@ -84,6 +84,25 @@
 /* UNDER REVIEW ENDING*/
 
 
+/* UNDER-REVIEW MODEL STARTING... */
+
+.custom-modal {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.hover-img {
+  transition: transform 0.3s ease;
+}
+
+.hover-img:hover {
+  transform: scale(1.05);
+}
+
+/* UNDER-REVIEW MODEL STARTING... */
+
+
 
 
 
@@ -120,4 +139,11 @@
 
 .nav-btn-color{
   color: #3738A6;
+  font-weight: 500;
 }
+
+
+
+
+
+

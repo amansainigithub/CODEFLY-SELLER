@@ -149,7 +149,7 @@
 
                 <td>
                   <div *ngIf="data.productStatus === 'UNDER_REVIEW'" class="underReview" >
-                    <i class="bi bi-arrow-clockwise"></i>
+                    <i class="bi bi-clock-history"></i>
                     UNDER REVIEW
                     <i class="bi bi-dot blink-dot-underReview "></i>
                   </div>
@@ -232,16 +232,25 @@
               <tr scope="row" *ngFor="let data of underReviewData; let i = index">
                 <td class="p-3">{{ i + 1 }}</td>
                 <td>
-                  <img [src]="data.productMainFile" height="65" width="65" class="p-1" style="border-radius: 8px;object-fit: cover;" alt="">
+                  <img 
+                    [src]="data.productMainFile"
+                    height="65"
+                    width="65"
+                    class="p-1 img-thumbnail hover-img"
+                    style="border-radius: 8px; object-fit: cover; cursor: pointer;"
+                    alt=""
+                    (mouseenter)="startHover(data.productMainFile)"
+                    (mouseleave)="cancelHover()"
+                  >
                 </td>
                 <td>{{ data.productName }}</td>
                 <td>{{ data.productKey }}</td>
                 <td>{{ data.productDate }} | {{ data.productTime }}</td>
                 <td>
                   <div *ngIf="data.productStatus === 'UNDER_REVIEW'" class="underReview" >
-                    <i class="bi bi-arrow-clockwise"></i>
-                    UNDER REVIEW
-                    <i class="bi bi-dot blink-dot-underReview "></i>
+                    <i class="bi bi-clock-history"></i>
+                   <span class="fs10" > UNDER REVIEW</span>
+                    <!-- <i class="bi bi-dot blink-dot-underReview "></i> -->
                   </div>
                 </td>
                 
@@ -277,6 +286,21 @@
 
       </div>
     </div>
+
+
+    <div class="modal fade" id="imageModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content custom-modal">
+          <div class="modal-body text-center p-2">
+            <img 
+              [src]="selectedImage"
+              class="img-fluid rounded"
+              style="max-height: 250px; object-fit: contain;">
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- PRODUCT UNDER REVIEW ENDING -->
 
 
@@ -392,7 +416,7 @@
                   <td>{{ data.productDate }} | {{ data.productTime }}</td>
                   <td>
                     <div class="dis-approved" >
-                      <i class="bi bi-exclamation-triangle"></i>
+                      <i class="bi bi-exclamation-diamond-fill"></i>
                         DIS APPROVED
                     <i class="bi bi-dot blink-dot-dis-approved "></i>
                   </div>

@@ -226,22 +226,22 @@
     <mat-tab label="Conformed Orders">
       <ng-template mat-tab-label class="fs11">
         <span style="font-size:11px !important; font-weight:500;">
-          Orders
-          <span *ngIf="pendingOrders.length > 0">
-            ({{ pendingOrders.length }})
+          ConfirmedOrders
+          <span *ngIf="confirmedOrders.length > 0">
+            ({{ confirmedOrders.length }})
           </span>
         </span>
       </ng-template>
 
-      <span style="font-size:11px !important; font-weight:500;">
-          Pending
-          <span *ngIf="pendingOrders.length > 0">
-            ({{ pendingOrders.length }})
+      <!-- <span style="font-size:11px !important; font-weight:500;">
+          Confirmed Orders
+          <span *ngIf="confirmedOrders.length > 0">
+            ({{ confirmedOrders.length }})
           </span>
-        </span>
+        </span> -->
 
-      <div class="table-wrapper mt-3">
-        <table class="table table-bordered table-sm fs11 confirmed-order-table">
+      <div class="table-wrapper mt-3 " style="overflow-x: auto;">
+        <table class="table table-bordered table-sm fs11 confirmed-order-table" style="overflow-x: auto;">
           <thead class="table-light">
             <tr>
               <th>Order No</th>
@@ -252,6 +252,9 @@
               <th>Qty</th>
               <th>Payment</th>
               <th>Status</th>
+              <th>Pickup Date</th>
+              <th>Courier Name</th>
+              <th>SR Status</th>
             </tr>
           </thead>
           <tbody>
@@ -265,9 +268,9 @@
               </td>
 
 
-              <td>{{ order.productName }}</td>
+              <td style="width: 200px;">{{ order.productName }}</td>
 
-              <td style="width: 120px;">
+              <td style="width: 230px;">
                 <div>
                   <span class="order-date">
                     <i class="bi bi-calendar2-range"></i>
@@ -296,6 +299,30 @@
                   <i class="bi bi-check2-circle"></i>
                   {{ order.orderStatus }}
                 </span>
+              </td>
+              <td style="width: 260px;">
+                <div>
+                  <span class="sr-pickup-date">
+                    <i class="bi bi-bag-heart"></i>
+                    {{ order.shipRocketPickupDate }}
+                  </span>
+                </div>
+              </td>
+              <td style="width: 200px;">
+                <div>
+                  <span class="sr-courier-name">
+                    <i class="bi bi-truck"></i>
+                    {{ order.shipRocketCourierName }}
+                  </span>
+                </div>
+              </td>
+              <td style="width: 120px;">
+                <div>
+                  <span class="order-date">
+                    <i class="bi bi-calendar2-range"></i>
+                    {{ order.shipRocketStatus }}
+                  </span>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -362,8 +389,8 @@
       <ng-template mat-tab-label class="fs11">
         <span style="font-size:11px !important; font-weight:500;">
           Shipped
-          <span *ngIf="pendingOrders.length > 0">
-            ({{ pendingOrders.length }})
+          <span *ngIf="shippedOrders.length > 0">
+            ({{ shippedOrders.length }})
           </span>
         </span>
       </ng-template>
@@ -493,8 +520,8 @@
       <ng-template mat-tab-label class="fs11">
         <span style="font-size:11px !important; font-weight:500;">
           Delivered
-          <span *ngIf="pendingOrders.length > 0">
-            ({{ pendingOrders.length }})
+          <span *ngIf="deliveredOrders.length > 0">
+            ({{ deliveredOrders.length }})
           </span>
         </span>
       </ng-template>
@@ -616,8 +643,8 @@
       <ng-template mat-tab-label class="fs11">
         <span style="font-size:11px !important; font-weight:500;">
            Cancelled
-          <span *ngIf="pendingOrders.length > 0">
-            ({{ pendingOrders.length }})
+          <span *ngIf="cancelledOrders.length > 0">
+            ({{ cancelledOrders.length }})
           </span>
         </span>
       </ng-template>

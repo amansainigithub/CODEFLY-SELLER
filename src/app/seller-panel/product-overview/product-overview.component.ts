@@ -171,7 +171,57 @@ export class ProductOverviewComponent {
         state: { productId: productId },  
       });
   }
+
+
+selectedImage: string = '';
+private hoverTimer: any;
+private modalInstance: any;
+
+startHover(imageUrl: string) {
+  this.hoverTimer = setTimeout(() => {
+    this.selectedImage = imageUrl;
+
+    const modalElement = document.getElementById('imageModal');
+    this.modalInstance = new bootstrap.Modal(modalElement);
+    this.modalInstance.show();
+
+  }, 1000); // 1 second delay
+}
+
+cancelHover() {
+  clearTimeout(this.hoverTimer);
+}
+
+
   // UNDER REVIEW PRODUCT ENDING
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // =============================================================================
   // =============================================================================

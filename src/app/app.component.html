@@ -6,68 +6,70 @@
 
 <!-- USER IS LOGGED IN  NAVBAR START -->
 <div id="app" *ngIf="isLoggedIn">
-  <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-lg-2 navExpand">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-lg-2 navExpand">
 
-    <a href="index.html" class="navbar-brand p-0 brandName">
-      <p class="m-0" style="color: #8B6BF6;">
-        <i class="bi bi-send-check-fill"></i>
-        Codefly
-      </p>
-      <!-- <img src="img/logo.png" alt="Logo"> -->
-    </a>
+        <a href="index.html" class="navbar-brand p-0 brandName">
+          <p class="m-0" style="color: #8B6BF6;">
+            <i class="bi bi-send-check-fill"></i>
+            Codefly
+          </p>
+          <!-- <img src="img/logo.png" alt="Logo"> -->
+        </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-      <span class="fa fa-bars"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <div class="navbar-nav ms-auto py-0">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <div class="navbar-nav ms-auto py-0">
+          </div>
+          <!-- <button mat-raised-button  class="baseColor" (click)="logout()">logout</button> -->
+        </div>
+
+
+      <div class="dropdown ms-auto">
+
+        <button class="btn btn-sm dropdown-toggle custom-btn"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+          <i class="bi bi-person-circle"></i> Profile
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end custom-menu">
+          <li>
+            <a class="dropdown-item custom-item" routerLink="/profile">
+            <i class="bi bi-person-circle mx-1"></i> My Profile
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item custom-item" routerLink="/settings">
+            <i class="bi bi-gear-wide-connected mx-1"></i> Settings
+            </a>
+          </li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <a class="dropdown-item custom-item text-danger" href="#"
+              (click)="logout()">
+              <i class="bi bi-power mx-1"></i>Logout
+            </a>
+          </li>
+        </ul>
+
       </div>
-      <!-- <button mat-raised-button  class="baseColor" (click)="logout()">logout</button> -->
+
+    </nav>
+
+    <div style="margin-top: 50px;">
+      <mat-progress-bar mode="indeterminate" *ngIf="progressBarLoader"></mat-progress-bar>
     </div>
-
-
-<div class="dropdown ms-auto">
-
-  <button class="btn btn-sm dropdown-toggle custom-btn"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false">
-    <i class="bi bi-person-circle"></i> Profile
-  </button>
-
-  <ul class="dropdown-menu dropdown-menu-end custom-menu">
-    <li>
-      <a class="dropdown-item custom-item" routerLink="/profile">
-       <i class="bi bi-person-circle mx-1"></i> My Profile
-      </a>
-    </li>
-    <li>
-      <a class="dropdown-item custom-item" routerLink="/settings">
-       <i class="bi bi-gear-wide-connected mx-1"></i> Settings
-      </a>
-    </li>
-    <li><hr class="dropdown-divider"></li>
-    <li>
-      <a class="dropdown-item custom-item text-danger" href="#"
-         (click)="logout()">
-        <i class="bi bi-power mx-1"></i>Logout
-      </a>
-    </li>
-  </ul>
-
-</div>
-
-
-
-
-
-
-  </nav>
+    
   <div class="container-fluid" style="margin-top: 80px;">
     <!-- Adjust margin-top to match the height of your fixed navbar -->
     <router-outlet></router-outlet>
   </div>
 </div>
+
+
 <!-- USER IS LOGGED IN NAVBAR ENDING -->
 
 <!-- ------------------------------------------------------------------------------------------------ -->
@@ -95,7 +97,7 @@
   </nav>
 
   <div> <!-- class="container-fluid"-->
-    <router-outlet></router-outlet>
+    <router-outlet  ></router-outlet>
   </div>
 </div>
 <!-- USER IS NOT LOGGED IN  NAVBAR ENDING -->
@@ -111,7 +113,8 @@
 
 <!-- SIDEBAR STARTING-->
 <div *ngIf="isLoggedIn">
-  <div style="top: 7%;" class="sidebar scrollable-content" [ngClass]="{'sidebar-extend-min': !isSidebarVisible}">
+  
+  <div style="top: 8%;" class="sidebar scrollable-content" [ngClass]="{'sidebar-extend-min': !isSidebarVisible}">
     <!-- <a href="" class="item">Home</a>
                           <a href="" class="item">Product</a> -->
 

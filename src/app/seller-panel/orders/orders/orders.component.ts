@@ -3,6 +3,7 @@ import { OrdersService } from '../../../_services/orders/orderService/orders.ser
 import { NgToastService } from 'ng-angular-popup';
 import { TokenStorageService } from '../../../_services/token-storage.service';
 import { PageEvent } from '@angular/material/paginator';
+import { LoaderService } from '../../../_services/loaderService/loader.service';
 declare var bootstrap: any; // Declare bootstrap for accessing modal methods
 
 @Component({
@@ -15,7 +16,8 @@ export class OrdersComponent {
     constructor(
     private orderService: OrdersService,
     private toast: NgToastService,
-    private tokenStorageService: TokenStorageService
+    private tokenStorageService: TokenStorageService,
+    private loaderService: LoaderService
   ) {}
 
   
@@ -51,17 +53,20 @@ export class OrdersComponent {
   }
 
   getPendingOrdersData(request: any) {
+    this.loaderService.show(); // Show loader before API call
+
     const user = this.tokenStorageService.getUser();
 
     this.orderService.getPendingOrders(request, user.username).subscribe({
       next: (res: any) => {
-        console.log(res);
+        //console.log(res);
         this.pendingOrders = res.data.content;
 
         //  PAGENATION DATA
         this.pendingOrders_totalElements = res.data.totalElements;
         this.pendingOrders_currentPage = res.data.pageable.pageNumber;
         this.pendingOrders_itemsPerPage = res.data.pageable.pageSize;
+        this.loaderService.hide(); // Hide loader after successful response
       },
       error: (err: any) => {
         this.toast.error({
@@ -70,8 +75,10 @@ export class OrdersComponent {
           position: 'topRight',
           duration: 2000,
         });
+        this.loaderService.hide(); // Hide loader after error response
       },
     });
+    // this.loaderService.hide(); // Hide loader after API call is made (in case of network issues)
 
   }
 
@@ -89,7 +96,7 @@ nextPagePendingProducts(event: PageEvent) {
 selectAll(event: any) {
   const checked = event.target.checked;
   this.pendingOrders.forEach((order: any) => order.selected = checked);
-  console.log(this.getSelectedOrders());
+  //console.log(this.getSelectedOrders());
 }
 
 getSelectedOrders() {
@@ -99,19 +106,19 @@ getSelectedOrders() {
 selectAllChecked: boolean = false;
 onSingleSelectChange() {
   this.selectAllChecked = this.pendingOrders.every((order: any) => order.selected);
-  console.log("Selected Orders:", this.getSelectedOrders());
+  //console.log("Selected Orders:", this.getSelectedOrders());
 }
 
 
 acceptOrderData:any;
 acceptOrder(order: any) {
-  console.log("Accepted order:", order);
+  //console.log("Accepted order:", order);
   this.acceptOrderData = order;
   this.modelShow();
 }
 
 rejectOrder(order: any) {
-  console.log("Rejected order:", order);
+  //console.log("Rejected order:", order);
   // Add API call or status update logic here
 }
 
@@ -333,7 +340,7 @@ nextPageConfirmedProducts(event: PageEvent) {
 
     this.orderService.getShippedOrders(request, user.username).subscribe({
       next: (res: any) => {
-        console.log(res);
+        //console.log(res);
         this.shippedOrders = res.data.content;
 
         //  PAGENATION DATA
@@ -430,7 +437,7 @@ nextPageShippedProducts(event: PageEvent) {
 
     this.orderService.getdeliveredOrders(request, user.username).subscribe({
       next: (res: any) => {
-        console.log(res);
+        //console.log(res);
         this.deliveredOrders = res.data.content;
 
         //  PAGENATION DATA
@@ -524,7 +531,7 @@ nextPageDeliveredProducts(event: PageEvent) {
 
     this.orderService.getCancelledOrders(request, user.username).subscribe({
       next: (res: any) => {
-        console.log(res);
+        //console.log(res);
         this.cancelledOrders = res.data.content;
 
         //  PAGENATION DATA

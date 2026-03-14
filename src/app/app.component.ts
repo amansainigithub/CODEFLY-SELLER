@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { TokenStorageService } from './_services/token-storage.service';
+import { LoaderService } from './_services/loaderService/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -10,13 +11,22 @@ export class AppComponent {
   showFiller = false;
   title = 'JET-ANGULAR-2';
 
+  //PROGRESS BAR LOADER
+  progressBarLoader = false;
+
   private roles: string[] = [];
   isLoggedIn = false;
   showAdminBoard = false;
   showModeratorBoard = false;
   username?: string;
 
-  constructor(private tokenStorageService: TokenStorageService) { }
+  constructor(private tokenStorageService: TokenStorageService,
+              private loaderService: LoaderService
+  ) { 
+    this.loaderService.loading$.subscribe(res => {
+      this.progressBarLoader = res;
+    });
+  }
 
   ngOnInit(): void {
 
@@ -31,8 +41,10 @@ export class AppComponent {
       const user = this.tokenStorageService.getUser();
       this.roles = user.roles;
       this.username = user.username;
-      
     }
+
+
+
 
   }
 
