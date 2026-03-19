@@ -244,17 +244,20 @@
         <table class="table table-bordered table-sm fs11 confirmed-order-table" style="overflow-x: auto;">
           <thead class="table-light">
             <tr>
-              <th>Order No</th>
-              <th>Product</th>
-              <th>Product Name</th>
-              <th>Date/Time</th>
-              <th>Price</th>
-              <th>Qty</th>
-              <th>Payment</th>
-              <th>Status</th>
-              <th>Pickup Date</th>
-              <th>Courier Name</th>
-              <th>SR Status</th>
+              <th style="min-width:200px;" >Order No</th>
+              <th style="min-width:100px;">Product</th>
+              <th style="min-width:200px;">Product Name</th>
+              <th style="min-width:120px;">Date/Time</th>
+              <th style="min-width:60px;">Price</th>
+              <th style="min-width:40px;">Qty</th>
+              <th style="min-width:100px;">Payment</th>
+              <th style="min-width:120px;">Status</th>
+              <th style="min-width:160px;">Pickup Date</th>
+              <th style="min-width:200px;">Courier Name</th>
+              <th style="min-width:150px;">Delivery Status</th>
+              <th style="min-width:150px;">Shipment Id</th>
+              <th style="min-width:150px;">AWB</th>
+              <th style="min-width:120px;">Labels</th>
             </tr>
           </thead>
           <tbody>
@@ -268,9 +271,9 @@
               </td>
 
 
-              <td style="width: 200px;">{{ order.productName }}</td>
+              <td>{{ order.productName }}</td>
 
-              <td style="width: 230px;">
+              <td>
                 <div>
                   <span class="order-date">
                     <i class="bi bi-calendar2-range"></i>
@@ -294,13 +297,13 @@
                   {{ order.paymentState }}
                 </span>
               </td>
-              <td style="width: 130px;">
+              <td>
                 <span class="confirmed-order-status">
                   <i class="bi bi-check2-circle"></i>
                   {{ order.orderStatus }}
                 </span>
               </td>
-              <td style="width: 260px;">
+              <td >
                 <div>
                   <span class="sr-pickup-date">
                     <i class="bi bi-bag-heart"></i>
@@ -308,7 +311,7 @@
                   </span>
                 </div>
               </td>
-              <td style="width: 200px;">
+              <td>
                 <div>
                   <span class="sr-courier-name">
                     <i class="bi bi-truck"></i>
@@ -316,13 +319,34 @@
                   </span>
                 </div>
               </td>
-              <td style="width: 120px;">
+              <td>
                 <div>
                   <span class="order-date">
-                    <i class="bi bi-calendar2-range"></i>
+                    <i class="bi bi-truck"></i>
                     {{ order.shipRocketStatus }}
                   </span>
                 </div>
+              </td>
+               <td>
+                <div>
+                  <span class="order-date">
+                    <i class="bi bi-truck"></i>
+                    {{ order.shipRocketShipmentId }}
+                  </span>
+                </div>
+              </td>
+               <td>
+                <div>
+                  <span class="order-date">
+                    <i class="bi bi-truck"></i>
+                    {{ order.shipRocketAwbCode }}
+                  </span>
+                </div>
+              </td>
+               <td>
+                  <button mat-raised-button color="primary" class="label-download" (click)="downloadLabel(order)">
+                    Download
+                  </button>
               </td>
             </tr>
           </tbody>

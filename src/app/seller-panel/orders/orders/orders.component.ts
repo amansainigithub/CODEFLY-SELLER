@@ -252,6 +252,8 @@ acceptOrderFinal() {
 
     this.orderService.getConfirmedOrders(request, user.username).subscribe({
       next: (res: any) => {
+        console.log("CONFIRMEND DATA ");
+        
         console.log(res);
         this.confirmedOrders = res.data.content;
 
@@ -281,6 +283,55 @@ nextPageConfirmedProducts(event: PageEvent) {
         size: this.confirmedOrders_itemsPerPage.toString(),
       };
       this.getConfirmedOrdersData(request);
+}
+
+
+labelShipmentIds:any = {
+  "shipmentIds": []
+}
+
+
+
+downloadLabel(orderData: any) {
+  this.labelShipmentIds.shipmentIds = [orderData.shipRocketShipmentId];
+
+  this.orderService.downloadLabels(this.labelShipmentIds).subscribe({
+    next: (res: any) => {
+      console.log("LABEL DATA", res);
+      const raw = res?.data?.raw;
+      if (raw?.label_created === 1 && res?.data?.label_url) {
+        const labelUrl = res.data.label_url;
+        this.toast.success({
+          detail: 'Success',
+          summary: 'Label generated successfully',
+          position: 'topRight',
+          duration: 2000,
+        });
+        window.open(labelUrl, '_blank');
+      } 
+      else {
+        let errorMsg = 'Label not generated';
+        if (raw?.not_created) {
+          const errors = Object.values(raw.not_created);
+          errorMsg = errors.join(', ');
+        }
+        this.toast.error({
+          detail: 'Failed',
+          summary: errorMsg,
+          position: 'topRight',
+          duration: 3000,
+        });
+      }
+    },
+    error: (err: any) => {
+      this.toast.error({
+        detail: 'Error',
+        summary: err.error?.message || 'Something went wrong',
+        position: 'topRight',
+        duration: 2000,
+      });
+    },
+  });
 }
 
 

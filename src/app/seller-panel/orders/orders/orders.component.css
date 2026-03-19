@@ -172,6 +172,12 @@
   color: #fefefe;
   font-weight: 500;
 }
+.label-download {
+  min-width: 80px;          /* medium size */
+  height: 26px;
+  font-size: 12px;
+  line-height: 32px;
+}
 
 /* #################################################3 */
 /* CONFIRMED CSS ENDING */

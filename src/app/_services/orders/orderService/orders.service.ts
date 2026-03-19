@@ -26,6 +26,9 @@ export class OrdersService {
           'ordersController/' +'getConfirmedOrders?page=' + request.page +'&size='+request.size +'&username=' +username,httpOptions);
     }
 
+
+
+
     getShippedOrders(request: any, username: any): Observable<any> {
       return this.http.post(
         API_AUTHORIZA_URL +
@@ -55,6 +58,13 @@ export class OrdersService {
             return this.http.post(API_AUTHORIZA_URL + 'ordersActionController/'+ 'orderAccept',orderAcceptData, httpOptions);
      }
 
+
+
+    downloadLabels(labelShipmentIds:any): Observable<any> {
+      return this.http.post(
+        API_AUTHORIZA_URL +
+          'ordersController/' +'generateLabelShipRocket1',labelShipmentIds ,httpOptions);
+    }  
     
   
 }
